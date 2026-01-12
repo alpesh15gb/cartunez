@@ -1,0 +1,278 @@
+//
+//  Variables
+//  _____________________________________________
+
+@primary__color: #ff0000;
+/* Vibrant Red */
+@secondary__color: #333333;
+@page__background-color: #0d0d0d;
+/* Very Dark Grey */
+@text__color: #f0f0f0;
+@link__color: #ff3333;
+@link__hover__color: #ffffff;
+@heading__color: #ffffff;
+
+@header__background-color: #000000;
+@header-icons-color: #ffffff;
+@navigation__background: #1a1a1a;
+@navigation-level0-item__color: #ffffff;
+@navigation-level0-item__active__color: @primary__color;
+
+@button-primary__background: @primary__color;
+@button-primary__border: @primary__color;
+@button-primary__color: #ffffff;
+@button-primary__hover__background: darken(@primary__color, 10%);
+@button-primary__hover__border: darken(@primary__color, 10%);
+
+@footer__background-color: #080808;
+
+//  Fonts
+@font-family__base: 'Roboto', sans-serif;
+@font-family__headings: 'Orbitron', sans-serif;
+
+//  Layout
+@layout__max-width: 1400px;
+
+//  Common
+.page-wrapper {
+    background-color: @page__background-color;
+    color: @text__color;
+}
+
+// Global overrides for Dark Mode
+body {
+    background-color: @page__background-color;
+    color: @text__color;
+}
+
+.cms-home .page-main {
+    padding-top: 0; // Full width hero
+}
+
+.section-title {
+    font-family: @font-family__headings;
+    text-transform: uppercase;
+    font-style: italic;
+    font-size: 2.4rem;
+    margin-bottom: 3rem;
+    position: relative;
+    display: inline-block;
+
+    &:after {
+        content: '';
+        display: block;
+        width: 60px;
+        height: 3px;
+        background: @primary__color;
+        margin: 10px auto 0;
+    }
+}
+
+.text-center {
+    text-align: center;
+}
+
+// Brands Grid
+.brand-grid {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    flex-wrap: wrap;
+
+    .brand-item {
+        background: #151515;
+        border: 1px solid #333;
+        color: #fff;
+        padding: 20px 40px;
+        text-transform: uppercase;
+        font-weight: bold;
+        text-decoration: none;
+        transition: all 0.3s;
+
+        &:hover {
+            border-color: @primary__color;
+            background: #222;
+        }
+    }
+}
+
+// Category Grid
+.category-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+
+    .category-card {
+        background: #1a1a1a;
+        border: 1px solid #333;
+        overflow: hidden;
+        transition: transform 0.3s;
+
+        &:hover {
+            transform: translateY(-5px);
+            border-color: @primary__color;
+        }
+
+        .cat-image {
+            height: 150px;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .cat-info {
+            padding: 15px;
+            text-align: center;
+
+            h4 {
+                margin: 0;
+                text-transform: uppercase;
+                font-size: 1.1rem;
+            }
+        }
+    }
+}
+
+// Product Grid (Best Sellers)
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 20px;
+
+    .product-item {
+        background: #151515;
+        padding: 15px;
+        border: 1px solid #2a2a2a;
+        transition: border-color 0.3s;
+
+        &:hover {
+            border-color: @primary__color;
+        }
+
+        .product-image {
+            background: #222;
+            height: 200px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+
+            img {
+                max-width: 100%;
+                max-height: 100%;
+            }
+        }
+
+        .product-name {
+            display: block;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+
+        .price-box .price {
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: #fff;
+            display: block;
+            margin-bottom: 15px;
+        }
+
+        .action.tocart {
+            width: 100%;
+            text-transform: uppercase;
+        }
+    }
+}
+
+// Features
+.feature-grid {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    gap: 30px;
+
+    .feature-item {
+        text-align: center;
+
+        .icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+
+        h4 {
+            text-transform: uppercase;
+            font-weight: bold;
+            color: #fff;
+        }
+    }
+}
+
+// Installs Gallery
+.install-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+
+    .install-item {
+        height: 250px;
+        background-color: #222;
+        background-size: cover;
+        background-position: center;
+        border: 2px solid #333;
+    }
+}
+
+// Footer Custom
+.footer-custom {
+    background: #050505;
+    border-top: 1px solid #222;
+    padding-top: 50px;
+    color: #999;
+
+    .footer-top {
+        padding-bottom: 40px;
+        border-bottom: 1px solid #222;
+
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 40px;
+        }
+
+        .footer-col {
+            flex: 1;
+            min-width: 200px;
+
+            h4 {
+                color: #fff;
+                margin-bottom: 20px;
+                text-transform: uppercase;
+                font-size: 1.1rem;
+            }
+
+            ul {
+                list-style: none;
+                padding: 0;
+
+                li {
+                    margin-bottom: 10px;
+
+                    a {
+                        color: #999;
+
+                        &:hover {
+                            color: @primary__color;
+                            text-decoration: none;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .footer-bottom {
+        padding: 20px 0;
+        text-align: center;
+        font-size: 0.9rem;
+    }
+}
