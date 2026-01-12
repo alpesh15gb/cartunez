@@ -74,11 +74,19 @@ until docker compose exec -T search curl -s http://localhost:9200/_cluster/healt
 done
 echo "[INFO] OpenSearch is ready!"
 
-# 5. Database Installation (if needed)
+# 5. Database Installation
+# If env.php exists but we are re-running, it might be broken.
+# We back it up and force a fresh install to ensure OpenSearch config is applied.
+if [ -f "src/app/etc/env.php" ]; then
+    echo "[INFO] Existing env.php found. Backing up to env.php.bak to force configuration update..."
+    mv src/app/etc/env.php src/app/etc/env.php.bak
+fi
+
 if [ ! -f "src/app/etc/env.php" ]; then
     echo "[ACTION] Running Magento Initial Installation (setup:install)..."
     # We use sh -c to access the container's environment variables
     docker compose run --rm app sh -c 'bin/magento setup:install \
+        --cleanup-database \
         --base-url="http://localhost:8082/" \
         --db-host="db" \
         --db-name="$DB_NAME" \
@@ -100,16 +108,6 @@ if [ ! -f "src/app/etc/env.php" ]; then
         --opensearch-index-prefix="cartunez" \
         --opensearch-enable-auth="0" \
         --opensearch-timeout="15"'
-else
-    echo "[INFO] env.php found, forcing OpenSearch configuration..."
-    docker compose run --rm app sh -c 'bin/magento config:set catalog/search/engine opensearch && \
-        bin/magento config:set catalog/search/opensearch_server_hostname search && \
-        bin/magento config:set catalog/search/opensearch_server_port 9200 && \
-        bin/magento config:set catalog/search/opensearch_index_prefix cartunez && \
-        bin/magento config:set catalog/search/opensearch_enable_auth 0 && \
-        bin/magento config:set catalog/search/opensearch_server_timeout 15 && \
-        bin/magento config:set catalog/search/elasticsearch7_server_hostname search && \
-        bin/magento config:set catalog/search/elasticsearch7_server_port 9200'
 fi
 
 # 6. Setup & Upgrade
