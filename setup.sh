@@ -103,7 +103,6 @@ if [ ! -f "src/app/etc/env.php" ]; then
 else
     echo "[INFO] env.php found, forcing OpenSearch configuration..."
     docker compose run --rm app bin/magento setup:config:set \
-        --search-engine="opensearch" \
         --opensearch-host="search" \
         --opensearch-port="9200" \
         --opensearch-index-prefix="cartunez" \
