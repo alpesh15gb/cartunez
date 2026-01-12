@@ -22,6 +22,10 @@ else
     mkdir -p src
 fi
 
+# Fix permissions for Docker (since host is root)
+echo "[ACTION] Fixing permissions for src directory..."
+chmod 777 src
+
 # 2. Ensure Docker is up
 echo "[ACTION] Ensuring Docker containers are running..."
 docker compose up -d
