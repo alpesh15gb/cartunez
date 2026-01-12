@@ -66,16 +66,16 @@ if [ -d "src_backup" ]; then
     echo "[INFO] Theme files restored."
 fi
 
+# ALWAYS wait for OpenSearch (needed for upgrade too)
+echo "[ACTION] Waiting for OpenSearch to be ready..."
+until docker compose exec -T search curl -s http://localhost:9200/_cluster/health > /dev/null; do
+    echo "Waiting for OpenSearch..."
+    sleep 5
+done
+echo "[INFO] OpenSearch is ready!"
+
 # 5. Database Installation (if needed)
 if [ ! -f "src/app/etc/env.php" ]; then
-    echo "[ACTION] Waiting for OpenSearch to be ready..."
-    # Loop until OpenSearch responds
-    until docker compose exec -T search curl -s http://localhost:9200/_cluster/health > /dev/null; do
-        echo "Waiting for OpenSearch..."
-        sleep 5
-    done
-    echo "[INFO] OpenSearch is ready!"
-
     echo "[ACTION] Running Magento Initial Installation (setup:install)..."
     # We use sh -c to access the container's environment variables
     docker compose run --rm app sh -c 'bin/magento setup:install \
@@ -101,7 +101,14 @@ if [ ! -f "src/app/etc/env.php" ]; then
         --opensearch-enable-auth="0" \
         --opensearch-timeout="15"'
 else
-    echo "[INFO] env.php found, skipping setup:install."
+    echo "[INFO] env.php found, forcing OpenSearch configuration..."
+    docker compose run --rm app bin/magento setup:config:set \
+        --search-engine="opensearch" \
+        --opensearch-host="search" \
+        --opensearch-port="9200" \
+        --opensearch-index-prefix="cartunez" \
+        --opensearch-enable-auth="0" \
+        --opensearch-timeout="15"
 fi
 
 # 6. Setup & Upgrade
