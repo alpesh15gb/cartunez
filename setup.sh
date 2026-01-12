@@ -66,7 +66,31 @@ if [ -d "src_backup" ]; then
     echo "[INFO] Theme files restored."
 fi
 
-# 5. Setup & Upgrade
+# 5. Database Installation (if needed)
+if [ ! -f "src/app/etc/env.php" ]; then
+    echo "[ACTION] Running Magento Initial Installation (setup:install)..."
+    # We use sh -c to access the container's environment variables
+    docker compose run --rm app sh -c 'bin/magento setup:install \
+        --base-url="http://localhost:8082/" \
+        --db-host="db" \
+        --db-name="$DB_NAME" \
+        --db-user="$DB_USER" \
+        --db-password="$DB_PASSWORD" \
+        --admin-firstname="Admin" \
+        --admin-lastname="User" \
+        --admin-email="admin@example.com" \
+        --admin-user="admin" \
+        --admin-password="Password123" \
+        --language="en_US" \
+        --currency="USD" \
+        --timezone="America/New_York" \
+        --use-rewrites=1 \
+        --backend-frontname="admin"'
+else
+    echo "[INFO] env.php found, skipping setup:install."
+fi
+
+# 6. Setup & Upgrade
 echo "[ACTION] Running Magento Setup & Upgrade..."
 docker compose run --rm app bin/magento setup:upgrade
 docker compose run --rm app bin/magento setup:di:compile
