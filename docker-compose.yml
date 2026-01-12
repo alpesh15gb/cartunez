@@ -1,11 +1,8 @@
-version: "3.8"
-
 services:
   app:
     build:
       context: .
       dockerfile: .docker/php/Dockerfile
-    image: cartunez_app
     volumes:
       - ./src:/var/www/html
       - ./src/pub/media:/var/www/html/pub/media

@@ -24,18 +24,12 @@ RUN docker-php-ext-configure gd --with-freetype --with-jpeg
 # Install PHP extensions
 RUN docker-php-ext-install \
     bcmath \
-    ctype \
-    dom \
-    fileinfo \
-    filter \
     gd \
-    hash \
     iconv \
     intl \
     mbstring \
     opcache \
     pdo_mysql \
-    simplexml \
     soap \
     sockets \
     xsl \
