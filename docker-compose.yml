@@ -5,8 +5,7 @@ services:
       dockerfile: .docker/php/Dockerfile
     volumes:
       - ./src:/var/www/html
-      - ./src/pub/media:/var/www/html/pub/media
-      - ./src/pub/static:/var/www/html/pub/static
+
     env_file:
       - .env
     depends_on:
