@@ -4,6 +4,13 @@
 - **Docker** & **Docker Compose** installed.
 - **Git** installed.
 - **Magento Marketplace Keys** (Public & Private keys).
+    1.  Go to [Adobe Commerce Marketplace](https://commercemarketplace.adobe.com/).
+    2.  Log in or Register.
+    3.  Click your **Profile Name** (top right) > **My Profile**.
+    4.  Go to **Access Keys** (under Marketplace).
+    5.  Click **Create A New Access Key**.
+    6.  **Public Key** = Your Username.
+    7.  **Private Key** = Your Password.
 
 ## Step-by-Step Installation
 
