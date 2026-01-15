@@ -1,0 +1,141 @@
+/* 
+ * Car Tunez Dark Mode Theme 
+ * Paste this into Appearance > Customize > Additional CSS
+ */
+
+:root {
+    --ct-primary: #ff0000;
+    --ct-bg-dark: #0d0d0d;
+    --ct-bg-card: #1a1a1a;
+    --ct-text-main: #f0f0f0;
+    --ct-text-muted: #999999;
+    --ct-border: #333333;
+}
+
+/* Global Backgrounds & Text */
+body,
+.site-content {
+    background-color: var(--ct-bg-dark) !important;
+    color: var(--ct-text-main) !important;
+    font-family: 'Roboto', sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    color: #ffffff !important;
+    font-family: 'Orbitron', sans-serif !important;
+    text-transform: uppercase;
+}
+
+a {
+    color: var(--ct-primary);
+    text-decoration: none;
+}
+
+a:hover {
+    color: #ffffff;
+}
+
+/* Header */
+.site-header {
+    background-color: #000000 !important;
+    border-bottom: 1px solid var(--ct-border);
+}
+
+.main-header-bar {
+    background-color: #000000 !important;
+}
+
+.ast-builder-menu .main-header-menu .menu-item>.menu-link {
+    color: #ffffff !important;
+}
+
+.ast-builder-menu .main-header-menu .menu-item:hover>.menu-link {
+    color: var(--ct-primary) !important;
+}
+
+/* Buttons */
+button,
+.button,
+.wp-block-button__link,
+input[type="submit"],
+.woocommerce a.button,
+.woocommerce button.button,
+.woocommerce input.button {
+    background-color: var(--ct-primary) !important;
+    color: #ffffff !important;
+    border: 1px solid var(--ct-primary) !important;
+    text-transform: uppercase;
+    font-weight: bold;
+    border-radius: 0 !important;
+    /* Sharp edges for "tech" look */
+}
+
+button:hover,
+.button:hover,
+.wp-block-button__link:hover,
+.woocommerce a.button:hover {
+    background-color: #cc0000 !important;
+    /* Darker Red */
+    border-color: #cc0000 !important;
+}
+
+/* WooCommerce Product Cards */
+.woocommerce ul.products li.product {
+    background-color: var(--ct-bg-card);
+    border: 1px solid var(--ct-border);
+    padding: 15px;
+    transition: all 0.3s ease;
+}
+
+.woocommerce ul.products li.product:hover {
+    border-color: var(--ct-primary);
+    transform: translateY(-5px);
+}
+
+.woocommerce ul.products li.product .woocommerce-loop-product__title {
+    color: #ffffff !important;
+    font-family: 'Orbitron', sans-serif;
+}
+
+.woocommerce ul.products li.product .price {
+    color: var(--ct-primary) !important;
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+/* Cart & Checkout Inputs */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="tel"],
+textarea,
+select {
+    background-color: var(--ct-bg-card) !important;
+    border: 1px solid var(--ct-border) !important;
+    color: #ffffff !important;
+}
+
+/* Footer */
+.site-footer {
+    background-color: #080808 !important;
+    border-top: 1px solid var(--ct-border);
+}
+
+.site-footer h2,
+.site-footer h3,
+.site-footer h4 {
+    color: #ffffff;
+}
+
+.site-footer a {
+    color: var(--ct-text-muted);
+}
+
+.site-footer a:hover {
+    color: var(--ct-primary);
+}

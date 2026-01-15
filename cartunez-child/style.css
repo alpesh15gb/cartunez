@@ -1,0 +1,143 @@
+/*
+ Theme Name:   Car Tunez Child
+ Theme URI:    https://cartunez.in
+ Description:  A dark-mode, automotive-inspired theme based on Astra.
+ Author:       Car Tunez
+ Template:     astra
+ Version:      1.0.0
+*/
+
+:root {
+    --ct-primary: #D70000;
+    /* Racing Red */
+    --ct-secondary: #1a1a1a;
+    --ct-dark-bg: #0a0a0a;
+    --ct-card-bg: #141414;
+    --ct-text: #f0f0f0;
+    --ct-border: #333;
+}
+
+body,
+.hfeed,
+.site-content {
+    background-color: var(--ct-dark-bg) !important;
+    color: var(--ct-text) !important;
+    font-family: 'Roboto', sans-serif;
+}
+
+/* Typography */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.entry-title,
+.widget-title {
+    font-family: 'Orbitron', sans-serif !important;
+    color: #fff !important;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+a {
+    color: var(--ct-primary);
+    text-decoration: none;
+}
+
+a:hover {
+    color: #ff3333;
+}
+
+/* Header */
+.site-header {
+    background-color: #000;
+    border-bottom: 2px solid var(--ct-primary);
+}
+
+.main-header-bar {
+    background-color: transparent !important;
+}
+
+/* Menu */
+.main-header-menu .menu-item>.menu-link {
+    color: #fff !important;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.main-header-menu .menu-item:hover>.menu-link {
+    color: var(--ct-primary) !important;
+}
+
+/* Product Cards (Grid) */
+.woocommerce ul.products li.product {
+    background-color: var(--ct-card-bg);
+    border: 1px solid var(--ct-border);
+    border-radius: 4px;
+    /* Slight radius */
+    transition: transform 0.2s, box-shadow 0.2s;
+    padding: 15px;
+}
+
+.woocommerce ul.products li.product:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(215, 0, 0, 0.2);
+    border-color: var(--ct-primary);
+}
+
+.woocommerce ul.products li.product .woocommerce-loop-product__title {
+    font-size: 1.1rem !important;
+    color: #fff !important;
+}
+
+.woocommerce ul.products li.product .price {
+    color: var(--ct-primary) !important;
+    font-weight: bold;
+    font-size: 1.25rem;
+}
+
+/* Buttons */
+button,
+.button,
+.wp-block-button__link,
+input[type="submit"],
+.woocommerce a.button {
+    background: linear-gradient(45deg, #a00000, #d70000);
+    color: #fff !important;
+    text-transform: uppercase;
+    font-weight: bold;
+    border: none;
+    border-radius: 2px;
+    padding: 12px 24px;
+}
+
+button:hover,
+.button:hover,
+.woocommerce a.button:hover {
+    background: linear-gradient(45deg, #d70000, #ff3333);
+    box-shadow: 0 0 10px rgba(215, 0, 0, 0.5);
+}
+
+/* Inputs */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+textarea,
+select {
+    background-color: var(--ct-secondary) !important;
+    border: 1px solid var(--ct-border) !important;
+    color: #fff !important;
+    padding: 10px;
+}
+
+input:focus {
+    border-color: var(--ct-primary) !important;
+    outline: none;
+}
+
+/* Footer */
+.site-footer {
+    background-color: #050505 !important;
+    border-top: 1px solid #222;
+}
