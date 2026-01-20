@@ -1,0 +1,9 @@
+type,make_name,make_slug,model_name,model_slug,variant_name,year_start,year_end,engine_type,transmission
+make,Maruti Suzuki,maruti,,,,,,,
+make,Hyundai,hyundai,,,,,,,
+model,Maruti Suzuki,maruti,Swift,swift,,,,,
+model,Maruti Suzuki,maruti,Baleno,baleno,,,,,
+model,Hyundai,hyundai,Creta,creta,,,,,
+variant,Maruti Suzuki,maruti,Swift,swift,LXi,2018,2024,petrol,manual
+variant,Maruti Suzuki,maruti,Swift,swift,VXi,2018,2024,petrol,manual
+variant,Maruti Suzuki,maruti,Swift,swift,ZXi,2018,2024,petrol,automatic

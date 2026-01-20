@@ -1,0 +1,3 @@
+# Placeholder for SSL certificates
+# In production, use Let's Encrypt or your own certificates
+# Required files: fullchain.pem, privkey.pem

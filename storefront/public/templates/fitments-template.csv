@@ -1,0 +1,6 @@
+product_sku,make,model,variant,year_start,year_end,fitment_type,notes
+LED-H4-6K,Maruti Suzuki,Swift,,2018,2024,direct,Plug and play installation
+LED-H4-6K,Maruti Suzuki,Baleno,,2015,2024,direct,Plug and play installation
+LED-H4-6K,Hyundai,Creta,,2020,2024,direct,Plug and play installation
+MAT-7D-SWF,Maruti Suzuki,Swift,,2018,2024,custom,Custom fit for Swift only
+SEAT-LTH-UNI,,,,,universal,Fits most cars with standard seats
