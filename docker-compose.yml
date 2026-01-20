@@ -98,10 +98,6 @@ services:
         condition: service_healthy
       meilisearch:
         condition: service_healthy
-    volumes:
-      - ./backend:/app
-      - /app/node_modules
-    command: npm run dev
 
   # ==================== Frontend Storefront ====================
   storefront:
@@ -117,11 +113,6 @@ services:
       NEXT_PUBLIC_RAZORPAY_KEY: ${RAZORPAY_KEY_ID:-}
     depends_on:
       - backend
-    volumes:
-      - ./storefront:/app
-      - /app/node_modules
-      - /app/.next
-    command: npm run dev
 
   # ==================== Reverse Proxy ====================
   nginx:
