@@ -25,7 +25,14 @@ import {
   updateStoresStep,
   updateStoresWorkflow,
 } from "@medusajs/medusa/core-flows";
-import { ApiKey } from "../../.medusa/types/query-entry-points";
+
+// Define ApiKey type inline to avoid importing from generated files
+type ApiKey = {
+  id: string;
+  token?: string;
+  title?: string;
+  type?: string;
+};
 
 const updateStoreCurrencies = createWorkflow(
   "update-store-currencies",

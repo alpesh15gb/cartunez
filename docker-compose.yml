@@ -1,4 +1,4 @@
-version: '3.8'
+# Car Tunez Docker Compose Configuration
 
 services:
   # ==================== Infrastructure ====================
@@ -15,7 +15,7 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-cartunez}"]
+      test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-cartunez}" ]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -30,7 +30,7 @@ services:
       - redis_data:/data
     command: redis-server --appendonly yes
     healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
+      test: [ "CMD", "redis-cli", "ping" ]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -47,7 +47,7 @@ services:
     volumes:
       - meilisearch_data:/meili_data
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:7700/health"]
+      test: [ "CMD", "curl", "-f", "http://localhost:7700/health" ]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -57,8 +57,8 @@ services:
     container_name: cartunez-minio
     restart: unless-stopped
     ports:
-      - "9000:9000"   # API
-      - "9001:9001"   # Console
+      - "9000:9000" # API
+      - "9001:9001" # Console
     environment:
       MINIO_ROOT_USER: ${MINIO_ROOT_USER:-minioadmin}
       MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:-minioadmin123}
@@ -66,7 +66,7 @@ services:
       - minio_data:/data
     command: server /data --console-address ":9001"
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      test: [ "CMD", "curl", "-f", "http://localhost:9000/minio/health/live" ]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -145,6 +145,7 @@ volumes:
   redis_data:
   meilisearch_data:
   minio_data:
+
 
 networks:
   default:

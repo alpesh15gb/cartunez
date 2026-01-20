@@ -2,9 +2,11 @@ FROM node:20-alpine
 
 WORKDIR /app
 
+# Install system dependencies
+RUN apk add --no-cache python3 make g++
+
 # Copy package files
-COPY package*.json yarn.lock* ./
-COPY .yarnrc.yml ./
+COPY package*.json ./
 
 # Install dependencies
 RUN npm install
@@ -12,11 +14,11 @@ RUN npm install
 # Copy source code
 COPY . .
 
-# Build the application
-RUN npm run build
-
 # Expose port
 EXPOSE 9000
 
-# Start the application
-CMD ["npm", "run", "start"]
+# Environment
+ENV NODE_ENV=production
+
+# Start the application in development mode (handles type generation)
+CMD ["npm", "run", "dev"]
