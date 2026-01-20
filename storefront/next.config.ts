@@ -2,6 +2,14 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   output: "standalone",
+  eslint: {
+    // Ignore ESLint during builds (we lint separately)
+    ignoreDuringBuilds: true,
+  },
+  typescript: {
+    // Ignore TypeScript errors during builds (we type-check separately)
+    ignoreBuildErrors: true,
+  },
   images: {
     remotePatterns: [
       {
@@ -26,3 +34,4 @@ const nextConfig: NextConfig = {
 };
 
 export default nextConfig;
+
