@@ -10,5 +10,4 @@ export const OtpRequest = model.define("otp_request", {
     is_verified: model.boolean().default(false),
     attempts: model.number().default(0),
     expires_at: model.dateTime(),
-    created_at: model.dateTime(),
 })
