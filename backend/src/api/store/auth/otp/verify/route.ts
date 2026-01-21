@@ -1,5 +1,5 @@
 import type { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
-import { OTP_AUTH_MODULE } from "../../../../modules/otp-auth"
+import { OTP_AUTH_MODULE } from "../../../../../modules/otp-auth"
 import { Modules } from "@medusajs/framework/utils"
 
 /**

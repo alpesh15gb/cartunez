@@ -1,5 +1,5 @@
 import type { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
-import { VEHICLE_FITMENT_MODULE } from "../../../modules/vehicle-fitment"
+import { VEHICLE_FITMENT_MODULE } from "../../../../modules/vehicle-fitment"
 
 /**
  * POST /admin/fitments/bulk
