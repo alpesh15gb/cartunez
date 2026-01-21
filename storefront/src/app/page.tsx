@@ -208,7 +208,7 @@ export default function Home() {
         <div className="absolute inset-0 bg-gradient-to-br from-orange-500/20 via-transparent to-transparent" />
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-orange-500/10 rounded-full blur-3xl" />
 
-        <div className="container-custom relative pt-24 pb-16 md:pt-32 md:pb-24">
+        <div className="container-custom relative pt-32 pb-16 md:pt-40 md:pb-24">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div className="space-y-6 animate-fade-in">
               <div className="inline-block px-4 py-2 bg-orange-500/10 rounded-full border border-orange-500/20">
