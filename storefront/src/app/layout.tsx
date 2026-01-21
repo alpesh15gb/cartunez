@@ -30,7 +30,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${inter.variable} antialiased`}>
         <Header />
-        <main className="min-h-screen pt-16 md:pt-20">
+        <main className="min-h-screen" style={{ paddingTop: '80px' }}>
           {children}
         </main>
         <Footer />
