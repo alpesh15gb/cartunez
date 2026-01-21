@@ -13,6 +13,9 @@ module.exports = defineConfig({
       cookieSecret: process.env.COOKIE_SECRET || "supersecret",
     }
   },
+  admin: {
+    disable: true,  // Disable admin panel to avoid esbuild bundling issues
+  },
   modules: [
     {
       resolve: "./src/modules/vehicle-fitment",
@@ -22,4 +25,3 @@ module.exports = defineConfig({
     },
   ],
 })
-
