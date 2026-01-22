@@ -1,5 +1,4 @@
 import { model } from "@medusajs/framework/utils"
-import { VehicleModel } from "./vehicle-model"
 
 /**
  * Vehicle Variant (e.g., Swift 2020 ZXi, Creta 2023 SX(O))
@@ -7,13 +6,13 @@ import { VehicleModel } from "./vehicle-model"
  */
 export const VehicleVariant = model.define("vehicle_variant", {
     id: model.id().primaryKey(),
-    model: model.belongsTo(() => VehicleModel, { mappedBy: "variants" }),
-    name: model.text().searchable(), // ZXi, SX(O), etc.
+    model_id: model.text(), // Foreign key to VehicleModel
+    name: model.text().searchable(),
     year_start: model.number(),
-    year_end: model.number().nullable(), // null = current
-    engine_type: model.text().nullable(), // Petrol, Diesel, CNG, Electric
+    year_end: model.number().nullable(),
+    engine_type: model.text().nullable(),
     engine_cc: model.number().nullable(),
-    transmission: model.text().nullable(), // Manual, Automatic, CVT, AMT
+    transmission: model.text().nullable(),
     fuel_type: model.text().nullable(),
     is_active: model.boolean().default(true),
 })

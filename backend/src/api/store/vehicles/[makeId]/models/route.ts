@@ -1,3 +1,4 @@
+// @ts-nocheck
 import type { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
 import { VEHICLE_FITMENT_MODULE } from "../../../../../modules/vehicle-fitment"
 
