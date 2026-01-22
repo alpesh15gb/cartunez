@@ -1,5 +1,5 @@
 import type { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
-import CODService from "../../../../services/cod"
+import CODService from "../../../../../services/cod"
 
 const codService = new CODService()
 

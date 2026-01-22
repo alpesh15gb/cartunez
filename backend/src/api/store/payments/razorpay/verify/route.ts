@@ -1,5 +1,5 @@
 import type { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
-import RazorpayService from "../../../../services/razorpay"
+import RazorpayService from "../../../../../services/razorpay"
 
 const razorpay = new RazorpayService()
 
