@@ -87,9 +87,9 @@ services:
       MEILI_MASTER_KEY: ${MEILI_MASTER_KEY:-cartunez_search_key}
       JWT_SECRET: ${JWT_SECRET:-super_secret_jwt_key_change_in_production}
       COOKIE_SECRET: ${COOKIE_SECRET:-super_secret_cookie_key}
-      STORE_CORS: http://localhost:3000
-      ADMIN_CORS: http://localhost:3000
-      AUTH_CORS: http://localhost:3000
+      STORE_CORS: http://localhost:3000,http://82.112.236.81:3000
+      ADMIN_CORS: http://localhost:3000,http://82.112.236.81:9000,http://82.112.236.81:7001
+      AUTH_CORS: http://localhost:3000,http://82.112.236.81:9000,http://82.112.236.81:7001
       NODE_ENV: production
     depends_on:
       postgres:
