@@ -21,4 +21,4 @@ EXPOSE 9000
 ENV NODE_ENV=production
 
 # Start the application in production mode (Build at runtime to ensure artifacts exist)
-CMD ["sh", "-c", "npm run build && ln -sf .medusa/server/public/admin .medusa/admin && npm run start"]
+CMD ["sh", "-c", "npm run build && mkdir -p build && mkdir -p .medusa/admin && cp -r .medusa/server/public/admin/* build/ && cp -r .medusa/server/public/admin/* .medusa/admin/ && npm run start"]
