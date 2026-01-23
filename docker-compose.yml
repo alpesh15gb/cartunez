@@ -90,7 +90,7 @@ services:
       STORE_CORS: http://localhost:3000
       ADMIN_CORS: http://localhost:3000
       AUTH_CORS: http://localhost:3000
-      NODE_ENV: development
+      NODE_ENV: production
     depends_on:
       postgres:
         condition: service_healthy
