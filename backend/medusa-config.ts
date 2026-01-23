@@ -14,7 +14,7 @@ module.exports = defineConfig({
     }
   },
   admin: {
-    disable: true,  // Disable admin panel to avoid esbuild bundling issues
+    disable: false,
   },
   modules: [
     {
