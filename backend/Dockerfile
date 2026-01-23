@@ -14,14 +14,11 @@ RUN npm install
 # Copy source code
 COPY . .
 
-# Build the application
-RUN npm run build
-
 # Expose port
 EXPOSE 9000
 
 # Environment
 ENV NODE_ENV=production
 
-# Start the application in production mode
-CMD ["npm", "run", "start"]
+# Start the application in production mode (Build at runtime to ensure artifacts exist)
+CMD ["sh", "-c", "npm run build && npm run start"]
