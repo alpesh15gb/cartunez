@@ -17,7 +17,7 @@ NC='\033[0m' # No Color
 # Configuration
 DOMAIN="cartunez.in"
 EMAIL="admin@cartunez.in"
-APP_DIR="/opt/cartunez"
+APP_DIR="/docker/cartunez"
 BACKUP_DIR="/opt/backups/cartunez"
 
 echo_info() {

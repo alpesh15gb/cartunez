@@ -85,10 +85,10 @@ services:
       MEILI_MASTER_KEY: ${MEILI_MASTER_KEY}
       JWT_SECRET: ${JWT_SECRET}
       COOKIE_SECRET: ${COOKIE_SECRET}
-      STORE_CORS: https://${DOMAIN}
-      ADMIN_CORS: https://${DOMAIN}
-      AUTH_CORS: https://${DOMAIN}
-      NODE_ENV: production
+      STORE_CORS: http://localhost:3000,http://82.112.236.81:3000,https://${DOMAIN}
+      ADMIN_CORS: http://localhost:3000,http://82.112.236.81:9000,http://82.112.236.81:7001,https://${DOMAIN},https://${DOMAIN}/app
+      AUTH_CORS: http://localhost:3000,http://82.112.236.81:9000,http://82.112.236.81:7001,https://${DOMAIN},https://${DOMAIN}/app
+      NODE_ENV: development
       # Razorpay
       RAZORPAY_KEY_ID: ${RAZORPAY_KEY_ID}
       RAZORPAY_KEY_SECRET: ${RAZORPAY_KEY_SECRET}
@@ -113,12 +113,12 @@ services:
       context: ./storefront
       dockerfile: Dockerfile
       args:
-        NEXT_PUBLIC_MEDUSA_BACKEND_URL: https://${DOMAIN}/api
+        NEXT_PUBLIC_MEDUSA_BACKEND_URL: http://82.112.236.81:9000
         NEXT_PUBLIC_RAZORPAY_KEY: ${RAZORPAY_KEY_ID}
     container_name: cartunez-storefront
     restart: always
     environment:
-      NEXT_PUBLIC_MEDUSA_BACKEND_URL: https://${DOMAIN}/api
+      NEXT_PUBLIC_MEDUSA_BACKEND_URL: http://82.112.236.81:9000
       NEXT_PUBLIC_RAZORPAY_KEY: ${RAZORPAY_KEY_ID}
     depends_on:
       - backend

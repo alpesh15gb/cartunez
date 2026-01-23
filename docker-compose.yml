@@ -104,12 +104,15 @@ services:
     build:
       context: ./storefront
       dockerfile: Dockerfile
+      args:
+        NEXT_PUBLIC_MEDUSA_BACKEND_URL: http://82.112.236.81:9000
     container_name: cartunez-storefront
     restart: unless-stopped
     ports:
       - "3000:3000"
     environment:
-      NEXT_PUBLIC_MEDUSA_BACKEND_URL: http://localhost:9000
+    environment:
+      NEXT_PUBLIC_MEDUSA_BACKEND_URL: http://82.112.236.81:9000
       NEXT_PUBLIC_RAZORPAY_KEY: ${RAZORPAY_KEY_ID:-}
     depends_on:
       - backend
@@ -126,7 +129,7 @@ services:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
       - ./nginx/certs:/etc/nginx/certs:ro
     depends_on:
-      - frontend
+      - storefront
       - backend
     profiles:
       - production
