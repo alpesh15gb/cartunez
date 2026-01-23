@@ -32,6 +32,17 @@ echo_error() {
     echo -e "${RED}[ERROR]${NC} $1"
 }
 
+# Helper to get docker-compose command
+get_compose_cmd() {
+    if docker compose version >/dev/null 2>&1; then
+        echo "docker compose"
+    elif command -v docker-compose >/dev/null 2>&1; then
+        echo "docker-compose"
+    else
+        echo "none"
+    fi
+}
+
 # Setup VPS (run once)
 setup() {
     echo_info "Setting up VPS for Car Tunez..."
@@ -47,11 +58,14 @@ setup() {
         systemctl start docker
     fi
     
-    # Install Docker Compose
-    if ! command -v docker-compose &> /dev/null; then
-        echo_info "Installing Docker Compose..."
+    # Install Docker Compose V2 if missing or old v1
+    COMPOSE_CMD=$(get_compose_cmd)
+    if [ "$COMPOSE_CMD" = "none" ] || [ "$COMPOSE_CMD" = "docker-compose" ]; then
+        echo_info "Installing/Updating Docker Compose V2..."
+        mkdir -p /usr/local/bin
         curl -L "https://github.com/docker/compose/releases/download/v2.24.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
         chmod +x /usr/local/bin/docker-compose
+        ln -sf /usr/local/bin/docker-compose /usr/bin/docker-compose
     fi
     
     # Create directories
@@ -88,8 +102,10 @@ setup() {
 ssl() {
     echo_info "Obtaining SSL certificate for $DOMAIN..."
     
+    COMPOSE_CMD=$(get_compose_cmd)
+    
     # Ensure nginx is stopped
-    docker-compose -f docker-compose.prod.yml down nginx 2>/dev/null || true
+    $COMPOSE_CMD -f docker-compose.prod.yml down nginx 2>/dev/null || true
     
     # Run certbot standalone
     docker run -it --rm \
@@ -129,12 +145,15 @@ deploy() {
         git pull origin main
     fi
     
+    COMPOSE_CMD=$(get_compose_cmd)
+    echo_info "Using compose command: $COMPOSE_CMD"
+
     # Build and start containers
     echo_info "Building containers..."
-    docker-compose -f docker-compose.prod.yml --env-file .env.prod build
+    $COMPOSE_CMD -f docker-compose.prod.yml --env-file .env.prod build
     
     echo_info "Starting containers..."
-    docker-compose -f docker-compose.prod.yml --env-file .env.prod up -d
+    $COMPOSE_CMD -f docker-compose.prod.yml --env-file .env.prod up -d
     
     # Wait for services
     echo_info "Waiting for services to start..."
@@ -142,7 +161,7 @@ deploy() {
     
     # Run database migrations
     echo_info "Running database migrations..."
-    docker-compose -f docker-compose.prod.yml exec backend npm run migrations:run || true
+    $COMPOSE_CMD -f docker-compose.prod.yml exec backend npm run migrations:run || true
     
     # Health check
     echo_info "Checking health..."
@@ -159,7 +178,8 @@ deploy() {
 # View logs
 logs() {
     cd $APP_DIR
-    docker-compose -f docker-compose.prod.yml logs -f $1
+    COMPOSE_CMD=$(get_compose_cmd)
+    $COMPOSE_CMD -f docker-compose.prod.yml logs -f $1
 }
 
 # Restart services
