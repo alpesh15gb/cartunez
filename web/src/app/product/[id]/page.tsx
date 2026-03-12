@@ -5,20 +5,22 @@ import { useCart } from '@/context/CartContext';
 import { useParams, useRouter } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
 import Image from 'next/image';
+import { API_URL } from '@/config';
 
-export default function ProductDetailPage() {
-    const { id } = useParams();
+export default function ProductPage() {
+    const params = useParams();
     const router = useRouter();
     const { addToCart } = useCart();
     const { token, isAuthenticated } = useAuth();
     const [product, setProduct] = useState<any>(null);
     const [wishlistLoading, setWishlistLoading] = useState(false);
     const [loading, setLoading] = useState(true);
+    const [quantity, setQuantity] = useState(1);
 
     useEffect(() => {
         const fetchProduct = async () => {
             try {
-                const response = await fetch(`http://localhost:5000/api/products/${id}`);
+                const response = await fetch(`${API_URL}/products/${params.id}`);
                 const data = await response.json();
                 setProduct(data);
             } catch (error) {
@@ -28,20 +30,20 @@ export default function ProductDetailPage() {
             }
         };
 
-        if (id) fetchProduct();
-    }, [id]);
+        if (params.id) fetchProduct();
+    }, [params.id]);
 
     const addToWishlist = async () => {
-        if (!isAuthenticated) return router.push('/login?redirect=/product/' + id);
+        if (!isAuthenticated) return router.push('/login?redirect=/product/' + params.id);
         setWishlistLoading(true);
         try {
-            const response = await fetch('http://localhost:5000/api/wishlist', {
+            const response = await fetch(`${API_URL}/wishlist`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`
                 },
-                body: JSON.stringify({ productId: id })
+                body: JSON.stringify({ productId: params.id })
             });
             if (response.ok) {
                 alert('Added to wishlist!');

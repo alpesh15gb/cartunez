@@ -1,4 +1,4 @@
-const API_BASE_URL = 'http://10.0.2.2:5000/api'; // Standard for Android Emulator to localhost
+const API_BASE_URL = 'https://cartunez.in/api'; 
 
 export const API_ENDPOINTS = {
     PRODUCTS: `${API_BASE_URL}/products`,

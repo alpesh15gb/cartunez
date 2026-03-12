@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import { useRouter } from 'next/navigation';
+import { API_URL } from '@/config';
 
 export default function SignupPage() {
     const { signup } = useAuth();

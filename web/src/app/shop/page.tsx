@@ -5,6 +5,7 @@ import { useSearchParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
 import VehicleSelector from '@/components/VehicleSelector';
+import { API_URL } from '@/config';
 
 function ShopContent() {
     const searchParams = useSearchParams();
@@ -32,8 +33,8 @@ function ShopContent() {
                 if (year) queryParams.append('year', year);
 
                 const [prodRes, catRes] = await Promise.all([
-                    fetch(`http://localhost:5000/api/products?${queryParams.toString()}`),
-                    fetch('http://localhost:5000/api/categories')
+                    fetch(`${API_URL}/products?${queryParams.toString()}`),
+                    fetch(`${API_URL}/categories`)
                 ]);
                 const prods = await prodRes.json();
                 const cats = await catRes.json();

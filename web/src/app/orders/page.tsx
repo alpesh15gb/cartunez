@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
+import { API_URL } from '@/config';
 
 export default function OrdersPage() {
     const { isAuthenticated, token } = useAuth();
@@ -19,7 +20,7 @@ export default function OrdersPage() {
 
         const fetchOrders = async () => {
             try {
-                const response = await fetch('http://localhost:5000/api/orders/my-orders', {
+                const response = await fetch(`${API_URL}/orders/my-orders`, {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }

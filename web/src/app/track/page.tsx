@@ -1,23 +1,22 @@
-'use client';
-
-import { useState, Suspense } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
+import { API_URL } from '@/config';
 
-function TrackOrderContent() {
+function TrackContent() {
     const searchParams = useSearchParams();
     const [orderId, setOrderId] = useState(searchParams.get('orderId') || '');
     const [order, setOrder] = useState<any>(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
 
-    const handleTrack = async (e: React.FormEvent) => {
-        e.preventDefault();
+    const handleTrack = async (e?: React.FormEvent) => {
+        if (e) e.preventDefault();
         if (!orderId) return;
         
         setLoading(true);
         setError('');
         try {
-            const response = await fetch(`http://localhost:5000/api/orders/${orderId}`);
+            const response = await fetch(`${API_URL}/orders/${orderId}`);
             if (response.ok) {
                 const data = await response.json();
                 setOrder(data);
@@ -30,6 +29,12 @@ function TrackOrderContent() {
             setLoading(false);
         }
     };
+
+    useEffect(() => {
+        if (searchParams.get('orderId')) {
+            handleTrack();
+        }
+    }, []);
 
     const steps = ['PENDING', 'PROCESSING', 'SHIPPED', 'DELIVERED'];
     const currentStepIndex = order ? steps.indexOf(order.status) : -1;
@@ -100,10 +105,10 @@ function TrackOrderContent() {
     );
 }
 
-export default function TrackOrderPage() {
+export default function TrackPage() {
     return (
         <Suspense fallback={<div>Loading Radar...</div>}>
-            <TrackOrderContent />
+            <TrackContent />
         </Suspense>
     );
 }

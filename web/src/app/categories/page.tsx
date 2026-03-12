@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { API_URL } from '@/config';
 import Image from 'next/image';
 
 const CATEGORY_METADATA: Record<string, { image: string, description: string }> = {
@@ -21,7 +22,7 @@ export default function CategoriesPage() {
     useEffect(() => {
         const fetchCategories = async () => {
             try {
-                const response = await fetch('http://localhost:5000/api/categories');
+                const response = await fetch(`${API_URL}/categories`);
                 const data = await response.json();
                 setCategories(data);
             } catch (error) {

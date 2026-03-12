@@ -2,48 +2,64 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
+import { API_URL } from '@/config';
 
-export default function VehicleSelector() {
+export default function VehicleSelector({ onVehicleSelect }: { onVehicleSelect: (modelId: string, year: string) => void }) {
     const router = useRouter();
     const searchParams = useSearchParams();
     
-    const [makes, setMakes] = useState<any[]>([]);
+    const [categories, setCategories] = useState<any[]>([]);
     const [models, setModels] = useState<any[]>([]);
-    const [years, setYears] = useState<number[]>([]);
+    const [years, setYears] = useState<string[]>([]); // Changed to string[]
     
-    const [selectedMake, setSelectedMake] = useState(searchParams.get('makeId') || '');
+    const [selectedCategory, setSelectedCategory] = useState(searchParams.get('makeId') || ''); // Renamed from selectedMake
     const [selectedModel, setSelectedModel] = useState(searchParams.get('modelId') || '');
     const [selectedYear, setSelectedYear] = useState(searchParams.get('year') || '');
+    const [loading, setLoading] = useState(true); // Added loading state
 
     useEffect(() => {
-        const fetchMakes = async () => {
-            const res = await fetch('http://localhost:5000/api/vehicles/makes');
-            const data = await res.json();
-            setMakes(data);
+        const fetchCategories = async () => { // Renamed from fetchMakes
+            try {
+                const res = await fetch(`${API_URL}/categories`); // Changed URL and API_URL
+                const data = await res.json();
+                setCategories(data); // Set categories instead of makes
+            } catch (error) {
+                console.error("Failed to fetch categories:", error);
+            } finally {
+                setLoading(false);
+            }
         };
-        fetchMakes();
+        fetchCategories();
     }, []);
 
     useEffect(() => {
-        if (selectedMake) {
+        if (selectedCategory) {
             const fetchModels = async () => {
-                const res = await fetch(`http://localhost:5000/api/vehicles/makes/${selectedMake}/models`);
-                const data = await res.json();
-                setModels(data);
+                try {
+                    const res = await fetch(`${API_URL}/vehicles/models?categoryId=${selectedCategory}`);
+                    const data = await res.json();
+                    setModels(data);
+                } catch (error) {
+                    console.error("Failed to fetch models:", error);
+                }
             };
             fetchModels();
         } else {
             setModels([]);
             setSelectedModel('');
         }
-    }, [selectedMake]);
+    }, [selectedCategory]);
 
     useEffect(() => {
         if (selectedModel) {
             const fetchYears = async () => {
-                const res = await fetch(`http://localhost:5000/api/vehicles/models/${selectedModel}/years`);
-                const data = await res.json();
-                setYears(data);
+                try {
+                    const response = await fetch(`${API_URL}/vehicles/years?modelId=${selectedModel}`);
+                    const data = await response.json();
+                    setYears(data);
+                } catch (error) {
+                    console.error("Failed to fetch years:", error);
+                }
             };
             fetchYears();
         } else {
@@ -60,8 +76,8 @@ export default function VehicleSelector() {
         if (selectedYear) params.set('year', selectedYear);
         else params.delete('year');
         
-        if (selectedMake) params.set('makeId', selectedMake);
-        else params.delete('makeId');
+        if (selectedCategory) params.set('categoryId', selectedCategory);
+        else params.delete('categoryId');
 
         router.push(`/shop?${params.toString()}`);
     };
@@ -71,13 +87,13 @@ export default function VehicleSelector() {
             <div className="flex-1 min-w-[150px]">
                 <label className="block text-[9px] font-black uppercase text-primary mb-1">Make</label>
                 <select 
-                    value={selectedMake} 
-                    onChange={(e) => setSelectedMake(e.target.value)}
+                    value={selectedCategory} 
+                    onChange={(e) => setSelectedCategory(e.target.value)}
                     className="w-full bg-background border border-border rounded-lg px-3 py-2 text-sm outline-none focus:border-primary"
                 >
-                    <option value="">Select Make</option>
-                    {makes.map(make => (
-                        <option key={make.id} value={make.id}>{make.name}</option>
+                    <option value="">Select Category</option>
+                    {categories.map(category => (
+                        <option key={category.id} value={category.id}>{category.name}</option>
                     ))}
                 </select>
             </div>
@@ -87,7 +103,7 @@ export default function VehicleSelector() {
                 <select 
                     value={selectedModel} 
                     onChange={(e) => setSelectedModel(e.target.value)}
-                    disabled={!selectedMake}
+                    disabled={!selectedCategory}
                     className="w-full bg-background border border-border rounded-lg px-3 py-2 text-sm outline-none focus:border-primary disabled:opacity-50"
                 >
                     <option value="">Select Model</option>
