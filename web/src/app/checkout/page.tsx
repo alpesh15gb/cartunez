@@ -48,7 +48,7 @@ export default function CheckoutPage() {
             order_id: order.razorpayOrderId,
             handler: async function (response: any) {
                 // Verify payment on backend
-                const verifyRes = await fetch('http://localhost:5000/api/orders/verify-payment', {
+                const verifyRes = await fetch(`${API_URL}/orders/verify-payment`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -85,7 +85,7 @@ export default function CheckoutPage() {
         if (!couponCode) return;
         setError('');
         try {
-            const response = await fetch('http://localhost:5000/api/coupons/validate', {
+            const response = await fetch(`${API_URL}/coupons/validate`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -132,7 +132,7 @@ export default function CheckoutPage() {
         };
 
         try {
-            const response = await fetch('http://localhost:5000/api/orders', {
+            const response = await fetch(`${API_URL}/orders`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

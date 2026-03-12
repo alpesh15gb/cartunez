@@ -5,6 +5,7 @@ import { useAuth } from '@/context/AuthContext';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
+import { API_URL } from '@/config';
 
 export default function WishlistPage() {
     const { isAuthenticated, token } = useAuth();
@@ -20,7 +21,7 @@ export default function WishlistPage() {
 
         const fetchWishlist = async () => {
             try {
-                const response = await fetch('http://localhost:5000/api/wishlist', {
+                const response = await fetch(`${API_URL}/wishlist`, {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }
@@ -41,7 +42,7 @@ export default function WishlistPage() {
 
     const removeFromWishlist = async (id: string) => {
         try {
-            const response = await fetch(`http://localhost:5000/api/wishlist/${id}`, {
+            const response = await fetch(`${API_URL}/wishlist/${id}`, {
                 method: 'DELETE',
                 headers: {
                     'Authorization': `Bearer ${token}`
