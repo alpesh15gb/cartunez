@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image, Alert, ActivityIndicator } from 'react-native';
 import { theme } from '../theme';
 import { Plus, Edit3, Trash2, RefreshCcw } from 'lucide-react-native';
-import { API_ENDPOINTS } from '../config';
+import { API_ENDPOINTS, IMAGE_BASE_URL } from '../config';
 
 export default function ProductsScreen({ navigation }) {
     const [products, setProducts] = useState([]);
@@ -25,6 +25,12 @@ export default function ProductsScreen({ navigation }) {
     useEffect(() => {
         fetchProducts();
     }, []);
+
+    const getImageUrl = (imagePath) => {
+        if (!imagePath) return null;
+        if (imagePath.startsWith('http')) return imagePath;
+        return `${IMAGE_BASE_URL}${imagePath}`;
+    };
 
     const handleDelete = (id) => {
         Alert.alert(
@@ -57,7 +63,7 @@ export default function ProductsScreen({ navigation }) {
         <View style={styles.productCard}>
             <View style={styles.imagePlaceholder}>
                 {item.images && item.images[0] ? (
-                    <Image source={{ uri: item.images[0] }} style={styles.productImage} />
+                    <Image source={{ uri: getImageUrl(item.images[0]) }} style={styles.productImage} />
                 ) : (
                     <Text style={{ fontSize: 20 }}>🏎️</Text>
                 )}
@@ -73,7 +79,10 @@ export default function ProductsScreen({ navigation }) {
                 </View>
             </View>
             <View style={styles.actions}>
-                <TouchableOpacity style={styles.actionBtn}>
+                <TouchableOpacity 
+                    style={styles.actionBtn} 
+                    onPress={() => navigation.navigate('EditProduct', { product: item })}
+                >
                     <Edit3 size={18} color={theme.colors.primary} />
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.actionBtn} onPress={() => handleDelete(item.id)}>

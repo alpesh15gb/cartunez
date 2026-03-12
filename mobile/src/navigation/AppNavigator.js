@@ -9,6 +9,7 @@ import OrdersScreen from '../screens/OrdersScreen';
 import CouponsScreen from '../screens/CouponsScreen';
 import CustomersScreen from '../screens/CustomersScreen';
 import ProfileScreen from '../screens/ProfileScreen';
+import EditProductScreen from '../screens/EditProductScreen';
 import { theme } from '../theme';
 
 const Tab = createBottomTabNavigator();
@@ -19,6 +20,7 @@ function InventoryStack() {
         <Stack.Navigator screenOptions={{ headerShown: false }}>
             <Stack.Screen name="ProductsList" component={ProductsScreen} />
             <Stack.Screen name="AddProduct" component={AddProductScreen} />
+            <Stack.Screen name="EditProduct" component={EditProductScreen} />
         </Stack.Navigator>
     );
 }

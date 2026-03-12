@@ -1,4 +1,5 @@
 const API_BASE_URL = 'https://cartunez.in/api'; 
+export const IMAGE_BASE_URL = 'https://cartunez.in';
 
 export const API_ENDPOINTS = {
     PRODUCTS: `${API_BASE_URL}/products`,
