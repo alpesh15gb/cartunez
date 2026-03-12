@@ -72,7 +72,12 @@ function ShopContent() {
             </div>
 
             <div className="container mx-auto px-6 pb-12">
-                <VehicleSelector />
+                <VehicleSelector onVehicleSelect={(modelId, year) => {
+                    const params = new URLSearchParams(searchParams.toString());
+                    params.set('modelId', modelId);
+                    params.set('year', year);
+                    router.push(`/shop?${params.toString()}`);
+                }} />
             </div>
 
             <div className="container mx-auto px-6 flex flex-col lg:flex-row gap-12 pb-24">
