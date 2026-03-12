@@ -1,0 +1,11 @@
+node_modules
+npm-debug.log
+dist
+.env
+.prisma
+prisma/dev.db
+prisma/prisma_error.log
+prisma/prisma_ghost.log
+prisma/prisma_version.log
+sqlite_test.log
+prisma_error.log

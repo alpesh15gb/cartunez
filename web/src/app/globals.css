@@ -1,0 +1,86 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #212529;
+  --card: #f8f9fa;
+  --border: #dee2e6;
+  --primary: #ff4d30;
+  /* Modern Bold Red / Coral */
+  --primary-hover: #e63e23;
+  --secondary: #343a40;
+  /* Dark Grey/Charcoal */
+  --accent: #28a745;
+  /* Dynamic Green for success/badges */
+  --muted: #6c757d;
+  --ghost-text: #f0f0f0;
+  /* For the large background text effects */
+}
+
+@theme {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-border: var(--border);
+  --color-primary: var(--primary);
+  --color-secondary: var(--secondary);
+  --color-accent: var(--accent);
+  --color-muted: var(--muted);
+}
+
+@layer base {
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    @apply antialiased selection:bg-[var(--primary)] selection:text-white;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-[var(--primary)] text-white font-bold px-8 py-3 uppercase tracking-wider transition-all duration-300 hover:bg-[var(--primary-hover)] hover:shadow-lg active:scale-95;
+    clip-path: polygon(0 0, 100% 0, 95% 100%, 0% 100%);
+  }
+
+  .btn-outline {
+    @apply border-2 border-[var(--primary)] text-[var(--primary)] font-bold px-8 py-3 uppercase tracking-wider transition-all duration-300 hover:bg-[var(--primary)] hover:text-white;
+  }
+
+  .card-modern {
+    @apply bg-[var(--background)] border border-[var(--border)] rounded-sm p-4 transition-all duration-300 hover:shadow-xl hover:-translate-y-1;
+  }
+
+  .ghost-title {
+    @apply absolute -z-10 text-[15rem] font-black uppercase tracking-tighter text-[var(--ghost-text)] pointer-events-none select-none;
+    top: -5rem;
+    left: -2rem;
+  }
+
+  .section-title {
+    @apply text-3xl font-black uppercase italic tracking-tighter relative mb-12;
+  }
+
+  .section-title::after {
+    content: '';
+    @apply absolute -bottom-2 left-0 w-20 h-1 bg-[var(--primary)];
+  }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--card);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--muted);
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--primary);
+}
