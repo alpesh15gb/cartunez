@@ -5,7 +5,7 @@ import * as path from 'path';
 const prisma = new PrismaClient();
 
 const productsData = JSON.parse(
-  fs.readFileSync(path.join(__dirname, '..', '..', 'tmp', 'extracted_products.json'), 'utf8')
+  fs.readFileSync(path.join(__dirname, 'data', 'extracted_products.json'), 'utf8')
 );
 
 const vehicleData = [
