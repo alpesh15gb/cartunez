@@ -29,23 +29,36 @@ export const createOrder = async (req: AuthRequest, res: Response) => {
 
         // If Razorpay, create a payment order
         if (paymentMethod === 'RAZORPAY') {
-            const razorpayOrder = await createRazorpayOrder(order.totalAmount, 'INR', order.id);
-            await prisma.order.update({
-                where: { id: order.id },
-                data: { razorpayOrderId: razorpayOrder.id }
-            });
-            return res.status(201).json({ ...order, razorpayOrderId: razorpayOrder.id });
+            try {
+                const razorpayOrder = await createRazorpayOrder(order.totalAmount, 'INR', order.id);
+                await prisma.order.update({
+                    where: { id: order.id },
+                    data: { razorpayOrderId: razorpayOrder.id }
+                });
+                return res.status(201).json({ ...order, razorpayOrderId: razorpayOrder.id });
+            } catch (error: any) {
+                console.error('Razorpay Order Error:', error);
+                return res.status(400).json({ 
+                    message: 'Razorpay payment is currently unavailable. Please use another payment method.', 
+                    error: error.message 
+                });
+            }
         }
 
-        // Simplified Shiprocket order creation (usually done after payment success)
-        // For COD, we can create it immediately
+        // Simplified Shiprocket order creation
         if (paymentMethod === 'CASH_ON_DELIVERY') {
-            // Logic to format order for Shiprocket would go here
-            // const shiprocketOrder = await createShiprocketOrder({...});
+            try {
+                // Logic to format order for Shiprocket would go here
+                // const shiprocketOrder = await createShiprocketOrder({...});
+            } catch (error) {
+                console.error('Shiprocket Order Error:', error);
+                // We don't fail the entire order if shipping integration fails
+            }
         }
 
         res.status(201).json(order);
     } catch (error) {
+        console.error('Order Creation Error:', error);
         res.status(500).json({ message: 'Error creating order', error });
     }
 };
