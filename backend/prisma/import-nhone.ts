@@ -4,7 +4,7 @@ import * as fs from 'fs';
 const prisma = new PrismaClient();
 
 async function main() {
-  const data = JSON.parse(fs.readFileSync('nhone_products.json', 'utf8'));
+  const data = JSON.parse(fs.readFileSync('../nhone_products_local.json', 'utf8'));
 
   for (const [categoryName, products] of Object.entries(data)) {
     console.log(`Processing category: ${categoryName}`);
@@ -34,17 +34,37 @@ async function main() {
       console.log(`Importing product: ${productData.name}`);
       
       try {
-        await prisma.product.create({
-          data: {
-            name: productData.name,
-            description: productData.description,
-            price: productData.price,
-            discountPrice: productData.discountPrice,
-            images: productData.images,
-            stockQuantity: productData.stockQuantity,
-            categoryId: category.id,
-          }
+        const existingProduct = await prisma.product.findFirst({
+          where: { name: productData.name }
         });
+
+        const adjustedImages = productData.images.map((img: string) => img.startsWith('/uploads') ? `/api${img}` : img);
+
+        if (existingProduct) {
+          await prisma.product.update({
+            where: { id: existingProduct.id },
+            data: {
+              description: productData.description,
+              price: productData.price,
+              discountPrice: productData.discountPrice,
+              images: adjustedImages,
+              stockQuantity: productData.stockQuantity,
+              categoryId: category.id,
+            }
+          });
+        } else {
+          await prisma.product.create({
+            data: {
+              name: productData.name,
+              description: productData.description,
+              price: productData.price,
+              discountPrice: productData.discountPrice,
+              images: adjustedImages,
+              stockQuantity: productData.stockQuantity,
+              categoryId: category.id,
+            }
+          });
+        }
       } catch (error) {
         console.error(`Failed to import ${productData.name}:`, error);
       }

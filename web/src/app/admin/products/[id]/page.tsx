@@ -59,7 +59,7 @@ export default function ProductFormPage({ params }: { params: { id: string } }) 
           description: data.description || '',
           categoryId: data.categoryId,
           images: data.images.length > 0 ? data.images : [''],
-          stock: (data.stock || 100).toString(),
+          stock: (data.stockQuantity || 100).toString(),
           specifications: data.specifications || ''
         });
       } catch (err) {
@@ -97,7 +97,7 @@ export default function ProductFormPage({ params }: { params: { id: string } }) 
       ...formData,
       price: parseFloat(formData.price),
       discountPrice: formData.discountPrice ? parseFloat(formData.discountPrice) : null,
-      stock: parseInt(formData.stock),
+      stockQuantity: parseInt(formData.stock),
       images: formData.images.filter(img => img.trim() !== '')
     };
 
