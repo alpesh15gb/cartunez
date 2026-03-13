@@ -43,7 +43,8 @@ export default function ProductsAdminPage() {
           headers: { 'Authorization': `Bearer ${token}` }
         });
         const data = await res.json();
-        setProducts(data.products || []);
+        const productsList = Array.isArray(data) ? data : (data.products || []);
+        setProducts(productsList);
         setTotalPages(data.pagination?.totalPages || 1);
       } catch (err) {
         console.error('Failed to fetch products:', err);

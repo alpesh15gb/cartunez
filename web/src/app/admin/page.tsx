@@ -17,6 +17,7 @@ interface Stats {
   totalProducts: number;
   totalUsers: number;
   pendingOrders: number;
+  totalSales: number;
 }
 
 export default function AdminDashboard() {
@@ -45,15 +46,15 @@ export default function AdminDashboard() {
   const cards = [
     { 
       name: 'Total Revenue', 
-      value: '₹1,24,500', 
-      label: '+12.5% from last month',
+      value: `₹${(stats?.totalSales || 0).toLocaleString()}`, 
+      label: 'Real-time Earnings',
       icon: TrendingUp,
       color: 'text-green-500',
       bg: 'bg-green-500/10'
     },
     { 
       name: 'Active Orders', 
-      value: stats?.totalOrders || '0', 
+      value: (stats?.totalOrders || 0).toString(), 
       label: `${stats?.pendingOrders || 0} pending fulfillment`,
       icon: ShoppingCart,
       color: 'text-primary',
@@ -61,15 +62,15 @@ export default function AdminDashboard() {
     },
     { 
       name: 'Catalog Size', 
-      value: stats?.totalProducts || '0', 
-      label: 'Products across 14 categories',
+      value: (stats?.totalProducts || 0).toString(), 
+      label: 'Inventory active in fleet',
       icon: Package,
       color: 'text-blue-500',
       bg: 'bg-blue-500/10'
     },
     { 
       name: 'Total Drivers', 
-      value: stats?.totalUsers || '0', 
+      value: (stats?.totalUsers || 0).toString(), 
       label: 'Registered users base',
       icon: Users,
       color: 'text-purple-500',

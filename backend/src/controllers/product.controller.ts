@@ -22,39 +22,60 @@ export const createProduct = async (req: Request, res: Response) => {
 };
 
 export const getProducts = async (req: Request, res: Response) => {
-    const { categoryId, search, modelId, year } = req.query;
+    const { categoryId, search, modelId, year, page } = req.query;
     try {
-        const products = await (prisma as any).product.findMany({
-            where: {
-                AND: [
-                    categoryId ? { categoryId: categoryId as string } : {},
-                    search ? {
-                        OR: [
-                            { name: { contains: search as string, mode: 'insensitive' } },
-                            { description: { contains: search as string, mode: 'insensitive' } },
-                        ]
-                    } : {},
-                    modelId ? {
-                        compatibilities: {
-                            some: {
-                                modelId: modelId as string,
-                                AND: [
-                                    year ? { startYear: { lte: parseInt(year as string) } } : {},
-                                    year ? {
-                                        OR: [
-                                            { endYear: null },
-                                            { endYear: { gte: parseInt(year as string) } }
-                                        ]
-                                    } : {}
-                                ]
-                            }
+        const whereClause = {
+            AND: [
+                categoryId ? { categoryId: categoryId as string } : {},
+                search ? {
+                    OR: [
+                        { name: { contains: search as string, mode: 'insensitive' as any } },
+                        { description: { contains: search as string, mode: 'insensitive' as any } },
+                    ]
+                } : {},
+                modelId ? {
+                    compatibilities: {
+                        some: {
+                            modelId: modelId as string,
+                            AND: [
+                                year ? { startYear: { lte: parseInt(year as string) } } : {},
+                                year ? {
+                                    OR: [
+                                        { endYear: null },
+                                        { endYear: { gte: parseInt(year as string) } }
+                                    ]
+                                } : {}
+                            ]
                         }
-                    } : {}
-                ]
-            },
-            include: { category: true, compatibilities: { include: { model: { include: { make: true } } } } },
+                    }
+                } : {}
+            ]
+        };
+
+        const pageNum = parseInt(page as string) || 1;
+        const limit = 20;
+        const skip = (pageNum - 1) * limit;
+
+        const [products, total] = await Promise.all([
+            (prisma as any).product.findMany({
+                where: whereClause,
+                include: { category: true },
+                skip,
+                take: limit,
+                orderBy: { createdAt: 'desc' }
+            }),
+            prisma.product.count({ where: whereClause })
+        ]);
+
+        res.json({
+            products,
+            pagination: {
+                total,
+                page: pageNum,
+                limit,
+                totalPages: Math.ceil(total / limit)
+            }
         });
-        res.json(products);
     } catch (error) {
         res.status(500).json({ message: 'Error fetching products', error });
     }
