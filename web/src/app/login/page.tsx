@@ -3,16 +3,25 @@
 import Link from 'next/link';
 import { useState } from 'react';
 import { useAuth } from '@/context/AuthContext';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { API_URL } from '@/config';
+import { useEffect } from 'react';
 
 export default function LoginPage() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
-    const { login } = useAuth();
+    const { login, isAuthenticated } = useAuth();
     const router = useRouter();
+    const searchParams = useSearchParams();
+    const redirect = searchParams.get('redirect') || '/';
+
+    useEffect(() => {
+        if (isAuthenticated) {
+            router.push(redirect);
+        }
+    }, [isAuthenticated, router, redirect]);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();

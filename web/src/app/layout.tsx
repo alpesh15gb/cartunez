@@ -3,6 +3,7 @@ import { Poppins, Inter } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import TopBar from "@/components/TopBar";
+import TawkChat from "@/components/TawkChat";
 import Link from 'next/link';
 import { CartProvider } from "@/context/CartContext";
 import { AuthProvider } from "@/context/AuthContext";
@@ -97,65 +98,67 @@ export default function RootLayout({
           <CartProvider>
             <TopBar />
             <Navbar />
+            <TawkChat />
             <main>
               {children}
             </main>
 
             {/* Modern Footer */}
-            <footer className="bg-secondary text-white pt-16 pb-8 border-t-8 border-primary">
+            <footer className="bg-white text-[#1a1a1a] pt-20 pb-10 border-t border-[#f0f0f0]">
               <div className="container mx-auto px-6">
-                <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
-                  <div>
-                    <h2 className="text-2xl font-black italic tracking-tighter mb-6 uppercase">CARTUNEZ</h2>
-                    <p className="text-muted text-[11px] font-bold uppercase tracking-widest leading-relaxed mb-6">
-                      Get Your Car Rolling In Style !!!
-                    </p>
-                    <div className="flex space-x-4 opacity-50">
-                      {/* Social Placeholders */}
-                      <span className="text-xl hover:text-primary cursor-pointer transition-colors">f</span>
-                      <span className="text-xl hover:text-primary cursor-pointer transition-colors">t</span>
-                      <span className="text-xl hover:text-primary cursor-pointer transition-colors">i</span>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12 mb-20">
+                  <div className="flex flex-col items-center lg:items-start text-center lg:text-left">
+                    <div className="flex items-center gap-1 mb-6">
+                        <span className="text-2xl font-black tracking-tighter italic uppercase text-[#1a1a1a]">Watches</span>
+                        <span className="bg-[#cc0000] text-white text-[9px] font-bold px-1.5 py-0.5 rounded leading-none">PRO</span>
                     </div>
+                    <p className="text-muted text-[10px] font-bold uppercase tracking-[0.2em] leading-relaxed max-w-xs">
+                      "Unlike diamonds, parts are practical" — Premium curated components for the modern enthusiast.
+                    </p>
                   </div>
 
                   <div>
-                    <h3 className="text-sm font-black uppercase tracking-[0.2em] mb-8 relative inline-block after:content-[''] after:absolute after:-bottom-2 after:left-0 after:w-10 after:h-0.5 after:bg-primary">Quick Links</h3>
+                    <h3 className="text-[11px] font-black uppercase tracking-[0.25em] mb-8 text-[#1a1a1a]">Shop</h3>
                     <ul className="space-y-4 text-[10px] font-bold uppercase tracking-widest text-muted">
-                      <li><Link href="/shop" className="hover:text-primary">All Collection</Link></li>
-                      <li><Link href="/categories" className="hover:text-primary">Featured Parts</Link></li>
-                      <li><Link href="/track" className="hover:text-primary">Track Order</Link></li>
-                      <li><Link href="/login" className="hover:text-primary">My Account</Link></li>
+                      <li><Link href="/shop?gender=men" className="hover:text-primary transition-colors">Men</Link></li>
+                      <li><Link href="/shop?gender=women" className="hover:text-primary transition-colors">Women</Link></li>
+                      <li><Link href="/categories" className="hover:text-primary transition-colors">All Categories</Link></li>
                     </ul>
                   </div>
 
                   <div>
-                    <h3 className="text-sm font-black uppercase tracking-[0.2em] mb-8 relative inline-block after:content-[''] after:absolute after:-bottom-2 after:left-0 after:w-10 after:h-0.5 after:bg-primary">Categories</h3>
+                    <h3 className="text-[11px] font-black uppercase tracking-[0.25em] mb-8 text-[#1a1a1a]">Info</h3>
                     <ul className="space-y-4 text-[10px] font-bold uppercase tracking-widest text-muted">
-                      <li><Link href="/shop?category=interior" className="hover:text-primary">Interior Accessories</Link></li>
-                      <li><Link href="/shop?category=exterior" className="hover:text-primary">Exterior Styling</Link></li>
-                      <li><Link href="/shop?category=electronics" className="hover:text-primary">Marine Electronics</Link></li>
-                      <li><Link href="/shop?category=batteries" className="hover:text-primary">Battery Systems</Link></li>
+                      <li><Link href="/faq" className="hover:text-primary transition-colors">About Us</Link></li>
+                      <li><Link href="/contact" className="hover:text-primary transition-colors">Store Locator</Link></li>
+                      <li><Link href="/track" className="hover:text-primary transition-colors">Track Order</Link></li>
                     </ul>
                   </div>
 
                   <div>
-                    <h3 className="text-sm font-black uppercase tracking-[0.2em] mb-8 relative inline-block after:content-[''] after:absolute after:-bottom-2 after:left-0 after:w-10 after:h-0.5 after:bg-primary">Contact Details</h3>
-                    <ul className="space-y-4 text-[10px] font-bold uppercase tracking-widest text-muted">
-                      <li className="flex items-start space-x-3 text-left">
-                        <span className="mt-0.5">📍</span>
-                        <span>Shop No 12&13, Veer Hanuman Temple, S.P. Road, Secunderabad, Hyderabad, 500003</span>
-                      </li>
-                      <li className="flex items-center space-x-3"><span>📞</span> <span>+91 9949695030</span></li>
-                      <li className="flex items-center space-x-3"><span>✉️</span> <span>cartunezhyd@gmail.com</span></li>
-                    </ul>
+                    <h3 className="text-[11px] font-black uppercase tracking-[0.25em] mb-8 text-[#1a1a1a]">Newsletter</h3>
+                    <p className="text-muted text-[10px] font-bold uppercase tracking-widest mb-6 leading-relaxed">
+                        Subscribe to get latest updates on products and offers.
+                    </p>
+                    <div className="flex border-b border-[#1a1a1a] pb-2">
+                        <input 
+                            type="email" 
+                            placeholder="Email address" 
+                            className="bg-transparent text-[11px] outline-none flex-1 font-bold uppercase tracking-widest" 
+                        />
+                        <button className="text-[11px] font-black uppercase tracking-[0.2em] hover:text-primary transition-colors">
+                            JOIN
+                        </button>
+                    </div>
                   </div>
                 </div>
 
-                <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center text-[9px] font-bold uppercase tracking-widest text-muted">
-                  <p>© 2026 Cartunez. All Performance Reserved.</p>
-                  <div className="flex space-x-6 mt-4 md:mt-0">
-                    <span className="hover:text-white cursor-pointer transition-colors">Privacy Policy</span>
-                    <span className="hover:text-white cursor-pointer transition-colors">Terms of Service</span>
+                <div className="pt-8 flex flex-col md:flex-row justify-between items-center text-[9px] font-bold uppercase tracking-[0.3em] text-muted space-y-4 md:space-y-0 border-t border-[#f8f8f8]">
+                  <p>© 2026 Watches PRO. All Rights Reserved.</p>
+                  <div className="flex space-x-6">
+                    <Link href="/policies/privacy" className="hover:text-primary transition-colors">Privacy</Link>
+                    <Link href="/policies/terms" className="hover:text-primary transition-colors">Terms</Link>
+                    <Link href="/policies/returns" className="hover:text-primary transition-colors">Returns</Link>
                   </div>
                 </div>
               </div>

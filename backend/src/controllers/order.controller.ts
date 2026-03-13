@@ -114,3 +114,49 @@ export const getOrderById = async (req: Request, res: Response) => {
         res.status(500).json({ message: 'Error fetching order', error });
     }
 };
+
+export const requestReturn = async (req: AuthRequest, res: Response) => {
+    const { id } = req.params;
+    const { reason } = req.body;
+    const userId = req.user.userId;
+
+    try {
+        const order = await prisma.order.findFirst({
+            where: { id: id as string, userId }
+        });
+
+        if (!order) return res.status(404).json({ message: 'Order not found' });
+        if (order.status !== 'DELIVERED') return res.status(400).json({ message: 'Only delivered orders can be returned' });
+
+        const updatedOrder = await (prisma as any).order.update({
+            where: { id },
+            data: {
+                returnStatus: 'REQUESTED',
+                returnReason: reason
+            }
+        });
+
+        res.json(updatedOrder);
+    } catch (error) {
+        res.status(500).json({ message: 'Error requesting return', error });
+    }
+};
+
+export const handleReturnAction = async (req: AuthRequest, res: Response) => {
+    const { id } = req.params;
+    const { action, adminComment } = req.body; // action: 'APPROVED' or 'REJECTED'
+
+    try {
+        const updatedOrder = await (prisma as any).order.update({
+            where: { id },
+            data: {
+                returnStatus: action,
+                returnAdminComment: adminComment
+            }
+        });
+
+        res.json(updatedOrder);
+    } catch (error) {
+        res.status(500).json({ message: 'Error handling return action', error });
+    }
+};

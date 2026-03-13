@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import prisma from '../utils/prisma';
 
 export const createProduct = async (req: Request, res: Response) => {
-    const { name, description, price, discountPrice, stockQuantity, images, categoryId } = req.body;
+    const { name, description, price, discountPrice, stockQuantity, isOutOfStock, images, categoryId } = req.body;
     try {
         const product = await prisma.product.create({
             data: {
@@ -11,6 +11,7 @@ export const createProduct = async (req: Request, res: Response) => {
                 price: parseFloat(price),
                 discountPrice: discountPrice ? parseFloat(discountPrice) : null,
                 stockQuantity: parseInt(stockQuantity),
+                isOutOfStock: isOutOfStock === true || isOutOfStock === 'true',
                 images,
                 categoryId,
             },
@@ -97,7 +98,7 @@ export const getProductById = async (req: Request, res: Response) => {
 
 export const updateProduct = async (req: Request, res: Response) => {
     const { id } = req.params;
-    const { name, description, price, discountPrice, stockQuantity, images, categoryId } = req.body;
+    const { name, description, price, discountPrice, stockQuantity, isOutOfStock, images, categoryId } = req.body;
     try {
         const product = await prisma.product.update({
             where: { id: id as string },
@@ -107,6 +108,7 @@ export const updateProduct = async (req: Request, res: Response) => {
                 price: price ? parseFloat(price) : undefined,
                 discountPrice: discountPrice !== undefined ? (discountPrice ? parseFloat(discountPrice) : null) : undefined,
                 stockQuantity: stockQuantity !== undefined ? parseInt(stockQuantity) : undefined,
+                isOutOfStock: isOutOfStock !== undefined ? (isOutOfStock === true || isOutOfStock === 'true') : undefined,
                 images,
                 categoryId,
             },

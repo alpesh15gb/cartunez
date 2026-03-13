@@ -2,19 +2,17 @@
 
 :root {
   --background: #ffffff;
-  --foreground: #212529;
-  --card: #f8f9fa;
-  --border: #dee2e6;
-  --primary: #ff4d30;
-  /* Modern Bold Red / Coral */
-  --primary-hover: #e63e23;
-  --secondary: #343a40;
-  /* Dark Grey/Charcoal */
+  --foreground: #1a1a1a;
+  --card: #ffffff;
+  --border: #eeeeee;
+  --primary: #cc0000;
+  /* Deep Modern Red */
+  --primary-hover: #aa0000;
+  --secondary: #1a1a1a;
+  /* Near Black */
   --accent: #28a745;
-  /* Dynamic Green for success/badges */
-  --muted: #6c757d;
-  --ghost-text: #f0f0f0;
-  /* For the large background text effects */
+  --muted: #888888;
+  --ghost-text: #f9f9f9;
 }
 
 @theme {
@@ -48,12 +46,11 @@
 
 @layer components {
   .btn-primary {
-    @apply bg-[var(--primary)] text-white font-bold px-8 py-3 uppercase tracking-wider transition-all duration-300 hover:bg-[var(--primary-hover)] hover:shadow-lg active:scale-95;
-    clip-path: polygon(0 0, 100% 0, 95% 100%, 0% 100%);
+    @apply bg-[var(--primary)] text-white font-black px-10 py-3.5 uppercase tracking-[0.15em] text-[11px] transition-all duration-300 hover:bg-[var(--primary-hover)] hover:shadow-xl active:scale-95 rounded-full;
   }
 
   .btn-outline {
-    @apply border-2 border-[var(--primary)] text-[var(--primary)] font-bold px-8 py-3 uppercase tracking-wider transition-all duration-300 hover:bg-[var(--primary)] hover:text-white;
+    @apply border-2 border-[var(--primary)] text-[var(--primary)] font-black px-10 py-3.5 uppercase tracking-[0.15em] text-[11px] transition-all duration-300 hover:bg-[var(--primary)] hover:text-white rounded-full;
   }
 
   .card-modern {
@@ -66,12 +63,7 @@
   }
 
   .section-title {
-    @apply text-3xl font-black uppercase italic tracking-tighter relative mb-12;
-  }
-
-  .section-title::after {
-    content: '';
-    @apply absolute -bottom-2 left-0 w-20 h-1 bg-[var(--primary)];
+    @apply text-3xl font-black uppercase tracking-tight text-center relative mb-16;
   }
 
   .scrollbar-hide::-webkit-scrollbar {

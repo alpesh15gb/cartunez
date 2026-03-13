@@ -8,6 +8,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { API_URL } from '@/config';
 import { ChevronLeft, Search, Share, ChevronDown, ChevronUp, Heart } from 'lucide-react';
+import ProductCard from '@/components/ProductCard';
 
 export default function ProductClient({ initialProduct }: { initialProduct: any }) {
     const params = useParams();
@@ -20,14 +21,52 @@ export default function ProductClient({ initialProduct }: { initialProduct: any 
     const [activeImageIndex, setActiveImageIndex] = useState(0);
     const [isHighlightsOpen, setIsHighlightsOpen] = useState(true);
     const [isInfoOpen, setIsInfoOpen] = useState(false);
+    const [reviews, setReviews] = useState<any[]>([]);
+    const [reviewLoading, setReviewLoading] = useState(false);
+    const [newReview, setNewReview] = useState({ rating: 5, comment: '' });
+    const [submittingReview, setSubmittingReview] = useState(false);
+    const [relatedProducts, setRelatedProducts] = useState<any[]>([]);
 
     useEffect(() => {
+        const fetchRelated = async (catId: string) => {
+            try {
+                const response = await fetch(`${API_URL}/products?categoryId=${catId}&limit=4`);
+                const data = await response.json();
+                const items = Array.isArray(data) ? data : (data.products || []);
+                setRelatedProducts(items.filter((p: any) => p.id !== params.id).slice(0, 4));
+            } catch (error) {
+                console.error('Error fetching related products:', error);
+            }
+        };
+
+        const fetchReviews = async () => {
+            if (!params.id) return;
+            setReviewLoading(true);
+            try {
+                const response = await fetch(`${API_URL}/reviews/${params.id}`);
+                const data = await response.json();
+                setReviews(Array.isArray(data) ? data : []);
+            } catch (error) {
+                console.error('Error fetching reviews:', error);
+            } finally {
+                setReviewLoading(false);
+            }
+        };
+
+        fetchReviews();
+        if (product?.categoryId) {
+            fetchRelated(product.categoryId);
+        }
+
         if (!initialProduct && params.id) {
             const fetchProduct = async () => {
                 try {
                     const response = await fetch(`${API_URL}/products/${params.id}`);
                     const data = await response.json();
                     setProduct(data);
+                    if (data.categoryId) {
+                        fetchRelated(data.categoryId);
+                    }
                 } catch (error) {
                     console.error('Error fetching product:', error);
                 } finally {
@@ -36,7 +75,40 @@ export default function ProductClient({ initialProduct }: { initialProduct: any 
             };
             fetchProduct();
         }
-    }, [params.id, initialProduct]);
+    }, [params.id, initialProduct, product?.categoryId]);
+
+    const submitReview = async (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!isAuthenticated) return router.push('/login?redirect=/product/' + params.id);
+        if (!newReview.comment.trim()) return;
+
+        setSubmittingReview(true);
+        try {
+            const response = await fetch(`${API_URL}/reviews`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({
+                    productId: params.id,
+                    rating: newReview.rating,
+                    comment: newReview.comment
+                })
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                setReviews([ { ...data, user: { email: 'You' } }, ...reviews]);
+                setNewReview({ rating: 5, comment: '' });
+                alert('Review submitted successfully!');
+            }
+        } catch (error) {
+            console.error('Error submitting review:', error);
+        } finally {
+            setSubmittingReview(false);
+        }
+    };
 
     const addToWishlist = async () => {
         if (!isAuthenticated) return router.push('/login?redirect=/product/' + params.id);
@@ -77,6 +149,17 @@ export default function ProductClient({ initialProduct }: { initialProduct: any 
     const currentPrice = product.discountPrice || product.price;
     const oldPrice = product.discountPrice ? product.price : null;
     const discountAmount = oldPrice ? oldPrice - currentPrice : 0;
+    const isOutOfStock = product.isOutOfStock || product.stockQuantity === 0;
+
+    const [zoomPos, setZoomPos] = useState({ x: 0, y: 0 });
+    const [isZoomed, setIsZoomed] = useState(false);
+
+    const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+        const { left, top, width, height } = e.currentTarget.getBoundingClientRect();
+        const x = ((e.pageX - left) / width) * 100;
+        const y = ((e.pageY - top) / height) * 100;
+        setZoomPos({ x, y });
+    };
 
     return (
         <div className="min-h-screen bg-[#f3f4f6] pb-[80px]"> {/* Bottom padding for sticky button */}
@@ -96,16 +179,34 @@ export default function ProductClient({ initialProduct }: { initialProduct: any 
             </div>
 
             {/* Product Image Gallery Area */}
-            <div className="bg-white pt-0 pb-4">
-                <div className="relative w-full aspect-[4/3] bg-white">
+            <div className="bg-white pt-10 pb-4">
+                <div 
+                    className="relative w-full aspect-[4/3] bg-white cursor-zoom-in overflow-hidden"
+                    onMouseMove={handleMouseMove}
+                    onMouseEnter={() => setIsZoomed(true)}
+                    onMouseLeave={() => setIsZoomed(false)}
+                >
                     {mainImage ? (
-                        <Image unoptimized
-                            src={mainImage}
-                            alt={product.name}
-                            fill
-                            className="object-contain"
-                            priority
-                        />
+                        <>
+                            <Image unoptimized
+                                src={mainImage}
+                                alt={product.name}
+                                fill
+                                className={`object-contain transition-opacity duration-300 ${isZoomed ? 'opacity-0' : 'opacity-100'}`}
+                                priority
+                            />
+                            {isZoomed && (
+                                <div 
+                                    className="absolute inset-0 pointer-events-none"
+                                    style={{
+                                        backgroundImage: `url(${mainImage})`,
+                                        backgroundPosition: `${zoomPos.x}% ${zoomPos.y}%`,
+                                        backgroundSize: '250%',
+                                        backgroundRepeat: 'no-repeat'
+                                    }}
+                                />
+                            )}
+                        </>
                     ) : (
                         <div className="w-full h-full flex items-center justify-center text-[6rem]">🚗</div>
                     )}
@@ -152,6 +253,13 @@ export default function ProductClient({ initialProduct }: { initialProduct: any 
                             {discountAmount > 0 && (
                                 <span className="text-[#287b3e] text-xs font-bold">₹{discountAmount.toLocaleString('en-IN')} OFF</span>
                             )}
+                        </div>
+                    )}
+
+                    {isOutOfStock && (
+                        <div className="mt-4 flex items-center gap-2 text-red-600">
+                           <div className="h-2 w-2 rounded-full bg-red-600 animate-pulse" />
+                           <span className="text-[11px] font-black uppercase tracking-widest">Currently Out of Stock / Discontinued</span>
                         </div>
                     )}
                 </div>
@@ -208,7 +316,7 @@ export default function ProductClient({ initialProduct }: { initialProduct: any 
             </div>
 
             {/* Information Section */}
-            <div className="bg-white mb-8 shadow-sm rounded-2xl overflow-hidden">
+            <div className="bg-white mb-6 shadow-sm rounded-2xl overflow-hidden">
                 <button 
                     onClick={() => setIsInfoOpen(!isInfoOpen)}
                     className="w-full px-4 py-5 flex justify-between items-center bg-white"
@@ -229,9 +337,99 @@ export default function ProductClient({ initialProduct }: { initialProduct: any 
                 )}
             </div>
 
+            {/* Reviews Section */}
+            <div className="bg-white px-4 py-6 mb-8 rounded-2xl shadow-sm">
+                <h2 className="text-gray-900 font-bold text-xl mb-6">Customer Reviews</h2>
+                
+                {/* Submit Review Form */}
+                <div className="mb-10 pb-10 border-b border-gray-100">
+                    <h3 className="text-sm font-bold uppercase tracking-widest text-[#e83e8c] mb-4">Rate this product</h3>
+                    <form onSubmit={submitReview} className="space-y-4">
+                        <div className="flex gap-2">
+                            {[1, 2, 3, 4, 5].map((star) => (
+                                <button
+                                    key={star}
+                                    type="button"
+                                    onClick={() => setNewReview({ ...newReview, rating: star })}
+                                    className={`text-2xl transition-transform active:scale-90 ${star <= newReview.rating ? 'text-yellow-400' : 'text-gray-200'}`}
+                                >
+                                    ★
+                                </button>
+                            ))}
+                        </div>
+                        <textarea
+                            value={newReview.comment}
+                            onChange={(e) => setNewReview({ ...newReview, comment: e.target.value })}
+                            placeholder="Share your experience with this product..."
+                            className="w-full bg-[#f8f9fa] border border-gray-200 rounded-xl p-4 text-sm outline-none focus:border-[#ff4d30] transition-colors min-h-[100px]"
+                        />
+                        <button
+                            type="submit"
+                            disabled={submittingReview}
+                            className="bg-secondary text-white font-bold py-3 px-8 rounded-xl text-sm uppercase tracking-[0.1em] hover:bg-primary transition-all disabled:opacity-50"
+                        >
+                            {submittingReview ? 'Submitting...' : 'Post Review'}
+                        </button>
+                    </form>
+                </div>
+
+                {/* Reviews List */}
+                <div className="space-y-8">
+                    {reviewLoading ? (
+                        <div className="animate-pulse space-y-4">
+                            <div className="h-4 bg-gray-100 rounded w-1/4"></div>
+                            <div className="h-20 bg-gray-100 rounded w-full"></div>
+                        </div>
+                    ) : reviews.length > 0 ? (
+                        reviews.map((review: any) => (
+                            <div key={review.id} className="pb-6 border-b border-gray-50 last:border-0">
+                                <div className="flex justify-between items-start mb-2">
+                                    <div className="flex items-center gap-2">
+                                        <div className="w-8 h-8 rounded-full bg-[#ff4d30] flex items-center justify-center text-white font-bold text-xs uppercase">
+                                            {review.user?.email?.[0] || 'U'}
+                                        </div>
+                                        <div>
+                                            <p className="text-sm font-bold text-gray-900">{review.user?.email.split('@')[0]}</p>
+                                            <div className="flex text-yellow-400 text-[10px]">
+                                                {Array.from({ length: 5 }).map((_, i) => (
+                                                    <span key={i}>{i < review.rating ? '★' : '☆'}</span>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <span className="text-[10px] text-gray-400 uppercase font-bold">
+                                        {new Date(review.createdAt).toLocaleDateString()}
+                                    </span>
+                                </div>
+                                <p className="text-gray-700 text-sm leading-relaxed pl-10 italic">
+                                    "{review.comment}"
+                                </p>
+                            </div>
+                        ))
+                    ) : (
+                        <div className="text-center py-10">
+                            <p className="text-gray-400 text-sm font-medium">No reviews yet. Be the first to rate!</p>
+                        </div>
+                    )}
+                </div>
+            </div>
+
+            {/* Related Products Section */}
+            {relatedProducts.length > 0 && (
+                <div className="container mx-auto px-4 mb-12">
+                    <h2 className="text-gray-900 font-bold text-xl mb-6 px-1">You Might Also Like</h2>
+                    <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                        {relatedProducts.map((p) => (
+                            <ProductCard key={p.id} product={p} />
+                        ))}
+                    </div>
+                </div>
+            )}
+
             {/* Sticky Add to Cart Bottom Bar */}
             <div className="fixed bottom-0 left-0 right-0 p-4 bg-white border-t border-gray-100 shadow-[0_-4px_20px_rgba(0,0,0,0.05)] z-40">
                 <button
+                    disabled={isOutOfStock}
                     onClick={() => addToCart({
                         id: product.id,
                         name: product.name,
@@ -239,9 +437,9 @@ export default function ProductClient({ initialProduct }: { initialProduct: any 
                         quantity: 1,
                         image: mainImage || '🚗'
                     })}
-                    className="w-full bg-[#e83e8c] text-white font-bold py-3.5 rounded-xl shadow-md active:scale-95 transition-transform text-center tracking-wide"
+                    className={`w-full font-bold py-3.5 rounded-xl shadow-md transition-all text-center tracking-wide ${isOutOfStock ? 'bg-gray-200 text-gray-500 cursor-not-allowed' : 'bg-[#e83e8c] text-white active:scale-95'}`}
                 >
-                    Add to cart
+                    {isOutOfStock ? 'Currently out of stock' : 'Add to cart'}
                 </button>
             </div>
         </div>

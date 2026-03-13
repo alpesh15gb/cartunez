@@ -23,24 +23,31 @@ interface Stats {
 export default function AdminDashboard() {
   const { token } = useAuth();
   const [stats, setStats] = useState<Stats | null>(null);
+  const [recentOrders, setRecentOrders] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchStats = async () => {
+    const fetchDashboardData = async () => {
       try {
-        const res = await fetch(`${API_URL}/stats`, {
+        const statsRes = await fetch(`${API_URL}/stats`, {
           headers: { 'Authorization': `Bearer ${token}` }
         });
-        const data = await res.json();
-        setStats(data);
+        const statsData = await statsRes.json();
+        setStats(statsData);
+
+        const ordersRes = await fetch(`${API_URL}/orders`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        const ordersData = await ordersRes.json();
+        setRecentOrders(Array.isArray(ordersData) ? ordersData.slice(0, 5) : []);
       } catch (err) {
-        console.error('Failed to fetch stats:', err);
+        console.error('Failed to fetch dashboard data:', err);
       } finally {
         setLoading(false);
       }
     };
 
-    if (token) fetchStats();
+    if (token) fetchDashboardData();
   }, [token]);
 
   const cards = [
@@ -142,37 +149,115 @@ export default function AdminDashboard() {
           <div className="absolute inset-x-8 bottom-24 top-24 bg-primary/5 blur-3xl rounded-full" />
         </div>
 
+        {/* Quick Actions Panel */}
         <div className="bg-card border border-border rounded-2xl p-8">
           <div className="space-y-1 mb-8">
-            <h3 className="text-xl font-black italic uppercase tracking-tight">System Status</h3>
-            <p className="text-[10px] font-bold uppercase tracking-widest text-muted">Real-time Infrastructure Health</p>
+            <h3 className="text-xl font-black italic uppercase tracking-tight">Quick Actions</h3>
+            <p className="text-[10px] font-bold uppercase tracking-widest text-muted">Common Management Tasks</p>
           </div>
           
-          <div className="space-y-6">
-            {[
-              { label: 'Database Sync', status: 'Operational', color: 'bg-green-500' },
-              { label: 'API Gateway', status: 'Active', color: 'bg-green-500' },
-              { label: 'Admin Mobile Connect', status: 'Live', color: 'bg-green-500' },
-              { label: 'Payment Integration', status: 'Standby', color: 'bg-yellow-500' },
-              { label: 'Catalog Scraper', status: 'Idle', color: 'bg-blue-500' },
-            ].map((item) => (
-              <div key={item.label} className="flex items-center justify-between group">
-                <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground group-hover:text-foreground transition-colors">{item.label}</span>
-                <div className="flex items-center gap-3">
-                  <span className="text-[9px] font-bold uppercase tracking-widest text-foreground">{item.status}</span>
-                  <div className={`h-1.5 w-1.5 rounded-full ${item.color} shadow-[0_0_8px] shadow-current transition-all group-hover:scale-150`} />
-                </div>
+          <div className="grid grid-cols-1 gap-4">
+            <button 
+              onClick={() => window.location.href = '/admin/products'}
+              className="flex items-center justify-between p-4 bg-background border border-border rounded-xl hover:border-primary transition-all group"
+            >
+              <div className="flex items-center gap-3">
+                <Package size={18} className="text-muted group-hover:text-primary transition-colors" />
+                <span className="text-[10px] font-black uppercase tracking-widest">Add New Product</span>
               </div>
-            ))}
+              <ArrowUpRight size={14} className="text-primary opacity-0 group-hover:opacity-100 transition-opacity" />
+            </button>
+            
+            <button 
+              onClick={() => window.location.href = '/admin/orders'}
+              className="flex items-center justify-between p-4 bg-background border border-border rounded-xl hover:border-primary transition-all group"
+            >
+              <div className="flex items-center gap-3">
+                <ShoppingCart size={18} className="text-muted group-hover:text-primary transition-colors" />
+                <span className="text-[10px] font-black uppercase tracking-widest">Review Penalties</span>
+              </div>
+              <ArrowUpRight size={14} className="text-primary opacity-0 group-hover:opacity-100 transition-opacity" />
+            </button>
+            
+            <button 
+              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+              className="flex items-center justify-between p-4 bg-background border border-border rounded-xl hover:border-primary transition-all group"
+            >
+              <div className="flex items-center gap-3">
+                <Users size={18} className="text-muted group-hover:text-primary transition-colors" />
+                <span className="text-[10px] font-black uppercase tracking-widest">Manage Staff</span>
+              </div>
+              <ArrowUpRight size={14} className="text-primary opacity-0 group-hover:opacity-100 transition-opacity" />
+            </button>
           </div>
-          
-          <div className="mt-12 bg-primary/5 border border-primary/20 rounded-xl p-4 flex gap-4 items-center">
-            <AlertCircle size={24} className="text-primary shrink-0" />
-            <div>
-              <p className="text-[10px] font-black uppercase text-foreground leading-tight">Catalog Import Active</p>
-              <p className="text-[9px] font-bold text-muted uppercase tracking-wider">846 Products Synced</p>
-            </div>
+        </div>
+      </div>
+
+      {/* Recent Orders Table */}
+      <div className="bg-card border border-border rounded-2xl overflow-hidden shadow-sm">
+        <div className="p-8 border-b border-border flex justify-between items-center">
+          <div className="space-y-1">
+            <h3 className="text-xl font-black italic uppercase tracking-tight">Recent Deployments</h3>
+            <p className="text-[10px] font-bold uppercase tracking-widest text-muted">Latest Customer Order Stream</p>
           </div>
+          <button 
+            onClick={() => window.location.href = '/admin/orders'}
+            className="text-[10px] font-black uppercase tracking-widest text-primary border-b-2 border-primary"
+          >
+            View All Orders
+          </button>
+        </div>
+        
+        <div className="overflow-x-auto">
+          <table className="w-full text-left">
+            <thead className="bg-[#f8f9fa] border-b border-border">
+              <tr>
+                <th className="px-8 py-4 text-[10px] font-black uppercase tracking-widest text-muted">Order ID</th>
+                <th className="px-8 py-4 text-[10px] font-black uppercase tracking-widest text-muted">Customer</th>
+                <th className="px-8 py-4 text-[10px] font-black uppercase tracking-widest text-muted">Amount</th>
+                <th className="px-8 py-4 text-[10px] font-black uppercase tracking-widest text-muted">Status</th>
+                <th className="px-8 py-4 text-[10px] font-black uppercase tracking-widest text-muted text-right">Actions</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-border">
+              {recentOrders.length > 0 ? (
+                recentOrders.map((order) => (
+                  <tr key={order.id} className="hover:bg-[#fcfcfc] transition-colors group">
+                    <td className="px-8 py-5">
+                      <span className="font-bold text-xs tracking-tighter">#{order.id.slice(-8).toUpperCase()}</span>
+                    </td>
+                    <td className="px-8 py-5">
+                      <p className="text-xs font-bold leading-tight">{order.user?.email.split('@')[0]}</p>
+                      <p className="text-[9px] text-muted-foreground uppercase font-medium">{order.email}</p>
+                    </td>
+                    <td className="px-8 py-5">
+                      <span className="font-black text-xs text-primary italic">₹{order.totalAmount.toLocaleString()}</span>
+                    </td>
+                    <td className="px-8 py-5">
+                      <div className="flex items-center gap-2">
+                        <div className={`h-1.5 w-1.5 rounded-full ${order.status === 'DELIVERED' ? 'bg-green-500' : 'bg-yellow-500'}`} />
+                        <span className="text-[10px] font-black uppercase tracking-widest">{order.status}</span>
+                      </div>
+                    </td>
+                    <td className="px-8 py-5 text-right">
+                      <button 
+                        onClick={() => window.location.href = `/admin/orders`}
+                        className="p-2 hover:bg-primary/10 rounded-lg text-primary transition-colors"
+                      >
+                        <ArrowUpRight size={16} />
+                      </button>
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan={5} className="px-8 py-10 text-center">
+                    <p className="text-[10px] font-bold uppercase tracking-widest text-muted">Scanning for active fleet orders...</p>
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
         </div>
       </div>
     </div>

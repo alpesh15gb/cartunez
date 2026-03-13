@@ -3,12 +3,14 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { useCart } from '@/context/CartContext';
+import { useAuth } from '@/context/AuthContext';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Menu, X, Search, ShoppingCart, User, Heart, Package, Truck, Home } from 'lucide-react';
 
 export default function Navbar() {
     const { totalItems } = useCart();
+    const { user, logout, isAuthenticated } = useAuth();
     const [mounted, setMounted] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -27,93 +29,75 @@ export default function Navbar() {
     };
 
     const navLinks = [
-        { label: 'Home', href: '/', icon: <Home size={18} /> },
-        { label: 'Interior', href: '/shop?search=interior', icon: <Package size={18} /> },
-        { label: 'Exterior', href: '/shop?search=exterior', icon: <Package size={18} /> },
-        { label: 'Electronics', href: '/shop?search=electronics', icon: <Package size={18} /> },
-        { label: 'Performance', href: '/shop?search=performance', icon: <Package size={18} /> },
-        { label: 'All Categories', href: '/categories', icon: <Package size={18} /> },
-        { label: 'Wishlist', href: '/wishlist', icon: <Heart size={18} /> },
-        { label: 'Orders', href: '/orders', icon: <Truck size={18} /> },
-        { label: 'Track Order', href: '/track', icon: <Truck size={18} /> },
+        { label: 'Home', href: '/' },
+        { label: 'Men', href: '/shop?gender=men' },
+        { label: 'Women', href: '/shop?gender=women' },
+        { label: 'Categories', href: '/categories' },
     ];
 
     return (
         <header className="bg-white border-b border-border sticky top-0 z-50">
             {/* Main Header */}
-            <div className="container mx-auto px-4 md:px-6 py-3 md:py-4 flex items-center justify-between">
-                {/* Mobile Menu Toggle */}
-                <button 
-                    onClick={() => setIsMenuOpen(!isMenuOpen)}
-                    className="md:hidden p-2 -ml-2 text-secondary hover:text-primary transition-colors"
-                >
-                    {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
-                </button>
+            <div className="container mx-auto px-4 md:px-6 h-16 md:h-20 flex items-center justify-between relative">
+                
+                {/* 1. Left Section: Navigation Menu (Desktop) / Hamburger (Mobile) */}
+                <div className="flex items-center flex-1">
+                    <button 
+                        onClick={() => setIsMenuOpen(!isMenuOpen)}
+                        className="md:hidden p-2 -ml-2 text-secondary hover:text-primary transition-colors"
+                    >
+                        {isMenuOpen ? <X size={20} /> : <Menu size={20} />}
+                    </button>
 
-                {/* Logo */}
-                <Link href="/" className="flex items-center group flex-1 md:flex-initial justify-center md:justify-start">
-                    <Image unoptimized
-                        src="/logo.png"
-                        alt="CarTunez Logo"
-                        width={450}
-                        height={180}
-                        className="h-10 md:h-24 w-auto object-contain"
-                        priority
-                    />
-                </Link>
+                    <nav className="hidden md:flex items-center space-x-6 text-[10px] font-black uppercase tracking-widest text-[#1a1a1a]">
+                        {navLinks.map((link) => (
+                            <Link 
+                                key={link.href} 
+                                href={link.href} 
+                                className="hover:text-primary transition-colors hover:underline decoration-primary decoration-2 underline-offset-4"
+                            >
+                                {link.label}
+                            </Link>
+                        ))}
+                    </nav>
+                </div>
 
-                {/* Search Bar (Desktop) */}
-                <form onSubmit={handleSearch} className="hidden md:flex flex-1 max-w-xl mx-8 font-medium">
-                    <div className="relative w-full">
-                        <input
-                            type="text"
-                            placeholder="Search components or brands..."
-                            value={searchQuery}
-                            onChange={(e) => setSearchQuery(e.target.value)}
-                            className="w-full bg-card border border-border px-6 py-2.5 rounded-full text-sm outline-none focus:border-primary transition-all pr-12"
-                        />
-                        <button type="submit" className="absolute right-4 top-1/2 -translate-y-1/2 text-muted hover:text-primary transition-colors">
-                            <Search size={18} />
-                        </button>
-                    </div>
-                </form>
-
-                {/* Actions */}
-                <div className="flex items-center space-x-4 md:space-x-8 text-[11px] font-black uppercase tracking-widest">
-                    <Link href="/login" className="hidden sm:flex flex-col items-center group">
-                        <User size={20} className="group-hover:scale-110 transition-transform group-hover:text-primary" />
-                        <span className="hover:text-primary transition-colors mt-1">Account</span>
+                {/* 2. Center Section: Logo */}
+                <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+                    <Link href="/" className="flex items-center group">
+                        <div className="flex items-center gap-1">
+                            <span className="text-2xl font-black tracking-tighter italic uppercase text-[#1a1a1a]">Watches</span>
+                            <span className="bg-[#cc0000] text-white text-[9px] font-bold px-1.5 py-0.5 rounded leading-none">PRO</span>
+                        </div>
                     </Link>
-                    <Link href="/cart" className="flex flex-col items-center group relative">
-                        <ShoppingCart size={20} className="group-hover:scale-110 transition-transform group-hover:text-primary" />
-                        <span className="hidden sm:inline hover:text-primary transition-colors mt-1">Cart</span>
+                </div>
+
+                {/* 3. Right Section: Utility Icons */}
+                <div className="flex items-center justify-end flex-1 space-x-4 md:space-x-6 text-[#1a1a1a]">
+                    <button className="p-1 hover:text-primary transition-colors">
+                        <Search size={22} strokeWidth={1.5} />
+                    </button>
+                    
+                    <Link href="/cart" className="p-1 relative hover:text-primary transition-colors">
+                        <ShoppingCart size={22} strokeWidth={1.5} />
                         {mounted && totalItems > 0 && (
-                            <span className="absolute -top-1 -right-1 bg-primary text-white text-[9px] rounded-full min-w-4 h-4 px-1 flex items-center justify-center font-bold">
+                            <span className="absolute -top-1 -right-1 bg-primary text-white text-[8px] rounded-full min-w-4 h-4 px-1 flex items-center justify-center font-bold">
                                 {totalItems}
                             </span>
                         )}
                     </Link>
+
+                    {isAuthenticated ? (
+                        <Link href={user?.role === 'ADMIN' ? '/admin' : '/profile'} className="p-1 hover:text-primary transition-colors">
+                            <User size={22} strokeWidth={1.5} />
+                        </Link>
+                    ) : (
+                        <Link href="/login" className="p-1 hover:text-primary transition-colors">
+                            <User size={22} strokeWidth={1.5} />
+                        </Link>
+                    )}
                 </div>
             </div>
-
-            {/* Desktop Nav Menu */}
-            <nav className="hidden md:block bg-secondary text-white">
-                <div className="container mx-auto px-6 flex space-x-8 py-3 text-[10px] font-black uppercase tracking-[0.2em]">
-                    {navLinks.slice(0, 8).map((link) => (
-                        <Link 
-                            key={link.href} 
-                            href={link.href} 
-                            className="hover:text-primary transition-colors"
-                        >
-                            {link.label}
-                        </Link>
-                    ))}
-                    <Link href="/track" className="ml-auto hover:text-primary transition-colors flex items-center gap-2">
-                        <Truck size={14} className="text-primary" />
-                        TRACK YOUR BUNDLE
-                    </Link>
-                </div>
-            </nav>
 
             {/* Mobile Menu Overlay */}
             <div 
@@ -126,7 +110,7 @@ export default function Navbar() {
                 <div className="flex flex-col h-full">
                     {/* Drawer Header */}
                     <div className="p-6 border-b border-border flex items-center justify-between">
-                        <span className="text-lg font-black uppercase italic italic tracking-tighter">
+                        <span className="text-lg font-black uppercase italic tracking-tighter">
                             Navigation <span className="text-primary italic">Menu</span>
                         </span>
                         <button onClick={() => setIsMenuOpen(false)} className="p-2 text-muted hover:text-primary">
@@ -160,9 +144,6 @@ export default function Navbar() {
                                 onClick={() => setIsMenuOpen(false)}
                                 className="flex items-center space-x-4 p-4 rounded-xl hover:bg-card group transition-colors"
                             >
-                                <span className="text-muted group-hover:text-primary transition-colors">
-                                    {link.icon}
-                                </span>
                                 <span className="text-sm font-bold uppercase tracking-wider group-hover:text-primary transition-colors">
                                     {link.label}
                                 </span>
@@ -172,14 +153,24 @@ export default function Navbar() {
 
                     {/* Drawer Footer */}
                     <div className="p-6 border-t border-border bg-card">
-                        <Link 
-                            href="/login" 
-                            onClick={() => setIsMenuOpen(false)}
-                            className="flex items-center justify-center space-x-3 w-full bg-secondary text-white py-4 rounded-xl font-black uppercase text-xs tracking-[0.2em] hover:bg-primary hover:text-white transition-all active:scale-95"
-                        >
-                            <User size={18} />
-                            <span>Member Account</span>
-                        </Link>
+                        {isAuthenticated ? (
+                            <button 
+                                onClick={() => { logout(); setIsMenuOpen(false); }}
+                                className="flex items-center justify-center space-x-3 w-full bg-red-600 text-white py-4 rounded-xl font-black uppercase text-xs tracking-[0.2em] hover:bg-red-700 transition-all active:scale-95"
+                            >
+                                <X size={18} />
+                                <span>Logout Account</span>
+                            </button>
+                        ) : (
+                            <Link 
+                                href="/login" 
+                                onClick={() => setIsMenuOpen(false)}
+                                className="flex items-center justify-center space-x-3 w-full bg-secondary text-white py-4 rounded-xl font-black uppercase text-xs tracking-[0.2em] hover:bg-primary hover:text-white transition-all active:scale-95"
+                            >
+                                <User size={18} />
+                                <span>Member Account</span>
+                            </Link>
+                        )}
                     </div>
                 </div>
             </div>

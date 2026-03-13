@@ -37,6 +37,7 @@ model Product {
   price         Float
   discountPrice Float?
   stockQuantity Int
+  isOutOfStock  Boolean        @default(false)
   images        String[]
   categoryId    String
   category      Category       @relation(fields: [categoryId], references: [id])
@@ -100,6 +101,12 @@ model Order {
   awbNumber            String?
 
   items     OrderItem[]
+  
+  // Return Management
+  returnStatus       ReturnStatus?
+  returnReason       String?
+  returnAdminComment String?
+
   createdAt DateTime    @default(now())
   updatedAt DateTime    @updatedAt
 }
@@ -137,6 +144,12 @@ enum OrderStatus {
   SHIPPED
   DELIVERED
   CANCELLED
+}
+
+enum ReturnStatus {
+  REQUESTED
+  APPROVED
+  REJECTED
 }
 
 model OrderItem {

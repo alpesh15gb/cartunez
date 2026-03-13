@@ -145,12 +145,15 @@ export default function CheckoutPage() {
 
             if (response.ok) {
                 if (formData.paymentMethod === 'RAZORPAY') {
-                    handleRazorpayPayment(data);
+                    await handleRazorpayPayment(data);
+                    setLoading(false);
                 } else {
+                    setLoading(false);
                     clearCart();
                     router.push('/checkout/success?orderId=' + data.id);
                 }
             } else {
+                setLoading(false);
                 setError(data.message || 'Failed to place order');
             }
         } catch (err) {

@@ -36,6 +36,7 @@ export default function ProductFormPage() {
     categoryId: '',
     images: [''],
     stock: '100',
+    isOutOfStock: false,
     specifications: ''
   });
 
@@ -62,6 +63,7 @@ export default function ProductFormPage() {
           categoryId: data.categoryId,
           images: data.images.length > 0 ? data.images : [''],
           stock: (data.stockQuantity || 100).toString(),
+          isOutOfStock: data.isOutOfStock || false,
           specifications: data.specifications || ''
         });
       } catch (err) {
@@ -217,6 +219,23 @@ export default function ProductFormPage() {
                     onChange={e => setFormData({...formData, stock: e.target.value})}
                   />
                 </div>
+              </div>
+
+              {/* Force Out of Stock Toggle */}
+              <div className="mt-8 pt-8 border-t border-border flex items-center justify-between">
+                <div className="space-y-1">
+                  <h4 className="text-sm font-black uppercase italic tracking-tight">Manual Availability Override</h4>
+                  <p className="text-[10px] font-bold text-muted uppercase tracking-widest leading-relaxed">
+                    Force product status to "Out of Stock" regardless of quantity count
+                  </p>
+                </div>
+                <button 
+                  type="button"
+                  onClick={() => setFormData({...formData, isOutOfStock: !formData.isOutOfStock})}
+                  className={`relative inline-flex h-8 w-14 items-center rounded-full transition-colors border-2 ${formData.isOutOfStock ? 'bg-red-500 border-red-500 shadow-[0_0_15px] shadow-red-500/30' : 'bg-muted border-border'}`}
+                >
+                  <span className={`inline-block h-5 w-5 transform rounded-full bg-white transition-transform ${formData.isOutOfStock ? 'translate-x-7' : 'translate-x-1'}`} />
+                </button>
               </div>
             </div>
           </div>

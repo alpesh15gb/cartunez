@@ -25,6 +25,7 @@ interface Product {
   images: string[];
   category: { name: string };
   stock: number;
+  isOutOfStock: boolean;
 }
 
 export default function ProductsAdminPage() {
@@ -108,7 +109,8 @@ export default function ProductsAdminPage() {
                 <th className="px-6 py-5 text-[10px] font-black uppercase tracking-[0.2em] text-muted">Product Details</th>
                 <th className="px-6 py-5 text-[10px] font-black uppercase tracking-[0.2em] text-muted">Category</th>
                 <th className="px-6 py-5 text-[10px] font-black uppercase tracking-[0.2em] text-muted">Pricing</th>
-                <th className="px-6 py-5 text-[10px] font-black uppercase tracking-[0.2em] text-muted">Inventory</th>
+                 <th className="px-6 py-5 text-[10px] font-black uppercase tracking-[0.2em] text-muted">Inventory</th>
+                <th className="px-6 py-5 text-[10px] font-black uppercase tracking-[0.2em] text-muted">Status</th>
                 <th className="px-6 py-5 text-[10px] font-black uppercase tracking-[0.2em] text-muted">Actions</th>
               </tr>
             </thead>
@@ -155,11 +157,18 @@ export default function ProductsAdminPage() {
                         )}
                       </div>
                     </td>
-                    <td className="px-6 py-5">
+                     <td className="px-6 py-5">
                        <div className="flex items-center gap-2">
                          <div className={`h-2 w-2 rounded-full ${product.stock > 10 ? 'bg-green-500' : product.stock > 0 ? 'bg-yellow-500' : 'bg-red-500'} shadow-[0_0_8px] shadow-current`} />
                          <span className="text-xs font-bold uppercase tracking-widest">{product.stock} units</span>
                        </div>
+                    </td>
+                    <td className="px-6 py-5">
+                       {product.isOutOfStock ? (
+                         <span className="px-2 py-1 bg-red-500/10 text-red-500 text-[8px] font-black uppercase rounded border border-red-500/20 tracking-tighter">Force OOS</span>
+                       ) : (
+                         <span className="px-2 py-1 bg-green-500/10 text-green-500 text-[8px] font-black uppercase rounded border border-green-500/20 tracking-tighter">Normal</span>
+                       )}
                     </td>
                     <td className="px-6 py-5">
                       <div className="flex items-center gap-2">

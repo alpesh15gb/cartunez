@@ -88,60 +88,93 @@ export default function HomePage() {
       <div className="ghost-title" aria-hidden="true">AUTO PARTS</div>
 
       {/* Hero Section */}
-      <section className="container mx-auto px-6 pt-12 pb-24">
-        <div className="flex flex-col lg:flex-row items-center gap-12">
-          {/* Hero Content */}
-          <div className="flex-1 space-y-6">
-            <span className="text-primary font-black uppercase tracking-[0.3em] text-xs">New Arrivals</span>
-            <h1 className="text-4xl md:text-6xl lg:text-7xl font-black italic uppercase tracking-tighter leading-none">
-              Premium <span className="text-secondary">Automotive Parts</span> & Accessories
+      <section className="relative h-[600px] md:h-[750px] w-full mb-20">
+        <Image unoptimized
+          src="/hero.png"
+          alt="Premium Automotive Mastery"
+          fill
+          className="object-cover brightness-50"
+          priority
+        />
+        <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-6">
+          <div className="max-w-4xl space-y-6">
+            <h1 className="text-white text-5xl md:text-7xl lg:text-8xl font-black uppercase tracking-tighter leading-tight">
+              "Unlike diamonds, <br />
+              <span className="text-primary italic">parts</span> are practical"
             </h1>
-            <p className="text-muted font-medium max-w-lg leading-relaxed">
-              Elevate your vehicle's performance and aesthetics with Cartunez – India's premium destination for curated automotive masterpieces and high-end styling.
+            <p className="text-white/80 text-xs md:text-sm font-medium max-w-xl mx-auto leading-relaxed uppercase tracking-widest">
+              Premium curated components for the modern automotive enthusiast. <br />
+              Performance, aesthetics, and precision engineering.
             </p>
-            <div className="pt-4 flex space-x-4">
-              <Link href="/shop" className="btn-primary">Shop Collection</Link>
-              <Link href="/categories" className="btn-outline">Explore Parts</Link>
+            <div className="pt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
+              <Link href="/shop" className="btn-primary w-full sm:w-auto">Explore Collection</Link>
             </div>
           </div>
+        </div>
 
-          {/* Hero Image / Car Display */}
-          <div className="flex-1 relative h-[300px] md:h-[500px] w-full rounded-sm overflow-hidden group shadow-2xl">
-            <Image unoptimized
-              src="/hero.png"
-              alt="Cartunez - High-performance sports car with custom upgrades"
-              fill
-              className="object-cover group-hover:scale-110 transition-transform duration-1000"
-              priority
-            />
-            <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent pointer-events-none" />
-          </div>
+        {/* Floating Side Tags (Static UI for aesthetic) */}
+        <div className="hidden lg:flex absolute right-0 top-1/2 -translate-y-1/2 flex-col gap-1 z-30 mr-8">
+            {['DEMOS', 'HOSTING', 'SERVICES', 'BUY'].map(tag => (
+                <div key={tag} className="bg-white text-[9px] font-black tracking-widest px-4 py-2 text-black shadow-lg cursor-pointer hover:bg-primary hover:text-white transition-all">
+                    {tag}
+                </div>
+            ))}
         </div>
       </section>
 
-      {/* Featured Banners */}
-      <section className="container mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-8 mb-24">
-        <div className="relative h-64 bg-secondary overflow-hidden group shadow-lg">
-          <div className="absolute inset-0 bg-black/40 z-10" />
-          <div className="relative z-20 h-full p-10 flex flex-col justify-center text-center items-center">
-            <h3 className="text-white text-3xl font-black italic uppercase mb-4">Performance Upgrades</h3>
-            <Link href="/shop" className="inline-block bg-primary text-white text-[10px] font-black uppercase tracking-widest px-4 py-2 w-fit hover:bg-white hover:text-primary transition-colors">Shop All</Link>
-          </div>
-          <Image unoptimized src="/performance.png" alt="High-performance automotive engine parts" fill className="object-cover grayscale opacity-20 group-hover:opacity-40 transition-opacity" />
-        </div>
-        <div className="relative h-64 bg-primary overflow-hidden group shadow-lg">
-          <div className="absolute inset-0 bg-black/40 z-10" />
-          <div className="relative z-20 h-full p-10 flex flex-col justify-center text-center items-center">
-            <h3 className="text-white text-3xl font-black italic uppercase mb-4">Luxury Interiors</h3>
-            <Link href="/shop" className="inline-block bg-secondary text-white text-[10px] font-black uppercase tracking-widest px-4 py-2 w-fit hover:bg-white hover:text-primary transition-colors">Shop Now</Link>
-          </div>
-          <Image unoptimized src="/interior.png" alt="Premium luxury car interior accessories" fill className="object-cover grayscale opacity-20 group-hover:opacity-40 transition-opacity" />
-        </div>
-      </section>
-
-      {/* Trending Products */}
+      {/* Bestsellers Section */}
       <section className="container mx-auto px-6 mb-24">
-        <h2 className="section-title">Trending Products</h2>
+        <h2 className="section-title">Our Bestsellers</h2>
+        {loading ? (
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
+            {[1, 2, 3, 4].map((i) => (
+              <div key={i} className="animate-pulse bg-gray-50 aspect-[3/4] rounded"></div>
+            ))}
+          </div>
+        ) : (
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12">
+            {products.slice(0, 4).map((product) => (
+              <ProductCard key={product.id} product={product} />
+            ))}
+          </div>
+        )}
+      </section>
+
+      {/* Featured Side-by-Side Banners */}
+      <section className="grid grid-cols-1 md:grid-cols-2 h-[500px] md:h-[600px] mb-24">
+        <div className="relative group overflow-hidden border-r border-white/10">
+          <Image unoptimized src="/performance.png" alt="Performance" fill className="object-cover group-hover:scale-110 transition-transform duration-700 brightness-75" />
+          <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-12 bg-black/20 group-hover:bg-black/40 transition-all">
+            <h3 className="text-white text-4xl md:text-6xl font-black uppercase tracking-tighter mb-4">
+                Parts <br /> For Men
+            </h3>
+            <p className="text-white/80 text-[10px] font-bold uppercase tracking-widest max-w-xs mb-8">
+                Curated high-performance upgrades for professional automotive builds.
+            </p>
+            <Link href="/shop" className="bg-white text-black text-[10px] font-black uppercase tracking-widest px-8 py-3 rounded-full hover:bg-primary hover:text-white transition-all">
+                EXPLORE
+            </Link>
+          </div>
+        </div>
+        <div className="relative group overflow-hidden">
+          <Image unoptimized src="/interior.png" alt="Interior" fill className="object-cover group-hover:scale-110 transition-transform duration-700 brightness-75" />
+          <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-12 bg-black/20 group-hover:bg-black/40 transition-all">
+            <h3 className="text-white text-4xl md:text-6xl font-black uppercase tracking-tighter mb-4">
+                Parts <br /> For Women
+            </h3>
+            <p className="text-white/80 text-[10px] font-bold uppercase tracking-widest max-w-xs mb-8">
+                Stylish and ergonomic interior masterpieces for ultimate comfort.
+            </p>
+            <Link href="/shop" className="bg-white text-black text-[10px] font-black uppercase tracking-widest px-8 py-3 rounded-full hover:bg-primary hover:text-white transition-all">
+                EXPLORE
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Latest products Section */}
+      <section className="container mx-auto px-6 mb-24">
+        <h2 className="section-title">Latest products</h2>
         {loading ? (
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8">
             {[1, 2, 4, 4].map((i) => (
