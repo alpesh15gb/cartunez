@@ -5,7 +5,7 @@ import * as path from 'path';
 const prisma = new PrismaClient();
 
 async function main() {
-    const productsPath = path.join(__dirname, '../../motorogue_products.json');
+    const productsPath = path.join(__dirname, '../motorogue_products.json');
     if (!fs.existsSync(productsPath)) {
         console.error('motorogue_products.json not found. Run the scraper first.');
         return;
