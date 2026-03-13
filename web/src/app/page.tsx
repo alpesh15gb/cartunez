@@ -38,8 +38,49 @@ export default function HomePage() {
 
   return (
     <div className="relative">
+      {/* Structured Data (JSON-LD) */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "WebSite",
+            "name": "Cartunez",
+            "url": "https://cartunez.in",
+            "potentialAction": {
+              "@type": "SearchAction",
+              "target": "https://cartunez.in/shop?q={search_term_string}",
+              "query-input": "required name=search_term_string"
+            }
+          })
+        }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Organization",
+            "name": "Cartunez",
+            "url": "https://cartunez.in",
+            "logo": "https://cartunez.in/logo.png",
+            "contactPoint": {
+              "@type": "ContactPoint",
+              "telephone": "+91-9949695030",
+              "contactType": "customer service",
+              "areaServed": "IN",
+              "availableLanguage": "en"
+            },
+            "sameAs": [
+              "https://www.facebook.com/cartunez",
+              "https://www.instagram.com/cartunez"
+            ]
+          })
+        }}
+      />
+
       {/* Background Ghost Text */}
-      <div className="ghost-title">AUTO PARTS</div>
+      <div className="ghost-title" aria-hidden="true">AUTO PARTS</div>
 
       {/* Hero Section */}
       <section className="container mx-auto px-6 pt-12 pb-24">
@@ -48,15 +89,14 @@ export default function HomePage() {
           <div className="flex-1 space-y-6">
             <span className="text-primary font-black uppercase tracking-[0.3em] text-xs">New Arrivals</span>
             <h1 className="text-7xl font-black italic uppercase tracking-tighter leading-none">
-              Get Your Car <br />
-              <span className="text-secondary">Rolling In Style</span>
+              Premium <span className="text-secondary">Automotive Parts</span> & Accessories
             </h1>
             <p className="text-muted font-medium max-w-lg leading-relaxed">
-              Elevate your vehicle's performance and aesthetics with our premium curated collection of automotive masterpieces.
+              Elevate your vehicle's performance and aesthetics with Cartunez – India's premium destination for curated automotive masterpieces and high-end styling.
             </p>
             <div className="pt-4 flex space-x-4">
-              <Link href="/shop" className="btn-primary">Shop Now</Link>
-              <Link href="/categories" className="btn-outline">Explore More</Link>
+              <Link href="/shop" className="btn-primary">Shop Collection</Link>
+              <Link href="/categories" className="btn-outline">Explore Parts</Link>
             </div>
           </div>
 
@@ -64,7 +104,7 @@ export default function HomePage() {
           <div className="flex-1 relative h-[500px] w-full rounded-sm overflow-hidden group shadow-2xl">
             <Image
               src="/hero.png"
-              alt="Modern Performance Car"
+              alt="Cartunez - High-performance sports car with custom upgrades"
               fill
               className="object-cover group-hover:scale-110 transition-transform duration-1000"
               priority
@@ -76,21 +116,21 @@ export default function HomePage() {
 
       {/* Featured Banners */}
       <section className="container mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-8 mb-24">
-        <div className="relative h-64 bg-secondary overflow-hidden group">
+        <div className="relative h-64 bg-secondary overflow-hidden group shadow-lg">
           <div className="absolute inset-0 bg-black/40 z-10" />
           <div className="relative z-20 h-full p-10 flex flex-col justify-center text-center items-center">
-            <h3 className="text-white text-3xl font-black italic uppercase mb-4">The Best Car Parts</h3>
-            <Link href="/shop" className="inline-block bg-primary text-white text-[10px] font-black uppercase tracking-widest px-4 py-2 w-fit hover:bg-white hover:text-primary transition-colors">Shop Now</Link>
+            <h3 className="text-white text-3xl font-black italic uppercase mb-4">Performance Upgrades</h3>
+            <Link href="/shop" className="inline-block bg-primary text-white text-[10px] font-black uppercase tracking-widest px-4 py-2 w-fit hover:bg-white hover:text-primary transition-colors">Shop All</Link>
           </div>
-          <Image src="/performance.png" alt="Car Parts" fill className="object-cover grayscale opacity-20 group-hover:opacity-40 transition-opacity" />
+          <Image src="/performance.png" alt="High-performance automotive engine parts" fill className="object-cover grayscale opacity-20 group-hover:opacity-40 transition-opacity" />
         </div>
-        <div className="relative h-64 bg-primary overflow-hidden group">
+        <div className="relative h-64 bg-primary overflow-hidden group shadow-lg">
           <div className="absolute inset-0 bg-black/40 z-10" />
           <div className="relative z-20 h-full p-10 flex flex-col justify-center text-center items-center">
-            <h3 className="text-white text-3xl font-black italic uppercase mb-4">Essentials</h3>
+            <h3 className="text-white text-3xl font-black italic uppercase mb-4">Luxury Interiors</h3>
             <Link href="/shop" className="inline-block bg-secondary text-white text-[10px] font-black uppercase tracking-widest px-4 py-2 w-fit hover:bg-white hover:text-primary transition-colors">Shop Now</Link>
           </div>
-          <Image src="/interior.png" alt="Luxury Cars" fill className="object-cover grayscale opacity-20 group-hover:opacity-40 transition-opacity" />
+          <Image src="/interior.png" alt="Premium luxury car interior accessories" fill className="object-cover grayscale opacity-20 group-hover:opacity-40 transition-opacity" />
         </div>
       </section>
 

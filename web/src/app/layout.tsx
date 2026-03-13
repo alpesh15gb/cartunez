@@ -13,8 +13,69 @@ const outfit = Outfit({
 });
 
 export const metadata: Metadata = {
-  title: "Cartunez | Modern Performance Shop",
-  description: "The premium destination for automotive parts and high-end accessories.",
+  metadataBase: new URL('https://cartunez.in'),
+  title: {
+    default: "Cartunez | Premium Automotive Parts & Accessories",
+    template: "%s | Cartunez"
+  },
+  description: "Cartunez is India's premium destination for high-end automotive parts, styling accessories, and performance upgrades. Shop interior, exterior, and electronics.",
+  keywords: ["car parts India", "automotive accessories Hyderabad", "luxury car styling", "Android car stereo", "car performance upgrades", "Cartunez"],
+  authors: [{ name: "Cartunez Team" }],
+  creator: "Cartunez",
+  publisher: "Cartunez",
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
+  alternates: {
+    canonical: '/',
+  },
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'default',
+    title: 'Cartunez',
+  },
+  openGraph: {
+    title: "Cartunez | Premium Automotive Parts",
+    description: "Shop the finest collection of automotive masterpieces. High-end parts and accessories for the modern enthusiast.",
+    url: 'https://cartunez.in',
+    siteName: 'Cartunez',
+    images: [
+      {
+        url: '/og-image.png',
+        width: 1200,
+        height: 630,
+        alt: 'Cartunez Modern Performance Shop',
+      },
+    ],
+    locale: 'en_IN',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: "Cartunez | Premium Automotive Parts",
+    description: "Upgrade your vehicle with our premium curated collection.",
+    images: ['/og-image.png'],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
+};
+
+export const viewport = {
+  themeColor: '#cc0000',
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
 };
 
 export default function RootLayout({
