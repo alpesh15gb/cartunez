@@ -1,7 +1,7 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
-import { LayoutDashboard, Package, ShoppingCart, User, Ticket, Users } from 'lucide-react-native';
+import { LayoutDashboard, Package, ShoppingCart, User, Ticket, Users, Newspaper } from 'lucide-react-native';
 import DashboardScreen from '../screens/DashboardScreen';
 import ProductsScreen from '../screens/ProductsScreen';
 import AddProductScreen from '../screens/AddProductScreen';
@@ -9,6 +9,7 @@ import OrdersScreen from '../screens/OrdersScreen';
 import CouponsScreen from '../screens/CouponsScreen';
 import CustomersScreen from '../screens/CustomersScreen';
 import ProfileScreen from '../screens/ProfileScreen';
+import NewsAdminScreen from '../screens/NewsAdminScreen';
 import EditProductScreen from '../screens/EditProductScreen';
 import { theme } from '../theme';
 
@@ -53,6 +54,7 @@ export default function AppNavigator() {
                     if (route.name === 'Orders') return <ShoppingCart size={size} color={color} />;
                     if (route.name === 'Coupons') return <Ticket size={size} color={color} />;
                     if (route.name === 'Customers') return <Users size={size} color={color} />;
+                    if (route.name === 'News') return <Newspaper size={size} color={color} />;
                     if (route.name === 'Profile') return <User size={size} color={color} />;
                 },
                 tabBarActiveTintColor: theme.colors.primary,
@@ -72,6 +74,7 @@ export default function AppNavigator() {
             <Tab.Screen name="Orders" component={OrdersScreen} />
             <Tab.Screen name="Coupons" component={CouponsScreen} />
             <Tab.Screen name="Customers" component={CustomersScreen} />
+            <Tab.Screen name="News" component={NewsAdminScreen} />
             <Tab.Screen name="Profile" component={ProfileScreen} />
         </Tab.Navigator>
     );

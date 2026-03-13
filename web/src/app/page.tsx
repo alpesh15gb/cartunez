@@ -7,34 +7,36 @@ import { API_URL } from '@/config';
 
 export default function HomePage() {
   const [products, setProducts] = useState<any[]>([]);
+  const [newsList, setNewsList] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchProducts = async () => {
+    const fetchHomeData = async () => {
       try {
-        const response = await fetch(`${API_URL}/products`);
-        const data = await response.json();
-        // Limit to 12 for trending section
-        if (Array.isArray(data)) {
-          setProducts(data.slice(0, 12));
-        } else {
-          setProducts([]);
+        const [productsRes, newsRes] = await Promise.all([
+          fetch(`${API_URL}/products`),
+          fetch(`${API_URL}/news`)
+        ]);
+        
+        const productsData = await productsRes.json();
+        const newsData = await newsRes.json();
+
+        if (Array.isArray(productsData)) {
+          setProducts(productsData.slice(0, 12));
+        }
+        if (Array.isArray(newsData)) {
+          setNewsList(newsData.slice(0, 3));
         }
       } catch (error) {
-        console.error('Error fetching products:', error);
+        console.error('Error fetching home data:', error);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchProducts();
+    fetchHomeData();
   }, []);
 
-  const LATEST_NEWS = [
-    { id: 1, title: 'Best Collection In Store', date: '02 Oct 2026', image: '/interior.png' },
-    { id: 2, title: 'Summer Performance Guide', date: '15 Sep 2026', image: '/performance.png' },
-    { id: 3, title: 'New Arrival: Forged Wheels', date: '28 Aug 2026', image: '/wheels.png' },
-  ];
 
   return (
     <div className="relative overflow-hidden">
@@ -203,25 +205,35 @@ export default function HomePage() {
       <section className="container mx-auto px-6 mb-24">
         <h2 className="section-title">Latest News</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {LATEST_NEWS.map((news) => (
-            <div key={news.id} className="group cursor-pointer">
-              <div className="relative h-64 bg-card mb-6 overflow-hidden rounded-sm">
-                {news.image.startsWith('/') ? (
-                  <Image src={news.image} alt={news.title} fill className="object-cover grayscale group-hover:grayscale-0 group-hover:scale-110 transition-all duration-700" />
+          {newsList.length > 0 ? (
+            newsList.map((news) => (
+              <div key={news.id} className="group cursor-pointer">
+                <div className="relative h-64 bg-card mb-6 overflow-hidden rounded-sm">
+                  {news.imageUrl ? (
+                    <Image src={news.imageUrl} alt={news.title} fill className="object-cover grayscale group-hover:grayscale-0 group-hover:scale-110 transition-all duration-700" />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center text-8xl grayscale group-hover:grayscale-0 group-hover:scale-110 transition-all duration-700">
+                      📰
+                    </div>
+                  )}
+                </div>
+                <span className="text-primary font-black uppercase tracking-widest text-[10px]">{new Date(news.createdAt).toLocaleDateString()}</span>
+                <h3 className="text-xl font-black uppercase italic tracking-tighter mt-2 group-hover:text-primary transition-colors">{news.title}</h3>
+                <p className="text-muted text-[11px] font-medium leading-relaxed mt-4 line-clamp-3">
+                  {news.content}
+                </p>
+                {news.externalUrl ? (
+                   <Link href={news.externalUrl} target="_blank" className="text-[10px] font-black uppercase tracking-[0.2em] mt-6 border-b-2 border-primary pb-1 group-hover:translate-x-2 transition-transform inline-block">Read on Social</Link>
                 ) : (
-                  <div className="w-full h-full flex items-center justify-center text-8xl grayscale group-hover:grayscale-0 group-hover:scale-110 transition-all duration-700">
-                    {news.image}
-                  </div>
+                   <button className="text-[10px] font-black uppercase tracking-[0.2em] mt-6 border-b-2 border-primary pb-1 group-hover:translate-x-2 transition-transform inline-block">Read More</button>
                 )}
               </div>
-              <span className="text-primary font-black uppercase tracking-widest text-[10px]">{news.date}</span>
-              <h3 className="text-xl font-black uppercase italic tracking-tighter mt-2 group-hover:text-primary transition-colors">{news.title}</h3>
-              <p className="text-muted text-[11px] font-medium leading-relaxed mt-4">
-                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been...
-              </p>
-              <button className="text-[10px] font-black uppercase tracking-[0.2em] mt-6 border-b-2 border-primary pb-1 group-hover:translate-x-2 transition-transform inline-block">Read More</button>
-            </div>
-          ))}
+            ))
+          ) : (
+             <div className="col-span-3 text-center py-12 border-2 border-dashed border-border text-muted font-bold uppercase tracking-widest">
+                No updates yet. Check back soon for latest arrivals!
+             </div>
+          )}
         </div>
       </section>
     </div>

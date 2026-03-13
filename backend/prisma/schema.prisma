@@ -159,3 +159,14 @@ model Review {
   comment   String
   createdAt DateTime @default(now())
 }
+
+model News {
+  id          String   @id @default(uuid())
+  title       String
+  content     String
+  imageUrl    String?
+  externalUrl String?  // For Facebook/Instagram links
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}

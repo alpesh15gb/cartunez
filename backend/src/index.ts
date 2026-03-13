@@ -13,6 +13,7 @@ import wishlistRoutes from './routes/wishlist.routes';
 import couponRoutes from './routes/coupon.routes';
 import userRoutes from './routes/user.routes';
 import vehicleRoutes from './routes/vehicle.routes';
+import newsRoutes from './routes/news.routes';
 
 dotenv.config();
 
@@ -34,6 +35,7 @@ app.use('/api/wishlist', wishlistRoutes);
 app.use('/api/coupons', couponRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/vehicles', vehicleRoutes);
+app.use('/api/news', newsRoutes);
 
 app.get('/health', (req, res) => {
     res.json({ status: 'ok', uptime: process.uptime() });
