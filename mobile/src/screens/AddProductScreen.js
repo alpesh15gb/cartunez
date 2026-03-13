@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, ScrollView, Alert, ActivityIndicator } from 'react-native';
 import { theme } from '../theme';
-import { Plus, Package, Tag, Database, Layers, Camera } from 'lucide-react-native';
+import { Plus, Package, Tag, Database, Layers, Camera, Trash2 } from 'lucide-react-native';
 import { API_ENDPOINTS } from '../config';
 import { useAuth } from '../context/AuthContext';
 
@@ -16,7 +16,7 @@ export default function AddProductScreen({ navigation }) {
         discountPrice: '',
         stockQuantity: '',
         categoryId: '',
-        images: '[]', // Stringified empty array for now
+        images: [], // Real array now
     });
 
     useEffect(() => {
@@ -132,6 +132,42 @@ export default function AddProductScreen({ navigation }) {
                 </View>
 
                 <View style={styles.inputGroup}>
+                    <Text style={styles.label}>Product Images (URLs)</Text>
+                    {formData.images.map((img, index) => (
+                        <View key={index} style={[styles.inputWrapper, { marginBottom: 10 }]}>
+                            <Camera size={18} color={theme.colors.muted} style={styles.icon} />
+                            <TextInput
+                                style={styles.input}
+                                value={img}
+                                onChangeText={(text) => {
+                                    const newImages = [...formData.images];
+                                    newImages[index] = text;
+                                    setFormData({ ...formData, images: newImages });
+                                }}
+                                placeholder="https://image-url.com"
+                                placeholderTextColor={theme.colors.muted}
+                            />
+                            <TouchableOpacity 
+                                style={{ padding: 10 }} 
+                                onPress={() => {
+                                    const newImages = formData.images.filter((_, i) => i !== index);
+                                    setFormData({ ...formData, images: newImages });
+                                }}
+                            >
+                                <Trash2 size={18} color={theme.colors.secondary} />
+                            </TouchableOpacity>
+                        </View>
+                    ))}
+                    <TouchableOpacity 
+                        style={styles.addImgBtn}
+                        onPress={() => setFormData({ ...formData, images: [...formData.images, ''] })}
+                    >
+                        <Plus size={16} color={theme.colors.primary} />
+                        <Text style={styles.addImgText}>Add Image URL</Text>
+                    </TouchableOpacity>
+                </View>
+
+                <View style={styles.inputGroup}>
                     <Text style={styles.label}>Category</Text>
                     <View style={styles.categoryGrid}>
                         {categories.map((cat) => (
@@ -180,4 +216,6 @@ const styles = StyleSheet.create({
     createBtn: { backgroundColor: theme.colors.primary, padding: 18, borderRadius: 12, alignItems: 'center', marginTop: 20 },
     createBtnText: { fontWeight: '900', color: '#000', fontSize: 14 },
     disabledBtn: { opacity: 0.7 },
+    addImgBtn: { flexDirection: 'row', alignItems: 'center', backgroundColor: theme.colors.card, padding: 12, borderRadius: 12, borderStyle: 'dashed', borderWidth: 1, borderColor: theme.colors.primary, justifyContent: 'center', marginTop: 5 },
+    addImgText: { color: theme.colors.primary, fontWeight: '900', fontSize: 11, marginLeft: 8, textTransform: 'uppercase' },
 });

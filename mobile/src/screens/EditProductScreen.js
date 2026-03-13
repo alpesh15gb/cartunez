@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, ScrollView, Alert, ActivityIndicator } from 'react-native';
 import { theme } from '../theme';
-import { Save, X, Package, Tag, Layers, Database } from 'lucide-react-native';
+import { Save, X, Package, Tag, Layers, Database, Camera, Trash2, Plus } from 'lucide-react-native';
 import { API_ENDPOINTS } from '../config';
 import { useAuth } from '../context/AuthContext';
 
@@ -16,6 +16,7 @@ export default function EditProductScreen({ route, navigation }) {
         discountPrice: product.discountPrice ? product.discountPrice.toString() : '',
         stockQuantity: product.stockQuantity.toString(),
         categoryId: product.categoryId,
+        images: product.images || [],
     });
 
     const handleSave = async () => {
@@ -136,6 +137,42 @@ export default function EditProductScreen({ route, navigation }) {
                         />
                     </View>
                 </View>
+
+                <View style={styles.inputGroup}>
+                    <Text style={styles.label}>Product Images (URLs)</Text>
+                    {formData.images.map((img, index) => (
+                        <View key={index} style={[styles.inputWrapper, { marginBottom: 10 }]}>
+                            <Camera size={18} color={theme.colors.muted} style={styles.icon} />
+                            <TextInput
+                                style={styles.input}
+                                value={img}
+                                onChangeText={(text) => {
+                                    const newImages = [...formData.images];
+                                    newImages[index] = text;
+                                    setFormData({ ...formData, images: newImages });
+                                }}
+                                placeholder="https://image-url.com"
+                                placeholderTextColor={theme.colors.muted}
+                            />
+                            <TouchableOpacity 
+                                style={{ padding: 10 }} 
+                                onPress={() => {
+                                    const newImages = formData.images.filter((_, i) => i !== index);
+                                    setFormData({ ...formData, images: newImages });
+                                }}
+                            >
+                                <Trash2 size={18} color={theme.colors.secondary} />
+                            </TouchableOpacity>
+                        </View>
+                    ))}
+                    <TouchableOpacity 
+                        style={styles.addImgBtn}
+                        onPress={() => setFormData({ ...formData, images: [...formData.images, ''] })}
+                    >
+                        <Plus size={16} color={theme.colors.primary} />
+                        <Text style={styles.addImgText}>Add Image URL</Text>
+                    </TouchableOpacity>
+                </View>
             </View>
         </ScrollView>
     );
@@ -153,4 +190,6 @@ const styles = StyleSheet.create({
     input: { flex: 1, padding: 15, color: theme.colors.text, fontWeight: 'bold' },
     textArea: { height: 100, textAlignVertical: 'top', backgroundColor: theme.colors.card, borderRadius: 12, borderWidth: 1, borderColor: theme.colors.border, padding: 15 },
     row: { flexDirection: 'row' },
+    addImgBtn: { flexDirection: 'row', alignItems: 'center', backgroundColor: theme.colors.card, padding: 12, borderRadius: 12, borderStyle: 'dashed', borderWidth: 1, borderColor: theme.colors.primary, justifyContent: 'center', marginTop: 5 },
+    addImgText: { color: theme.colors.primary, fontWeight: '900', fontSize: 11, marginLeft: 8, textTransform: 'uppercase' },
 });

@@ -15,6 +15,7 @@ export default function ProductClient({ initialProduct }: { initialProduct: any 
     const [product, setProduct] = useState<any>(initialProduct);
     const [wishlistLoading, setWishlistLoading] = useState(false);
     const [loading, setLoading] = useState(!initialProduct);
+    const [activeImageIndex, setActiveImageIndex] = useState(0);
     const [quantity, setQuantity] = useState(1);
 
     useEffect(() => {
@@ -68,7 +69,8 @@ export default function ProductClient({ initialProduct }: { initialProduct: any 
         </div>
     );
 
-    const mainImage = product.images && product.images[0] ? product.images[0] : null;
+    const images = product.images && product.images.length > 0 ? product.images : [];
+    const mainImage = images[activeImageIndex] || null;
 
     return (
         <div className="min-h-screen bg-white">
@@ -81,7 +83,7 @@ export default function ProductClient({ initialProduct }: { initialProduct: any 
 
             <div className="container mx-auto px-6 pb-24">
                 <div className="flex flex-col lg:flex-row gap-20">
-                    {/* Main Display */}
+                    {/* Main Display & Thumbnails */}
                     <div className="flex-1 space-y-6">
                         <div className="bg-card border border-border aspect-square relative rounded-sm overflow-hidden group">
                             {mainImage ? (
@@ -98,6 +100,21 @@ export default function ProductClient({ initialProduct }: { initialProduct: any 
                             )}
                             <div className="absolute top-4 left-4 bg-primary text-white text-[10px] font-black px-4 py-1 uppercase italic shadow-lg z-10">Premium Selection</div>
                         </div>
+
+                        {/* Thumbnails */}
+                        {images.length > 1 && (
+                            <div className="flex gap-4 overflow-x-auto pb-2 scrollbar-thin scrollbar-thumb-primary">
+                                {images.map((img: string, idx: number) => (
+                                    <button
+                                        key={idx}
+                                        onClick={() => setActiveImageIndex(idx)}
+                                        className={`relative w-24 h-24 border-2 rounded-sm overflow-hidden flex-shrink-0 transition-all ${activeImageIndex === idx ? 'border-primary opacity-100' : 'border-border opacity-50 hover:opacity-100'}`}
+                                    >
+                                        <Image src={img} alt={`${product.name} ${idx + 1}`} fill className="object-cover" />
+                                    </button>
+                                ))}
+                            </div>
+                        )}
                     </div>
 
                     {/* Product Specs */}
