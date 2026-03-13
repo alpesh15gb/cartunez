@@ -38,8 +38,8 @@ function ShopContent() {
                 ]);
                 const prods = await prodRes.json();
                 const cats = await catRes.json();
-                setProducts(prods);
-                setCategories(cats);
+                setProducts(Array.isArray(prods) ? prods : []);
+                setCategories(Array.isArray(cats) ? cats : []);
                 
                 if (catId) setSelectedCategoryId(catId);
                 else setSelectedCategoryId('All');
