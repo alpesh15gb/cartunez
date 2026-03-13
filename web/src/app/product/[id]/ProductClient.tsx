@@ -5,7 +5,9 @@ import { useCart } from '@/context/CartContext';
 import { useParams, useRouter } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
 import Image from 'next/image';
+import Link from 'next/link';
 import { API_URL } from '@/config';
+import { ChevronLeft, Search, Share, ChevronDown, ChevronUp, Heart } from 'lucide-react';
 
 export default function ProductClient({ initialProduct }: { initialProduct: any }) {
     const params = useParams();
@@ -16,7 +18,8 @@ export default function ProductClient({ initialProduct }: { initialProduct: any 
     const [wishlistLoading, setWishlistLoading] = useState(false);
     const [loading, setLoading] = useState(!initialProduct);
     const [activeImageIndex, setActiveImageIndex] = useState(0);
-    const [quantity, setQuantity] = useState(1);
+    const [isHighlightsOpen, setIsHighlightsOpen] = useState(true);
+    const [isInfoOpen, setIsInfoOpen] = useState(false);
 
     useEffect(() => {
         if (!initialProduct && params.id) {
@@ -58,145 +61,188 @@ export default function ProductClient({ initialProduct }: { initialProduct: any 
     };
 
     if (loading) return (
-        <div className="min-h-screen flex items-center justify-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-primary"></div>
+        <div className="min-h-screen flex items-center justify-center bg-gray-50">
+            <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-[#ff4d30]"></div>
         </div>
     );
 
     if (!product) return (
-        <div className="container mx-auto px-6 py-40 text-center font-black uppercase italic">
+        <div className="min-h-screen flex items-center justify-center bg-gray-50 text-gray-500 font-semibold">
             Product Not Found
         </div>
     );
 
     const images = product.images && product.images.length > 0 ? product.images : [];
     const mainImage = images[activeImageIndex] || null;
+    const currentPrice = product.discountPrice || product.price;
+    const oldPrice = product.discountPrice ? product.price : null;
+    const discountAmount = oldPrice ? oldPrice - currentPrice : 0;
 
     return (
-        <div className="min-h-screen bg-white">
-            {/* Breadcrumb */}
-            <div className="bg-card py-6 border-b border-border mb-12">
-                <div className="container mx-auto px-6 text-[10px] font-black uppercase tracking-widest text-muted">
-                    Home / Shop / {product.category?.name || 'Uncategorized'} / <span className="text-foreground">{product.name}</span>
+        <div className="min-h-screen bg-[#f3f4f6] pb-[80px]"> {/* Bottom padding for sticky button */}
+            {/* Transparent Top Navigation Bar */}
+            <div className="fixed top-0 left-0 right-0 z-50 flex justify-between items-center p-4 bg-gradient-to-b from-black/20 to-transparent pointer-events-none">
+                <button onClick={() => router.back()} className="bg-white/90 p-2 text-black rounded-full shadow-sm pointer-events-auto active:scale-95 transition-transform backdrop-blur-sm">
+                    <ChevronLeft size={20} />
+                </button>
+                <div className="flex gap-3 pointer-events-auto">
+                    <button className="bg-white/90 p-2 text-black rounded-full shadow-sm active:scale-95 transition-transform backdrop-blur-sm">
+                        <Search size={20} />
+                    </button>
+                    <button className="bg-white/90 p-2 text-black rounded-full shadow-sm active:scale-95 transition-transform backdrop-blur-sm">
+                        <Share size={20} />
+                    </button>
                 </div>
             </div>
 
-            <div className="container mx-auto px-6 pb-24">
-                <div className="flex flex-col lg:flex-row gap-20">
-                    {/* Main Display & Thumbnails */}
-                    <div className="flex-1 space-y-6">
-                        <div className="bg-card border border-border aspect-square relative rounded-sm overflow-hidden group">
-                            {mainImage ? (
-                                <Image unoptimized
-                                    src={mainImage}
-                                    alt={product.name}
-                                    fill
-                                    className="object-cover group-hover:scale-110 transition-transform duration-1000 select-none"
-                                />
-                            ) : (
-                                <div className="w-full h-full flex items-center justify-center text-[12rem] group-hover:scale-110 transition-transform duration-1000 select-none uppercase font-black italic">
-                                    🚗
-                                </div>
-                            )}
-                            <div className="absolute top-4 left-4 bg-primary text-white text-[10px] font-black px-4 py-1 uppercase italic shadow-lg z-10">Premium Selection</div>
-                        </div>
-
-                        {/* Thumbnails */}
-                        {images.length > 1 && (
-                            <div className="flex gap-4 overflow-x-auto pb-2 scrollbar-thin scrollbar-thumb-primary">
-                                {images.map((img: string, idx: number) => (
-                                    <button
-                                        key={idx}
-                                        onClick={() => setActiveImageIndex(idx)}
-                                        className={`relative w-24 h-24 border-2 rounded-sm overflow-hidden flex-shrink-0 transition-all ${activeImageIndex === idx ? 'border-primary opacity-100' : 'border-border opacity-50 hover:opacity-100'}`}
-                                    >
-                                        <Image unoptimized src={img} alt={`${product.name} ${idx + 1}`} fill className="object-cover" />
-                                    </button>
-                                ))}
-                            </div>
-                        )}
-                    </div>
-
-                    {/* Product Specs */}
-                    <div className="flex-1 space-y-10">
-                        <div>
-                            <div className="flex text-sm text-yellow-500 mb-4">★★★★★</div>
-                            <h1 className="text-4xl font-black italic uppercase tracking-tighter leading-tight mb-4">{product.name}</h1>
-                            <span className="text-primary font-black uppercase tracking-[0.3em] text-[10px] block mb-6">{product.category?.name || 'General Product'}</span>
-                            <div className="flex items-end space-x-4 mb-2">
-                                <p className="text-4xl font-black text-secondary">₹{(product.discountPrice || product.price).toLocaleString('en-IN')}</p>
-                                {product.discountPrice && (
-                                    <p className="text-xl font-bold text-muted line-through mb-1">₹{product.price.toLocaleString('en-IN')}</p>
-                                )}
-                            </div>
-                        </div>
-
-                        {/* Description contains HTML from Shopify API */}
-                        <div
-                            className="text-muted leading-relaxed text-sm font-medium border-l-4 border-primary pl-8 italic mb-12 prose max-w-none"
-                            dangerouslySetInnerHTML={{ __html: product.description }}
+            {/* Product Image Gallery Area */}
+            <div className="bg-white pt-0 pb-4">
+                <div className="relative w-full aspect-[4/3] bg-white">
+                    {mainImage ? (
+                        <Image unoptimized
+                            src={mainImage}
+                            alt={product.name}
+                            fill
+                            className="object-contain"
+                            priority
                         />
-
-                        <div className="flex flex-col sm:flex-row gap-4 pt-6">
-                            <button
-                                onClick={() => addToCart({
-                                    id: product.id,
-                                    name: product.name,
-                                    price: product.discountPrice || product.price,
-                                    quantity: 1,
-                                    image: mainImage || '🚗'
-                                })}
-                                className="btn-primary flex-1 py-5 text-xs shadow-xl active:translate-y-1 transition-transform"
-                            >
-                                Engage - Add To Cart
-                            </button>
-                            <button 
-                                onClick={addToWishlist}
-                                disabled={wishlistLoading}
-                                className="btn-outline flex-1 py-5 text-xs shadow-md"
-                            >
-                                {wishlistLoading ? 'SAVING...' : 'Add To Wishlist'}
-                            </button>
+                    ) : (
+                        <div className="w-full h-full flex items-center justify-center text-[6rem]">🚗</div>
+                    )}
+                    
+                    {/* Image Pagination Dots */}
+                    {images.length > 1 && (
+                        <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-1.5 z-20">
+                            {images.map((_: any, idx: number) => (
+                                <div 
+                                    key={idx} 
+                                    className={`h-1.5 rounded-full transition-all duration-300 ${idx === activeImageIndex ? 'w-4 bg-gray-800' : 'w-1.5 bg-gray-300'}`}
+                                />
+                            ))}
                         </div>
-
-                        <div className="grid grid-cols-2 gap-px bg-border border border-border mt-12 overflow-hidden rounded-sm">
-                            <div className="bg-white p-6">
-                                <span className="block text-[9px] font-black uppercase tracking-widest text-primary mb-2">Technical Warranty</span>
-                                <p className="text-[11px] font-black uppercase text-secondary">2 Year Professional Limited</p>
-                            </div>
-                            <div className="bg-white p-6">
-                                <span className="block text-[9px] font-black uppercase tracking-widest text-primary mb-2">Shipping Logistics</span>
-                                <p className="text-[11px] font-black uppercase text-secondary">Free Air Delivery - PAN India</p>
-                            </div>
-                        </div>
-                    </div>
+                    )}
                 </div>
             </div>
 
-            {/* Reviews Section */}
-            <div className="container mx-auto px-6 py-24 border-t border-border">
-                <h2 className="text-3xl font-black italic uppercase tracking-tighter mb-12">Field <span className="text-primary italic">Reports</span></h2>
-                
-                {product.reviews && product.reviews.length > 0 ? (
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                        {product.reviews.map((review: any) => (
-                            <div key={review.id} className="bg-card border border-border p-8 rounded-xl">
-                                <div className="flex text-yellow-500 mb-4 text-xs">
-                                    {'★'.repeat(review.rating)}{'☆'.repeat(5 - review.rating)}
-                                </div>
-                                <p className="text-sm font-medium italic text-muted leading-relaxed mb-6">"{review.comment}"</p>
-                                <div className="flex justify-between items-center text-[10px] font-black uppercase tracking-widest">
-                                    <span className="text-primary">{review.user.email.split('@')[0]}</span>
-                                    <span className="text-muted/50">{new Date(review.createdAt).toLocaleDateString()}</span>
-                                </div>
-                            </div>
-                        ))}
+            {/* Product Core Info Block */}
+            <div className="bg-white px-4 py-5 mb-2 rounded-b-2xl shadow-sm">
+                <div className="flex justify-between items-start gap-4 mb-2">
+                    <h1 className="text-gray-900 font-semibold text-lg leading-tight">
+                        {product.name}
+                    </h1>
+                    <button onClick={addToWishlist} disabled={wishlistLoading} className="text-gray-400 hover:text-red-500 flex-shrink-0 mt-1">
+                        <Heart size={20} className={wishlistLoading ? 'opacity-50' : ''} />
+                    </button>
+                </div>
+
+                <p className="text-gray-500 text-sm mb-4">
+                    Net quantity: 1 pc
+                </p>
+
+                {/* Price Display */}
+                <div className="flex flex-col gap-1">
+                    <div className="flex items-center gap-2">
+                        <div className="bg-[#287b3e] text-white px-2 py-0.5 rounded text-lg font-bold shadow-sm">
+                            ₹{currentPrice.toLocaleString('en-IN')}
+                        </div>
                     </div>
-                ) : (
-                    <div className="text-center py-20 bg-card border border-dashed border-border rounded-xl">
-                        <p className="text-muted font-bold uppercase tracking-widest">No reviews yet. Be the first to report.</p>
+                    {oldPrice && (
+                        <div className="flex items-center gap-2 mt-1">
+                            <span className="text-gray-500 text-xs">MRP <span className="line-through">₹{oldPrice.toLocaleString('en-IN')}</span> (incl. of all taxes)</span>
+                            {discountAmount > 0 && (
+                                <span className="text-[#287b3e] text-xs font-bold">₹{discountAmount.toLocaleString('en-IN')} OFF</span>
+                            )}
+                        </div>
+                    )}
+                </div>
+
+                {/* Thumbnail Selector */}
+                {images.length > 1 && (
+                    <div className="mt-6">
+                        <p className="text-gray-700 text-sm font-medium mb-3">View More Images</p>
+                        <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-hide">
+                            {images.map((img: string, idx: number) => (
+                                <button
+                                    key={idx}
+                                    onClick={() => setActiveImageIndex(idx)}
+                                    className={`relative w-16 h-16 rounded-xl overflow-hidden flex-shrink-0 border-2 transition-all ${activeImageIndex === idx ? 'border-gray-800 shadow-sm' : 'border-gray-100'}`}
+                                >
+                                    <Image unoptimized src={img} alt={`Thumbnail ${idx}`} fill className="object-contain p-1" />
+                                </button>
+                            ))}
+                        </div>
                     </div>
                 )}
+            </div>
+
+            {/* Highlights Section */}
+            <div className="bg-white mb-2 shadow-sm rounded-2xl overflow-hidden">
+                <button 
+                    onClick={() => setIsHighlightsOpen(!isHighlightsOpen)}
+                    className="w-full px-4 py-5 flex justify-between items-center bg-white"
+                >
+                    <span className="font-bold text-gray-900 text-lg">Highlights</span>
+                    {isHighlightsOpen ? <ChevronUp size={20} className="text-gray-600" /> : <ChevronDown size={20} className="text-gray-600" />}
+                </button>
+                
+                {isHighlightsOpen && (
+                    <div className="px-4 pb-5">
+                        <div className="space-y-4">
+                            <div className="flex text-sm">
+                                <span className="w-1/3 text-gray-500">Category</span>
+                                <span className="w-2/3 text-gray-900 font-medium">{product.category?.name || 'Automotive'}</span>
+                            </div>
+                            <div className="flex text-sm">
+                                <span className="w-1/3 text-gray-500">Unit</span>
+                                <span className="w-2/3 text-gray-900 font-medium">1 pc</span>
+                            </div>
+                            {/* Instead of specs table, just show the description directly here since we scraped it */}
+                            <div className="flex text-sm">
+                                <span className="w-1/3 text-gray-500">Key Features</span>
+                                <div className="w-2/3 text-gray-900 leading-relaxed font-medium prose prose-sm prose-p:my-1 max-w-none text-[13px]" 
+                                     dangerouslySetInnerHTML={{ __html: product.description || 'Premium automotive product designed for durability and high performance.' }} />
+                            </div>
+                        </div>
+                    </div>
+                )}
+            </div>
+
+            {/* Information Section */}
+            <div className="bg-white mb-8 shadow-sm rounded-2xl overflow-hidden">
+                <button 
+                    onClick={() => setIsInfoOpen(!isInfoOpen)}
+                    className="w-full px-4 py-5 flex justify-between items-center bg-white"
+                >
+                    <span className="font-bold text-gray-900 text-lg">Information</span>
+                    {isInfoOpen ? <ChevronUp size={20} className="text-gray-600" /> : <ChevronDown size={20} className="text-gray-600" />}
+                </button>
+                
+                {isInfoOpen && (
+                    <div className="px-4 pb-5">
+                        <div className="flex text-sm">
+                            <span className="w-1/3 text-gray-500">Disclaimer</span>
+                            <span className="w-2/3 text-gray-700 text-xs leading-relaxed">
+                                All images are for representational purposes only. It is advised that you read the details, directions for use, and manufacturing information before purchasing.
+                            </span>
+                        </div>
+                    </div>
+                )}
+            </div>
+
+            {/* Sticky Add to Cart Bottom Bar */}
+            <div className="fixed bottom-0 left-0 right-0 p-4 bg-white border-t border-gray-100 shadow-[0_-4px_20px_rgba(0,0,0,0.05)] z-40">
+                <button
+                    onClick={() => addToCart({
+                        id: product.id,
+                        name: product.name,
+                        price: currentPrice,
+                        quantity: 1,
+                        image: mainImage || '🚗'
+                    })}
+                    className="w-full bg-[#e83e8c] text-white font-bold py-3.5 rounded-xl shadow-md active:scale-95 transition-transform text-center tracking-wide"
+                >
+                    Add to cart
+                </button>
             </div>
         </div>
     );
