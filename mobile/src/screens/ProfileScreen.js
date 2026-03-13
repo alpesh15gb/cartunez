@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { theme } from '../theme';
 import { User, Shield, Bell, LogOut, ChevronRight, MapPin, Phone, Mail } from 'lucide-react-native';
+import { useAuth } from '../context/AuthContext';
 
 const SettingItem = ({ icon: Icon, title, value, multiline }) => (
     <TouchableOpacity style={[styles.item, multiline && { height: 'auto', alignItems: 'flex-start' }]}>
@@ -17,6 +18,8 @@ const SettingItem = ({ icon: Icon, title, value, multiline }) => (
 );
 
 export default function ProfileScreen() {
+    const { logout, user } = useAuth();
+
     return (
         <View style={styles.container}>
             <View style={styles.profileHeader}>
@@ -24,7 +27,7 @@ export default function ProfileScreen() {
                     <User size={40} color={theme.colors.primary} />
                 </View>
                 <Text style={styles.adminName}>Admin Control</Text>
-                <Text style={styles.adminEmail}>cartunezhyd@gmail.com</Text>
+                <Text style={styles.adminEmail}>{user?.email || 'cartunezhyd@gmail.com'}</Text>
             </View>
 
             <View style={styles.section}>
@@ -45,7 +48,7 @@ export default function ProfileScreen() {
                 <SettingItem icon={Bell} title="Notifications" value="Enabled" />
             </View>
 
-            <TouchableOpacity style={styles.logoutBtn}>
+            <TouchableOpacity style={styles.logoutBtn} onPress={logout}>
                 <LogOut size={20} color={theme.colors.secondary} />
                 <Text style={styles.logoutText}>Logout System</Text>
             </TouchableOpacity>

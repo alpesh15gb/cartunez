@@ -1,17 +1,21 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, ActivityIndicator, Image } from 'react-native';
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { theme } from '../theme';
-import { User, ChevronRight, ShoppingBag, Mail, Calendar } from 'lucide-react-native';
+import { User, ChevronRight, ShoppingBag, Calendar } from 'lucide-react-native';
 import { API_ENDPOINTS } from '../config';
+import { useAuth } from '../context/AuthContext';
 
 export default function CustomersScreen() {
     const [customers, setCustomers] = useState([]);
     const [loading, setLoading] = useState(true);
+    const { token } = useAuth();
 
     const fetchCustomers = async () => {
         setLoading(true);
         try {
-            const response = await fetch(API_ENDPOINTS.USERS);
+            const response = await fetch(API_ENDPOINTS.USERS, {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
             const data = await response.json();
             setCustomers(data);
         } catch (error) {
@@ -22,8 +26,8 @@ export default function CustomersScreen() {
     };
 
     useEffect(() => {
-        fetchCustomers();
-    }, []);
+        if (token) fetchCustomers();
+    }, [token]);
 
     const renderItem = ({ item }) => (
         <TouchableOpacity style={styles.customerCard}>

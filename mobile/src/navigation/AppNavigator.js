@@ -12,6 +12,10 @@ import ProfileScreen from '../screens/ProfileScreen';
 import EditProductScreen from '../screens/EditProductScreen';
 import { theme } from '../theme';
 
+import { useAuth } from '../context/AuthContext';
+import LoginScreen from '../screens/LoginScreen';
+import { ActivityIndicator, View } from 'react-native';
+
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
@@ -26,6 +30,20 @@ function InventoryStack() {
 }
 
 export default function AppNavigator() {
+    const { user, loading } = useAuth();
+
+    if (loading) {
+        return (
+            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: theme.colors.background }}>
+                <ActivityIndicator size="large" color={theme.colors.primary} />
+            </View>
+        );
+    }
+
+    if (!user) {
+        return <LoginScreen />;
+    }
+
     return (
         <Tab.Navigator
             screenOptions={({ route }) => ({

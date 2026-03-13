@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, FlatList, TouchableOpacity, Alert, ActivityIndi
 import { theme } from '../theme';
 import { Plus, Trash2, Tag, Calendar, RefreshCcw } from 'lucide-react-native';
 import { API_ENDPOINTS } from '../config';
+import { useAuth } from '../context/AuthContext';
 
 export default function CouponsScreen() {
     const [coupons, setCoupons] = useState([]);
@@ -14,11 +15,14 @@ export default function CouponsScreen() {
         discountAmount: '',
         expiryDate: ''
     });
+    const { token } = useAuth();
 
     const fetchCoupons = async () => {
         setLoading(true);
         try {
-            const response = await fetch(API_ENDPOINTS.COUPONS);
+            const response = await fetch(API_ENDPOINTS.COUPONS, {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
             const data = await response.json();
             setCoupons(data);
         } catch (error) {
@@ -29,8 +33,8 @@ export default function CouponsScreen() {
     };
 
     useEffect(() => {
-        fetchCoupons();
-    }, []);
+        if (token) fetchCoupons();
+    }, [token]);
 
     const handleCreateCoupon = async () => {
         if (!newCoupon.code || !newCoupon.discountAmount) {
@@ -41,7 +45,10 @@ export default function CouponsScreen() {
         try {
             const response = await fetch(API_ENDPOINTS.COUPONS, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
                 body: JSON.stringify(newCoupon)
             });
             if (response.ok) {
@@ -49,7 +56,8 @@ export default function CouponsScreen() {
                 setShowAdd(false);
                 setNewCoupon({ code: '', discountType: 'PERCENTAGE', discountAmount: '', expiryDate: '' });
             } else {
-                Alert.alert('Error', 'Failed to create coupon.');
+                const data = await response.json();
+                Alert.alert('Error', data.message || 'Failed to create coupon.');
             }
         } catch (error) {
             console.error('Error creating coupon:', error);
@@ -64,7 +72,10 @@ export default function CouponsScreen() {
                 style: "destructive",
                 onPress: async () => {
                     try {
-                        const response = await fetch(`${API_ENDPOINTS.COUPONS}/${id}`, { method: 'DELETE' });
+                        const response = await fetch(`${API_ENDPOINTS.COUPONS}/${id}`, { 
+                            method: 'DELETE',
+                            headers: { 'Authorization': `Bearer ${token}` }
+                        });
                         if (response.ok) fetchCoupons();
                     } catch (error) { console.error(error); }
                 }

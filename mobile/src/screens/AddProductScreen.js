@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, ScrollView, TextInput, TouchableOpacity, Alert, ActivityIndicator, Image } from 'react-native';
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, ScrollView, Alert, ActivityIndicator } from 'react-native';
 import { theme } from '../theme';
-import { Camera, ChevronLeft, Package, Tag, IndianRupee, Database, List } from 'lucide-react-native';
+import { Plus, Package, Tag, Database, Layers, Camera } from 'lucide-react-native';
 import { API_ENDPOINTS } from '../config';
+import { useAuth } from '../context/AuthContext';
 
 export default function AddProductScreen({ navigation }) {
+    const { token } = useAuth();
     const [loading, setLoading] = useState(false);
     const [categories, setCategories] = useState([]);
     const [formData, setFormData] = useState({
@@ -12,9 +14,9 @@ export default function AddProductScreen({ navigation }) {
         description: '',
         price: '',
         discountPrice: '',
-        stock: '',
+        stockQuantity: '',
         categoryId: '',
-        images: []
+        images: '[]', // Stringified empty array for now
     });
 
     useEffect(() => {
@@ -23,6 +25,7 @@ export default function AddProductScreen({ navigation }) {
                 const response = await fetch(API_ENDPOINTS.CATEGORIES);
                 const data = await response.json();
                 setCategories(data);
+                if (data.length > 0) setFormData(prev => ({ ...prev, categoryId: data[0].id }));
             } catch (error) {
                 console.error('Error fetching categories:', error);
             }
@@ -30,9 +33,9 @@ export default function AddProductScreen({ navigation }) {
         fetchCategories();
     }, []);
 
-    const handleSubmit = async () => {
-        if (!formData.name || !formData.price || !formData.stock || !formData.categoryId) {
-            Alert.alert('Incomplete Manifest', 'All primary telemetry fields must be populated.');
+    const handleCreate = async () => {
+        if (!formData.name || !formData.price || !formData.stockQuantity || !formData.categoryId) {
+            Alert.alert('Incomplete Data', 'Please fill in all required fields.');
             return;
         }
 
@@ -40,25 +43,23 @@ export default function AddProductScreen({ navigation }) {
         try {
             const response = await fetch(API_ENDPOINTS.PRODUCTS, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    ...formData,
-                    price: parseFloat(formData.price),
-                    discountPrice: formData.discountPrice ? parseFloat(formData.discountPrice) : null,
-                    stock: parseInt(formData.stock),
-                    // Adding dummy images for now as image picker requires native modules
-                    images: ['https://source.unsplash.com/featured/?car,parts']
-                })
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify(formData),
             });
 
             if (response.ok) {
-                Alert.alert('Success', 'New asset deployed to inventory.');
+                Alert.alert('Success', 'Weapon added to inventory');
                 navigation.goBack();
             } else {
-                Alert.alert('Error', 'Failed to deploy asset.');
+                const data = await response.json();
+                Alert.alert('Error', data.message || 'Transmission failed');
             }
         } catch (error) {
-            console.error('Error adding product:', error);
+            console.error('Create error:', error);
+            Alert.alert('Error', 'Connection to database failed');
         } finally {
             setLoading(false);
         }
@@ -66,113 +67,93 @@ export default function AddProductScreen({ navigation }) {
 
     return (
         <ScrollView style={styles.container}>
-            <View style={styles.headerRow}>
-                <TouchableOpacity onPress={() => navigation.goBack()}>
-                    <ChevronLeft size={24} color={theme.colors.text} />
-                </TouchableOpacity>
-                <Text style={styles.header}>New Asset</Text>
+            <View style={styles.header}>
+                <Text style={styles.headerTitle}>Add New Product</Text>
             </View>
 
             <View style={styles.form}>
                 <View style={styles.inputGroup}>
-                    <Text style={styles.label}>Product Designation</Text>
-                    <TextInput 
-                        style={styles.input}
-                        placeholder="e.g. Carbon Fiber Spoiler"
-                        placeholderTextColor={theme.colors.muted}
-                        value={formData.name}
-                        onChangeText={(t) => setFormData({...formData, name: t})}
-                    />
+                    <Text style={styles.label}>Product Name</Text>
+                    <View style={styles.inputWrapper}>
+                        <Package size={18} color={theme.colors.muted} style={styles.icon} />
+                        <TextInput
+                            style={styles.input}
+                            value={formData.name}
+                            onChangeText={(text) => setFormData({ ...formData, name: text })}
+                            placeholder="Enter product name"
+                            placeholderTextColor={theme.colors.muted}
+                        />
+                    </View>
                 </View>
 
                 <View style={styles.inputGroup}>
-                    <Text style={styles.label}>Logistics Details (Description)</Text>
-                    <TextInput 
-                        style={[styles.input, { height: 100 }]}
-                        multiline
-                        placeholder="Technical specifications..."
-                        placeholderTextColor={theme.colors.muted}
+                    <Text style={styles.label}>Description</Text>
+                    <TextInput
+                        style={[styles.input, styles.textArea]}
                         value={formData.description}
-                        onChangeText={(t) => setFormData({...formData, description: t})}
+                        onChangeText={(text) => setFormData({ ...formData, description: text })}
+                        placeholder="Enter description"
+                        placeholderTextColor={theme.colors.muted}
+                        multiline
+                        numberOfLines={4}
                     />
                 </View>
 
                 <View style={styles.row}>
                     <View style={[styles.inputGroup, { flex: 1, marginRight: 10 }]}>
-                        <Text style={styles.label}>MRP (Original Price)</Text>
-                        <TextInput 
-                            style={styles.input}
-                            keyboardType="numeric"
-                            placeholder="0.00"
-                            placeholderTextColor={theme.colors.muted}
-                            value={formData.price}
-                            onChangeText={(t) => setFormData({...formData, price: t})}
-                        />
+                        <Text style={styles.label}>Price (₹)</Text>
+                        <View style={styles.inputWrapper}>
+                            <Tag size={18} color={theme.colors.muted} style={styles.icon} />
+                            <TextInput
+                                style={styles.input}
+                                value={formData.price}
+                                onChangeText={(text) => setFormData({ ...formData, price: text })}
+                                keyboardType="numeric"
+                                placeholder="0.00"
+                                placeholderTextColor={theme.colors.muted}
+                            />
+                        </View>
                     </View>
+
                     <View style={[styles.inputGroup, { flex: 1 }]}>
-                        <Text style={styles.label}>Discount Price</Text>
-                        <TextInput 
-                            style={styles.input}
-                            keyboardType="numeric"
-                            placeholder="Optional"
-                            placeholderTextColor={theme.colors.muted}
-                            value={formData.discountPrice}
-                            onChangeText={(t) => setFormData({...formData, discountPrice: t})}
-                        />
+                        <Text style={styles.label}>Stock</Text>
+                        <View style={styles.inputWrapper}>
+                            <Database size={18} color={theme.colors.muted} style={styles.icon} />
+                            <TextInput
+                                style={styles.input}
+                                value={formData.stockQuantity}
+                                onChangeText={(text) => setFormData({ ...formData, stockQuantity: text })}
+                                keyboardType="numeric"
+                                placeholder="0"
+                                placeholderTextColor={theme.colors.muted}
+                            />
+                        </View>
                     </View>
                 </View>
 
                 <View style={styles.inputGroup}>
-                    <Text style={styles.label}>Stock Level</Text>
-                    <TextInput 
-                        style={styles.input}
-                        keyboardType="numeric"
-                        placeholder="0"
-                        placeholderTextColor={theme.colors.muted}
-                        value={formData.stock}
-                        onChangeText={(t) => setFormData({...formData, stock: t})}
-                    />
-                </View>
-
-                <View style={styles.inputGroup}>
-                    <Text style={styles.label}>Category Classification</Text>
-                    <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.categoryScroll}>
+                    <Text style={styles.label}>Category</Text>
+                    <View style={styles.categoryGrid}>
                         {categories.map((cat) => (
-                            <TouchableOpacity 
+                            <TouchableOpacity
                                 key={cat.id}
                                 style={[styles.catBtn, formData.categoryId === cat.id && styles.catBtnActive]}
-                                onPress={() => setFormData({...formData, categoryId: cat.id})}
+                                onPress={() => setFormData({ ...formData, categoryId: cat.id })}
                             >
-                                <Text style={[styles.catText, formData.categoryId === cat.id && styles.catTextActive]}>{cat.name}</Text>
+                                <Text style={[styles.catText, formData.categoryId === cat.id && styles.catTextActive]}>
+                                    {cat.name}
+                                </Text>
                             </TouchableOpacity>
                         ))}
-                    </ScrollView>
-                </View>
-
-                {/* Compatibility Placeholder */}
-                <View style={styles.inputGroup}>
-                    <Text style={styles.label}>Vehicle Compatibility (Advanced Tagger)</Text>
-                    <View style={styles.compatibilityCard}>
-                        <Database size={16} color={theme.colors.muted} />
-                        <Text style={styles.compatibilityHint}>Global cross-reference enabled. Use web dashboard for batch tagging.</Text>
                     </View>
                 </View>
 
-                <TouchableOpacity style={styles.imageUpload}>
-                    <Camera size={30} color={theme.colors.primary} />
-                    <Text style={styles.uploadText}>Acquire Visual Data (Add Image)</Text>
-                </TouchableOpacity>
-
                 <TouchableOpacity 
-                    style={[styles.submitBtn, loading && { opacity: 0.5 }]}
-                    onPress={handleSubmit}
+                    style={[styles.createBtn, loading && styles.disabledBtn]} 
+                    onPress={handleCreate}
                     disabled={loading}
                 >
-                    {loading ? (
-                        <ActivityIndicator color="#000" />
-                    ) : (
-                        <Text style={styles.submitText}>COMMIT TO DATABASE</Text>
-                    )}
+                    {loading ? <ActivityIndicator color="#000" /> : <Text style={styles.createBtnText}>ADD TO INVENTORY</Text>}
                 </TouchableOpacity>
             </View>
         </ScrollView>
@@ -180,23 +161,23 @@ export default function AddProductScreen({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-    container: { flex: 1, backgroundColor: theme.colors.background, padding: theme.spacing.md },
-    headerRow: { flexDirection: 'row', alignItems: 'center', gap: 15, marginBottom: 30, marginTop: 10 },
-    header: { fontSize: 24, fontWeight: '900', color: theme.colors.text, fontStyle: 'italic', textTransform: 'uppercase' },
-    form: { gap: 20 },
-    inputGroup: { gap: 8 },
-    label: { color: theme.colors.muted, fontSize: 10, fontWeight: 'black', textTransform: 'uppercase', letterSpacing: 1 },
-    input: { backgroundColor: theme.colors.card, color: theme.colors.text, padding: 15, borderRadius: 12, borderWidth: 1, borderColor: theme.colors.border, fontWeight: 'bold' },
+    container: { flex: 1, backgroundColor: theme.colors.background },
+    header: { padding: 20, paddingTop: 60, borderBottomWidth: 1, borderBottomColor: theme.colors.border, backgroundColor: theme.colors.card },
+    headerTitle: { fontSize: 24, fontWeight: '900', color: theme.colors.text, textTransform: 'uppercase', fontStyle: 'italic' },
+    form: { padding: 20 },
+    inputGroup: { marginBottom: 20 },
+    label: { fontSize: 10, fontWeight: '900', color: theme.colors.muted, textTransform: 'uppercase', marginBottom: 8, letterSpacing: 1 },
+    inputWrapper: { flexDirection: 'row', alignItems: 'center', backgroundColor: theme.colors.card, borderRadius: 12, borderWidth: 1, borderColor: theme.colors.border },
+    icon: { marginLeft: 15 },
+    input: { flex: 1, padding: 15, color: theme.colors.text, fontWeight: 'bold' },
+    textArea: { height: 100, textAlignVertical: 'top', backgroundColor: theme.colors.card, borderRadius: 12, borderWidth: 1, borderColor: theme.colors.border, padding: 15 },
     row: { flexDirection: 'row' },
-    categoryScroll: { flexDirection: 'row', gap: 10 },
-    catBtn: { backgroundColor: theme.colors.card, paddingHorizontal: 20, paddingVertical: 10, borderRadius: 8, borderWidth: 1, borderColor: theme.colors.border, marginRight: 10 },
-    catBtnActive: { borderColor: theme.colors.primary, backgroundColor: theme.colors.primary + '20' },
-    catText: { color: theme.colors.muted, fontSize: 10, fontWeight: 'bold', textTransform: 'uppercase' },
-    catTextActive: { color: theme.colors.primary },
-    imageUpload: { height: 150, backgroundColor: theme.colors.card, borderRadius: 12, borderStyle: 'dashed', borderWidth: 2, borderColor: theme.colors.primary + '40', justifyContent: 'center', alignItems: 'center', gap: 10, marginTop: 10 },
-    uploadText: { color: theme.colors.muted, fontSize: 10, fontWeight: 'bold', textTransform: 'uppercase' },
-    compatibilityCard: { backgroundColor: theme.colors.card, padding: 15, borderRadius: 12, borderWidth: 1, borderColor: theme.colors.border, flexDirection: 'row', alignItems: 'center', gap: 10 },
-    compatibilityHint: { color: theme.colors.muted, fontSize: 10, flex: 1 },
-    submitBtn: { backgroundColor: theme.colors.primary, padding: 20, borderRadius: 12, alignItems: 'center', marginTop: 20, marginBottom: 50 },
-    submitText: { color: '#000', fontWeight: '900', fontSize: 14, textTransform: 'uppercase' }
+    categoryGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: 10 },
+    catBtn: { paddingHorizontal: 15, paddingVertical: 8, borderRadius: 8, backgroundColor: theme.colors.card, borderWidth: 1, borderColor: theme.colors.border },
+    catBtnActive: { backgroundColor: theme.colors.primary, borderColor: theme.colors.primary },
+    catText: { color: theme.colors.muted, fontSize: 11, fontWeight: 'bold' },
+    catTextActive: { color: '#000' },
+    createBtn: { backgroundColor: theme.colors.primary, padding: 18, borderRadius: 12, alignItems: 'center', marginTop: 20 },
+    createBtnText: { fontWeight: '900', color: '#000', fontSize: 14 },
+    disabledBtn: { opacity: 0.7 },
 });

@@ -73,3 +73,41 @@ export const getProductById = async (req: Request, res: Response) => {
         res.status(500).json({ message: 'Error fetching product', error });
     }
 };
+
+export const updateProduct = async (req: Request, res: Response) => {
+    const { id } = req.params;
+    const { name, description, price, discountPrice, stockQuantity, images, categoryId } = req.body;
+    try {
+        const product = await prisma.product.update({
+            where: { id },
+            data: {
+                name,
+                description,
+                price: price ? parseFloat(price) : undefined,
+                discountPrice: discountPrice !== undefined ? (discountPrice ? parseFloat(discountPrice) : null) : undefined,
+                stockQuantity: stockQuantity !== undefined ? parseInt(stockQuantity) : undefined,
+                images,
+                categoryId,
+            },
+        });
+        res.json(product);
+    } catch (error) {
+        res.status(500).json({ message: 'Error updating product', error });
+    }
+};
+
+export const deleteProduct = async (req: Request, res: Response) => {
+    const { id } = req.params;
+    try {
+        // First delete dependent records if not handled by Cascade
+        await (prisma as any).vehicleCompatibility.deleteMany({ where: { productId: id } });
+        await (prisma as any).review.deleteMany({ where: { productId: id } });
+        
+        await prisma.product.delete({
+            where: { id },
+        });
+        res.json({ message: 'Product deleted successfully' });
+    } catch (error) {
+        res.status(500).json({ message: 'Error deleting product', error });
+    }
+};
