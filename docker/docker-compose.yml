@@ -23,6 +23,8 @@ services:
       RAZORPAY_WEBHOOK_SECRET: ${RAZORPAY_WEBHOOK_SECRET}
       SHIPROCKET_EMAIL: ${SHIPROCKET_EMAIL}
       SHIPROCKET_PASSWORD: ${SHIPROCKET_PASSWORD}
+    volumes:
+      - ../backend/public/uploads:/app/public/uploads
     depends_on:
       - db
 
