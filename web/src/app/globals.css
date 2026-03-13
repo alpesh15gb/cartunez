@@ -61,9 +61,8 @@
   }
 
   .ghost-title {
-    @apply absolute -z-10 text-[15rem] font-black uppercase tracking-tighter text-[var(--ghost-text)] pointer-events-none select-none;
-    top: -5rem;
-    left: -2rem;
+    @apply absolute -z-10 text-[6rem] md:text-[15rem] font-black uppercase tracking-tighter text-[var(--ghost-text)] pointer-events-none select-none overflow-hidden whitespace-nowrap;
+    @apply top-[-2rem] md:top-[-5rem] left-[-1rem] md:left-[-2rem];
   }
 
   .section-title {

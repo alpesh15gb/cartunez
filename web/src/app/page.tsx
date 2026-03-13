@@ -37,7 +37,7 @@ export default function HomePage() {
   ];
 
   return (
-    <div className="relative">
+    <div className="relative overflow-hidden">
       {/* Structured Data (JSON-LD) */}
       <script
         type="application/ld+json"
@@ -88,7 +88,7 @@ export default function HomePage() {
           {/* Hero Content */}
           <div className="flex-1 space-y-6">
             <span className="text-primary font-black uppercase tracking-[0.3em] text-xs">New Arrivals</span>
-            <h1 className="text-7xl font-black italic uppercase tracking-tighter leading-none">
+            <h1 className="text-4xl md:text-6xl lg:text-7xl font-black italic uppercase tracking-tighter leading-none">
               Premium <span className="text-secondary">Automotive Parts</span> & Accessories
             </h1>
             <p className="text-muted font-medium max-w-lg leading-relaxed">
@@ -101,7 +101,7 @@ export default function HomePage() {
           </div>
 
           {/* Hero Image / Car Display */}
-          <div className="flex-1 relative h-[500px] w-full rounded-sm overflow-hidden group shadow-2xl">
+          <div className="flex-1 relative h-[300px] md:h-[500px] w-full rounded-sm overflow-hidden group shadow-2xl">
             <Image
               src="/hero.png"
               alt="Cartunez - High-performance sports car with custom upgrades"
