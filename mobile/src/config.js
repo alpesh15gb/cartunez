@@ -8,6 +8,7 @@ export const API_ENDPOINTS = {
     USERS: `${API_BASE_URL}/users`,
     STATS: `${API_BASE_URL}/stats`,
     CATEGORIES: `${API_BASE_URL}/categories`,
+    LOGIN: `${API_BASE_URL}/auth/login`,
 };
 
 export default API_BASE_URL;
