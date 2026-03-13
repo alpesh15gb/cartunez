@@ -12,8 +12,9 @@ import {
   ChevronRight,
   MoreVertical,
   ExternalLink,
-  Search,
-  Calendar
+  Search, 
+  Calendar,
+  AlertCircle
 } from 'lucide-react';
 
 interface Order {
