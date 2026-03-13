@@ -87,7 +87,7 @@ export default function ProductClient({ initialProduct }: { initialProduct: any 
                     <div className="flex-1 space-y-6">
                         <div className="bg-card border border-border aspect-square relative rounded-sm overflow-hidden group">
                             {mainImage ? (
-                                <Image
+                                <Image unoptimized
                                     src={mainImage}
                                     alt={product.name}
                                     fill
@@ -110,7 +110,7 @@ export default function ProductClient({ initialProduct }: { initialProduct: any 
                                         onClick={() => setActiveImageIndex(idx)}
                                         className={`relative w-24 h-24 border-2 rounded-sm overflow-hidden flex-shrink-0 transition-all ${activeImageIndex === idx ? 'border-primary opacity-100' : 'border-border opacity-50 hover:opacity-100'}`}
                                     >
-                                        <Image src={img} alt={`${product.name} ${idx + 1}`} fill className="object-cover" />
+                                        <Image unoptimized src={img} alt={`${product.name} ${idx + 1}`} fill className="object-cover" />
                                     </button>
                                 ))}
                             </div>

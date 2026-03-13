@@ -104,7 +104,7 @@ export default function HomePage() {
 
           {/* Hero Image / Car Display */}
           <div className="flex-1 relative h-[300px] md:h-[500px] w-full rounded-sm overflow-hidden group shadow-2xl">
-            <Image
+            <Image unoptimized
               src="/hero.png"
               alt="Cartunez - High-performance sports car with custom upgrades"
               fill
@@ -124,7 +124,7 @@ export default function HomePage() {
             <h3 className="text-white text-3xl font-black italic uppercase mb-4">Performance Upgrades</h3>
             <Link href="/shop" className="inline-block bg-primary text-white text-[10px] font-black uppercase tracking-widest px-4 py-2 w-fit hover:bg-white hover:text-primary transition-colors">Shop All</Link>
           </div>
-          <Image src="/performance.png" alt="High-performance automotive engine parts" fill className="object-cover grayscale opacity-20 group-hover:opacity-40 transition-opacity" />
+          <Image unoptimized src="/performance.png" alt="High-performance automotive engine parts" fill className="object-cover grayscale opacity-20 group-hover:opacity-40 transition-opacity" />
         </div>
         <div className="relative h-64 bg-primary overflow-hidden group shadow-lg">
           <div className="absolute inset-0 bg-black/40 z-10" />
@@ -132,7 +132,7 @@ export default function HomePage() {
             <h3 className="text-white text-3xl font-black italic uppercase mb-4">Luxury Interiors</h3>
             <Link href="/shop" className="inline-block bg-secondary text-white text-[10px] font-black uppercase tracking-widest px-4 py-2 w-fit hover:bg-white hover:text-primary transition-colors">Shop Now</Link>
           </div>
-          <Image src="/interior.png" alt="Premium luxury car interior accessories" fill className="object-cover grayscale opacity-20 group-hover:opacity-40 transition-opacity" />
+          <Image unoptimized src="/interior.png" alt="Premium luxury car interior accessories" fill className="object-cover grayscale opacity-20 group-hover:opacity-40 transition-opacity" />
         </div>
       </section>
 
@@ -151,7 +151,7 @@ export default function HomePage() {
               <div key={product.id} className="card-modern group">
                 <div className="relative aspect-square bg-card mb-4 overflow-hidden rounded-sm">
                   {product.images && product.images[0] ? (
-                    <Image src={product.images[0]} alt={product.name} fill className="object-cover group-hover:scale-110 transition-transform duration-700" />
+                    <Image unoptimized src={product.images[0]} alt={product.name} fill className="object-cover group-hover:scale-110 transition-transform duration-700" />
                   ) : (
                     <div className="w-full h-full flex items-center justify-center text-6xl group-hover:scale-110 transition-transform">
                       🚗
@@ -210,7 +210,7 @@ export default function HomePage() {
               <div key={news.id} className="group cursor-pointer">
                 <div className="relative h-64 bg-card mb-6 overflow-hidden rounded-sm">
                   {news.imageUrl ? (
-                    <Image src={news.imageUrl} alt={news.title} fill className="object-cover grayscale group-hover:grayscale-0 group-hover:scale-110 transition-all duration-700" />
+                    <Image unoptimized src={news.imageUrl} alt={news.title} fill className="object-cover grayscale group-hover:grayscale-0 group-hover:scale-110 transition-all duration-700" />
                   ) : (
                     <div className="w-full h-full flex items-center justify-center text-8xl grayscale group-hover:grayscale-0 group-hover:scale-110 transition-all duration-700">
                       📰

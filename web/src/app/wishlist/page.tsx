@@ -76,7 +76,7 @@ export default function WishlistPage() {
                     {wishlist.map((item) => (
                         <div key={item.id} className="bg-card border border-border group relative overflow-hidden flex flex-col">
                             <div className="aspect-square relative overflow-hidden bg-white">
-                                <Image
+                                <Image unoptimized
                                     src={item.product.images[0] || '/placeholder.png'}
                                     alt={item.product.name}
                                     fill

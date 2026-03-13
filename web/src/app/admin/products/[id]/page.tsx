@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/context/AuthContext';
-import { useRouter } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { API_URL } from '@/config';
 import Link from 'next/link';
 import { 
@@ -18,8 +18,10 @@ import {
   ChevronDown
 } from 'lucide-react';
 
-export default function ProductFormPage({ params }: { params: { id: string } }) {
-  const isEdit = params.id !== 'new';
+export default function ProductFormPage() {
+  const params = useParams();
+  const id = params?.id as string;
+  const isEdit = id && id !== 'new';
   const { token } = useAuth();
   const router = useRouter();
   const [loading, setLoading] = useState(isEdit);
@@ -50,7 +52,7 @@ export default function ProductFormPage({ params }: { params: { id: string } }) 
 
     const fetchProduct = async () => {
       try {
-        const res = await fetch(`${API_URL}/products/${params.id}`);
+        const res = await fetch(`${API_URL}/products/${id}`);
         const data = await res.json();
         setFormData({
           name: data.name,
@@ -71,7 +73,7 @@ export default function ProductFormPage({ params }: { params: { id: string } }) 
 
     fetchCategories();
     if (isEdit) fetchProduct();
-  }, [params.id, isEdit]);
+  }, [id, isEdit]);
 
   const handleImageChange = (index: number, value: string) => {
     const newImages = [...formData.images];
@@ -102,7 +104,7 @@ export default function ProductFormPage({ params }: { params: { id: string } }) 
     };
 
     try {
-      const url = isEdit ? `${API_URL}/products/${params.id}` : `${API_URL}/products`;
+      const url = isEdit ? `${API_URL}/products/${id}` : `${API_URL}/products`;
       const method = isEdit ? 'PUT' : 'POST';
       
       const res = await fetch(url, {

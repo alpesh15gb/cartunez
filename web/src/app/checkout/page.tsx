@@ -302,7 +302,7 @@ export default function CheckoutPage() {
                                 <div key={item.id} className="flex justify-between items-center bg-white/5 p-4 rounded border border-white/10 hover:border-primary transition-colors">
                                     <div className="flex items-center space-x-4">
                                         <div className="relative w-12 h-12 rounded overflow-hidden bg-white/10">
-                                            <Image
+                                            <Image unoptimized
                                                 src={item.image}
                                                 alt={item.name}
                                                 fill

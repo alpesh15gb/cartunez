@@ -27,7 +27,7 @@ export default function CartPage() {
                         <div key={item.id} className="flex gap-6 bg-card border border-border p-6 rounded-lg transition-transform hover:scale-[1.01] items-center">
                             <div className="w-24 h-24 bg-background relative rounded border border-border overflow-hidden flex-shrink-0">
                                 {item.image && item.image.startsWith('/') ? (
-                                    <Image
+                                    <Image unoptimized
                                         src={item.image}
                                         alt={item.name}
                                         fill

@@ -52,7 +52,7 @@ export default function Navbar() {
 
                 {/* Logo */}
                 <Link href="/" className="flex items-center group flex-1 md:flex-initial justify-center md:justify-start">
-                    <Image
+                    <Image unoptimized
                         src="/logo.png"
                         alt="CarTunez Logo"
                         width={450}

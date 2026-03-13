@@ -83,7 +83,7 @@ export default function OrdersPage() {
                                         <div key={item.id} className="flex justify-between items-center bg-white/5 border border-border p-4 rounded">
                                             <div className="flex items-center space-x-4">
                                                 <div className="relative w-12 h-12 bg-white border border-border rounded overflow-hidden">
-                                                    <Image
+                                                    <Image unoptimized
                                                         src={item.product.images[0] || '/placeholder.png'}
                                                         alt={item.product.name}
                                                         fill

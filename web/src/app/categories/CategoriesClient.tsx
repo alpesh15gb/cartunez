@@ -34,7 +34,7 @@ export default function CategoriesClient({ categories }: { categories: any[] }) 
                         >
                             <div className="absolute inset-0 grayscale opacity-20 group-hover:opacity-100 group-hover:grayscale-0 group-hover:scale-110 transition-all duration-700">
                                 {meta.image.startsWith('/') ? (
-                                    <Image
+                                    <Image unoptimized
                                         src={meta.image}
                                         alt={cat.name}
                                         fill

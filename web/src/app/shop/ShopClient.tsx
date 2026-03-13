@@ -161,7 +161,7 @@ function ShopContent() {
                                         className="block relative aspect-square bg-card mb-6 overflow-hidden transition-all duration-700 hover:scale-105"
                                     >
                                         {product.images && product.images[0] ? (
-                                            <Image
+                                            <Image unoptimized
                                                 src={product.images[0]}
                                                 alt={product.name}
                                                 fill
