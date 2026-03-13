@@ -33,7 +33,7 @@ export default function LoginScreen() {
             <View style={styles.inner}>
                 <View style={styles.brandingContainer}>
                     <Image
-                        source={require('../../assets/logo.png')}
+                        source={require('../../assets/admin_logo.png')}
                         style={styles.logo}
                         resizeMode="contain"
                     />

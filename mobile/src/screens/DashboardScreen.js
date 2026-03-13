@@ -41,7 +41,7 @@ export default function DashboardScreen({ navigation }) {
         <ScrollView style={styles.container}>
             <View style={styles.brandingContainer}>
                 <Image
-                    source={require('../../assets/logo.png')}
+                    source={require('../../assets/admin_logo.png')}
                     style={styles.logo}
                     resizeMode="contain"
                 />

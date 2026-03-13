@@ -61,7 +61,7 @@ export default function ProductsScreen({ navigation }) {
     const renderItem = ({ item }) => (
         <View style={styles.productCard}>
             <Image 
-                source={getImageUrl(item.images) ? { uri: getImageUrl(item.images) } : require('../../assets/logo.png')} 
+                source={getImageUrl(item.images) ? { uri: getImageUrl(item.images) } : require('../../assets/admin_logo.png')} 
                 style={styles.productImage} 
             />
             <View style={styles.productInfo}>
