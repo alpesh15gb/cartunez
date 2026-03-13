@@ -7,9 +7,20 @@ BASE_URL = "https://nhone.in"
 COLLECTIONS = [
     "/collections/car-headlight-bulb",
     "/collections/android-player",
-    "/collections/cleaning-care"
+    "/collections/cleaning-care",
+    "/collections/music-system",
+    "/collections/floor-mats",
+    "/collections/dashcam",
+    "/collections/key-cover",
+    "/collections/perfume",
+    "/collections/android-frame",
+    "/collections/car-camera-1",
+    "/collections/car-device-charger",
+    "/collections/fog-lamp-bracket",
+    "/collections/side-mirror-covers",
+    "/collections/focus-light"
 ]
-LIMIT_PER_COLLECTION = 5 # For testing and fast import
+LIMIT_PER_COLLECTION = 999 # Fetch all available products
 
 def scrape_product(product_url):
     print(f"Scraping product: {product_url}")
@@ -124,12 +135,28 @@ def scrape_collection(collection_url):
 if __name__ == "__main__":
     all_products = {}
     
+    # Load existing progress if available
+    try:
+        with open("nhone_products.json", "r") as f:
+            all_products = json.load(f)
+        print(f"Loaded existing progress from nhone_products.json ({len(all_products)} categories)")
+    except FileNotFoundError:
+        pass
+
     for collection in COLLECTIONS:
         category_name = collection.split("/")[-1].replace("-", " ").title()
+        
+        # Resume logic: skip if already has products
+        if category_name in all_products and len(all_products[category_name]) > 0:
+            print(f"Skipping {category_name} (already scraped {len(all_products[category_name])} products)")
+            continue
+
         products = scrape_collection(collection)
         all_products[category_name] = products
         
-    with open("nhone_products.json", "w") as f:
-        json.dump(all_products, f, indent=2)
+        # Save after each collection
+        with open("nhone_products.json", "w") as f:
+            json.dump(all_products, f, indent=2)
+        print(f"Saved {category_name} to nhone_products.json")
         
-    print(f"Scrape complete! Saved to nhone_products.json")
+    print(f"Scrape complete! Total products saved.")

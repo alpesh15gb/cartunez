@@ -28,7 +28,7 @@ export const getAllNews = async (req: Request, res: Response) => {
 export const deleteNews = async (req: Request, res: Response) => {
     const { id } = req.params;
     try {
-        await prisma.news.delete({ where: { id } });
+        await prisma.news.delete({ where: { id: String(id) } });
         res.json({ message: 'News post deleted successfully' });
     } catch (error) {
         res.status(500).json({ message: 'Error deleting news post', error });
@@ -40,7 +40,7 @@ export const updateNews = async (req: Request, res: Response) => {
     const { title, content, imageUrl, externalUrl, isActive } = req.body;
     try {
         const news = await prisma.news.update({
-            where: { id },
+            where: { id: String(id) },
             data: { title, content, imageUrl, externalUrl, isActive }
         });
         res.json(news);
