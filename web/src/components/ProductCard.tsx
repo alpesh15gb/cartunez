@@ -39,24 +39,7 @@ export default function ProductCard({ product }: ProductCardProps) {
         ) : (
           <div className="w-full h-full flex items-center justify-center text-4xl">🚗</div>
         )}
-        
-        {/* ADD Button Overlay */}
-        <div className="absolute -bottom-3 left-0 right-0 flex justify-center z-20">
-          <button 
-            className="bg-white text-primary border border-[#e0e0e0] shadow-sm rounded-lg px-6 py-1 font-bold text-sm tracking-wide z-10 
-                       hover:bg-primary hover:text-white transition-colors uppercase"
-            onClick={(e) => {
-              e.preventDefault();
-              // Add to cart logic here
-            }}
-          >
-            ADD
-          </button>
-        </div>
       </Link>
-
-      {/* spacer to accommodate the overlapping button */}
-      <div className="h-4"></div> 
 
       <Link href={`/product/${product.id}`} className="flex flex-col flex-1 mt-2">
         {/* Price & Discount */}
@@ -84,11 +67,8 @@ export default function ProductCard({ product }: ProductCardProps) {
 
         {/* Push bottom info to the end */}
         <div className="mt-auto pt-2">
-          <p className="text-gray-500 text-[10px]">1 unit</p>
-          <div className="flex items-center space-x-1 mt-1">
-            <span className="text-[#287b3e] text-[10px]">★</span>
-            <span className="text-gray-500 text-[10px]">4.8 (120) | 24 mins</span>
-          </div>
+          {/* Keep layout balanced but remove fake data */}
+          <div className="h-4"></div>
         </div>
       </Link>
     </div>
