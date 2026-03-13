@@ -99,22 +99,22 @@ export default function HomePage() {
         <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-6">
           <div className="max-w-4xl space-y-6">
             <h1 className="text-white text-5xl md:text-7xl lg:text-8xl font-black uppercase tracking-tighter leading-tight">
-              "Unlike diamonds, <br />
-              <span className="text-primary italic">parts</span> are practical"
+              "Mastery in every <br />
+              <span className="text-primary italic">component</span>"
             </h1>
             <p className="text-white/80 text-xs md:text-sm font-medium max-w-xl mx-auto leading-relaxed uppercase tracking-widest">
-              Premium curated components for the modern automotive enthusiast. <br />
-              Performance, aesthetics, and precision engineering.
+              India's Premier Destination for High-Performance Automotive Parts. <br />
+              Crafting Excellence, One Part at a Time.
             </p>
             <div className="pt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
-              <Link href="/shop" className="btn-primary w-full sm:w-auto">Explore Collection</Link>
+              <Link href="/shop" className="btn-primary w-full sm:w-auto">Shop All Parts</Link>
             </div>
           </div>
         </div>
 
         {/* Floating Side Tags (Static UI for aesthetic) */}
         <div className="hidden lg:flex absolute right-0 top-1/2 -translate-y-1/2 flex-col gap-1 z-30 mr-8">
-            {['DEMOS', 'HOSTING', 'SERVICES', 'BUY'].map(tag => (
+            {['PERFORMANCE', 'INTERIOR', 'EXTERIOR', 'NEW'].map(tag => (
                 <div key={tag} className="bg-white text-[9px] font-black tracking-widest px-4 py-2 text-black shadow-lg cursor-pointer hover:bg-primary hover:text-white transition-all">
                     {tag}
                 </div>
@@ -146,12 +146,12 @@ export default function HomePage() {
           <Image unoptimized src="/performance.png" alt="Performance" fill className="object-cover group-hover:scale-110 transition-transform duration-700 brightness-75" />
           <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-12 bg-black/20 group-hover:bg-black/40 transition-all">
             <h3 className="text-white text-4xl md:text-6xl font-black uppercase tracking-tighter mb-4">
-                Parts <br /> For Men
+                Performance <br /> Upgrades
             </h3>
             <p className="text-white/80 text-[10px] font-bold uppercase tracking-widest max-w-xs mb-8">
                 Curated high-performance upgrades for professional automotive builds.
             </p>
-            <Link href="/shop" className="bg-white text-black text-[10px] font-black uppercase tracking-widest px-8 py-3 rounded-full hover:bg-primary hover:text-white transition-all">
+            <Link href="/shop?category=Performance" className="bg-white text-black text-[10px] font-black uppercase tracking-widest px-8 py-3 rounded-full hover:bg-primary hover:text-white transition-all">
                 EXPLORE
             </Link>
           </div>
@@ -160,12 +160,12 @@ export default function HomePage() {
           <Image unoptimized src="/interior.png" alt="Interior" fill className="object-cover group-hover:scale-110 transition-transform duration-700 brightness-75" />
           <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-12 bg-black/20 group-hover:bg-black/40 transition-all">
             <h3 className="text-white text-4xl md:text-6xl font-black uppercase tracking-tighter mb-4">
-                Parts <br /> For Women
+                Interior <br /> Aesthetics
             </h3>
             <p className="text-white/80 text-[10px] font-bold uppercase tracking-widest max-w-xs mb-8">
                 Stylish and ergonomic interior masterpieces for ultimate comfort.
             </p>
-            <Link href="/shop" className="bg-white text-black text-[10px] font-black uppercase tracking-widest px-8 py-3 rounded-full hover:bg-primary hover:text-white transition-all">
+            <Link href="/shop?category=Interior" className="bg-white text-black text-[10px] font-black uppercase tracking-widest px-8 py-3 rounded-full hover:bg-primary hover:text-white transition-all">
                 EXPLORE
             </Link>
           </div>

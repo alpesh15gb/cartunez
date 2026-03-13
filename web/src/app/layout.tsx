@@ -109,20 +109,20 @@ export default function RootLayout({
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12 mb-20">
                   <div className="flex flex-col items-center lg:items-start text-center lg:text-left">
                     <div className="flex items-center gap-1 mb-6">
-                        <span className="text-2xl font-black tracking-tighter italic uppercase text-[#1a1a1a]">Watches</span>
-                        <span className="bg-[#cc0000] text-white text-[9px] font-bold px-1.5 py-0.5 rounded leading-none">PRO</span>
+                        <span className="text-2xl font-black tracking-tighter italic uppercase text-[#1a1a1a]">CarTunez</span>
+                        <span className="bg-[#cc0000] text-white text-[9px] font-bold px-1.5 py-0.5 rounded leading-none">AUTO</span>
                     </div>
                     <p className="text-muted text-[10px] font-bold uppercase tracking-[0.2em] leading-relaxed max-w-xs">
-                      "Unlike diamonds, parts are practical" — Premium curated components for the modern enthusiast.
+                      "India's Premier Destination for Automotive Mastery " — Curated components for the modern enthusiast.
                     </p>
                   </div>
 
                   <div>
                     <h3 className="text-[11px] font-black uppercase tracking-[0.25em] mb-8 text-[#1a1a1a]">Shop</h3>
                     <ul className="space-y-4 text-[10px] font-bold uppercase tracking-widest text-muted">
-                      <li><Link href="/shop?gender=men" className="hover:text-primary transition-colors">Men</Link></li>
-                      <li><Link href="/shop?gender=women" className="hover:text-primary transition-colors">Women</Link></li>
-                      <li><Link href="/categories" className="hover:text-primary transition-colors">All Categories</Link></li>
+                      <li><Link href="/shop?category=Interior" className="hover:text-primary transition-colors">Interior</Link></li>
+                      <li><Link href="/shop?category=Performance" className="hover:text-primary transition-colors">Performance</Link></li>
+                      <li><Link href="/shop?category=exterior" className="hover:text-primary transition-colors">Exterior</Link></li>
                     </ul>
                   </div>
 
@@ -154,7 +154,7 @@ export default function RootLayout({
                 </div>
 
                 <div className="pt-8 flex flex-col md:flex-row justify-between items-center text-[9px] font-bold uppercase tracking-[0.3em] text-muted space-y-4 md:space-y-0 border-t border-[#f8f8f8]">
-                  <p>© 2026 Watches PRO. All Rights Reserved.</p>
+                  <p>© 2026 CarTunez Auto. All Rights Reserved.</p>
                   <div className="flex space-x-6">
                     <Link href="/policies/privacy" className="hover:text-primary transition-colors">Privacy</Link>
                     <Link href="/policies/terms" className="hover:text-primary transition-colors">Terms</Link>

@@ -30,8 +30,8 @@ export default function Navbar() {
 
     const navLinks = [
         { label: 'Home', href: '/' },
-        { label: 'Men', href: '/shop?gender=men' },
-        { label: 'Women', href: '/shop?gender=women' },
+        { label: 'Performance', href: '/shop?category=Performance' },
+        { label: 'Interior', href: '/shop?category=Interior' },
         { label: 'Categories', href: '/categories' },
     ];
 
@@ -66,8 +66,8 @@ export default function Navbar() {
                 <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
                     <Link href="/" className="flex items-center group">
                         <div className="flex items-center gap-1">
-                            <span className="text-2xl font-black tracking-tighter italic uppercase text-[#1a1a1a]">Watches</span>
-                            <span className="bg-[#cc0000] text-white text-[9px] font-bold px-1.5 py-0.5 rounded leading-none">PRO</span>
+                            <span className="text-2xl font-black tracking-tighter italic uppercase text-[#1a1a1a]">CarTunez</span>
+                            <span className="bg-[#cc0000] text-white text-[9px] font-bold px-1.5 py-0.5 rounded leading-none">AUTO</span>
                         </div>
                     </Link>
                 </div>
