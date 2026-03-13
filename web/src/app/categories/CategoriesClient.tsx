@@ -29,7 +29,7 @@ export default function CategoriesClient({ categories }: { categories: any[] }) 
                     return (
                         <Link
                             key={cat.id}
-                            href={`/shop?category=${cat.id}`}
+                            href={`/shop?categoryId=${cat.id}`}
                             className="group relative h-96 bg-card border border-border p-12 flex flex-col justify-end overflow-hidden transition-all hover:border-primary border-b-4 border-b-primary/50"
                         >
                             <div className="absolute inset-0 grayscale opacity-20 group-hover:opacity-100 group-hover:grayscale-0 group-hover:scale-110 transition-all duration-700">

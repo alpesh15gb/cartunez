@@ -28,10 +28,10 @@ export default function Navbar() {
 
     const navLinks = [
         { label: 'Home', href: '/', icon: <Home size={18} /> },
-        { label: 'Interior', href: '/shop?category=interior', icon: <Package size={18} /> },
-        { label: 'Exterior', href: '/shop?category=exterior', icon: <Package size={18} /> },
-        { label: 'Electronics', href: '/shop?category=electronics', icon: <Package size={18} /> },
-        { label: 'Performance', href: '/shop?category=performance', icon: <Package size={18} /> },
+        { label: 'Interior', href: '/shop?search=interior', icon: <Package size={18} /> },
+        { label: 'Exterior', href: '/shop?search=exterior', icon: <Package size={18} /> },
+        { label: 'Electronics', href: '/shop?search=electronics', icon: <Package size={18} /> },
+        { label: 'Performance', href: '/shop?search=performance', icon: <Package size={18} /> },
         { label: 'All Categories', href: '/categories', icon: <Package size={18} /> },
         { label: 'Wishlist', href: '/wishlist', icon: <Heart size={18} /> },
         { label: 'Orders', href: '/orders', icon: <Truck size={18} /> },

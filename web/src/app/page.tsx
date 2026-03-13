@@ -21,11 +21,13 @@ export default function HomePage() {
         const productsData = await productsRes.json();
         const newsData = await newsRes.json();
 
-        if (Array.isArray(productsData)) {
-          setProducts(productsData.slice(0, 12));
+        const productsList = Array.isArray(productsData) ? productsData : (productsData?.products || []);
+        if (productsList) {
+          setProducts(productsList.slice(0, 12));
         }
-        if (Array.isArray(newsData)) {
-          setNewsList(newsData.slice(0, 3));
+        const newsArray = Array.isArray(newsData) ? newsData : (newsData?.news || []);
+        if (newsArray) {
+          setNewsList(newsArray.slice(0, 3));
         }
       } catch (error) {
         console.error('Error fetching home data:', error);
