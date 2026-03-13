@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { API_URL } from '@/config';
+import ProductCard from '@/components/ProductCard';
 
 export default function HomePage() {
   const [products, setProducts] = useState<any[]>([]);
@@ -142,42 +143,15 @@ export default function HomePage() {
       <section className="container mx-auto px-6 mb-24">
         <h2 className="section-title">Trending Products</h2>
         {loading ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8">
             {[1, 2, 4, 4].map((i) => (
-              <div key={i} className="animate-pulse bg-card h-80 rounded-sm"></div>
+              <div key={i} className="animate-pulse bg-gray-100 h-64 rounded-xl"></div>
             ))}
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8">
             {products.map((product) => (
-              <div key={product.id} className="card-modern group">
-                <div className="relative aspect-square bg-card mb-4 overflow-hidden rounded-sm">
-                  {product.images && product.images[0] ? (
-                    <Image unoptimized src={product.images[0]} alt={product.name} fill className="object-cover group-hover:scale-110 transition-transform duration-700" />
-                  ) : (
-                    <div className="w-full h-full flex items-center justify-center text-6xl group-hover:scale-110 transition-transform">
-                      🚗
-                    </div>
-                  )}
-                  {product.discountPrice && (
-                    <div className="absolute top-2 left-2 bg-primary text-white text-[9px] font-black px-2 py-0.5 uppercase italic z-10">Sale</div>
-                  )}
-                </div>
-                <div className="space-y-1">
-                  <div className="text-[10px] text-yellow-500">
-                    ★★★★★
-                  </div>
-                  <Link href={`/product/${product.id}`} className="block text-[13px] font-bold uppercase tracking-tight hover:text-primary transition-colors overflow-hidden text-ellipsis whitespace-nowrap">
-                    {product.name}
-                  </Link>
-                  <div className="flex items-center space-x-2">
-                    <span className="text-primary font-black">₹{(product.discountPrice || product.price).toLocaleString()}</span>
-                    {product.discountPrice && (
-                      <span className="text-muted text-[10px] line-through">₹{product.price.toLocaleString()}</span>
-                    )}
-                  </div>
-                </div>
-              </div>
+              <ProductCard key={product.id} product={product} />
             ))}
           </div>
         )}

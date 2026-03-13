@@ -6,6 +6,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import VehicleSelector from '@/components/VehicleSelector';
 import { API_URL } from '@/config';
+import ProductCard from '@/components/ProductCard';
 
 function ShopContent() {
     const searchParams = useSearchParams();
@@ -149,48 +150,16 @@ function ShopContent() {
                     </div>
 
                     {loading ? (
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-8">
                             {[1, 2, 3, 4, 5, 6].map(i => (
-                                <div key={i} className="animate-pulse bg-card aspect-square rounded-sm"></div>
+                                <div key={i} className="animate-pulse bg-gray-100 aspect-[3/4] rounded-xl"></div>
                             ))}
                         </div>
                     ) : filteredProducts.length > 0 ? (
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-8">
                             {filteredProducts.map((product) => (
-                                <div key={product.id} className="card-modern group">
-                                    <Link
-                                        href={`/product/${product.id}`}
-                                        className="block relative aspect-square bg-card mb-6 overflow-hidden transition-all duration-700 hover:scale-105"
-                                    >
-                                        {product.images && product.images[0] ? (
-                                            <Image unoptimized
-                                                src={product.images[0]}
-                                                alt={product.name}
-                                                fill
-                                                className="object-cover"
-                                            />
-                                        ) : (
-                                            <div className="w-full h-full flex items-center justify-center text-8xl">
-                                                🚗
-                                            </div>
-                                        )}
-                                        <div className="absolute inset-0 bg-black/5 opacity-0 group-hover:opacity-100 transition-opacity" />
-                                    </Link>
-                                    <div className="space-y-2 text-center px-4 pb-6">
-                                        <span className="text-primary font-black uppercase tracking-[0.2em] text-[9px]">{product.category?.name}</span>
-                                        <div className="flex justify-center text-[10px] text-yellow-500">
-                                            ★★★★★
-                                        </div>
-                                        <Link href={`/product/${product.id}`} className="block text-sm font-black uppercase italic tracking-tighter hover:text-primary transition-colors overflow-hidden text-ellipsis whitespace-nowrap">
-                                            {product.name}
-                                        </Link>
-                                        <div className="flex items-center justify-center space-x-3">
-                                            <p className="text-base font-black text-secondary">₹{(product.discountPrice || product.price).toLocaleString('en-IN')}</p>
-                                            {product.discountPrice && (
-                                                <p className="text-[11px] font-bold text-muted line-through">₹{product.price.toLocaleString('en-IN')}</p>
-                                            )}
-                                        </div>
-                                    </div>
+                                <div key={product.id}>
+                                    <ProductCard product={product} />
                                 </div>
                             ))}
                         </div>
