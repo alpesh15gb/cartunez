@@ -21,18 +21,30 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Dynamic products
   let productRoutes: MetadataRoute.Sitemap = [];
   try {
-    const response = await fetch(`${API_URL}/products`);
-    const products = await response.json();
-    if (Array.isArray(products)) {
-        productRoutes = products.map((product: any) => ({
-            url: `${baseUrl}/product/${product.id}`,
-            lastModified: new Date(product.updatedAt || new Date()),
-            changeFrequency: 'weekly' as const,
-            priority: 0.7,
-        }));
+    // Fail fast during build if API is unreachable (5s timeout)
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 5000);
+
+    const response = await fetch(`${API_URL}/products`, {
+        signal: controller.signal,
+        next: { revalidate: 3600 }
+    });
+    
+    clearTimeout(timeoutId);
+
+    if (response.ok) {
+        const products = await response.json();
+        if (Array.isArray(products)) {
+            productRoutes = products.map((product: any) => ({
+                url: `${baseUrl}/product/${product.id}`,
+                lastModified: new Date(product.updatedAt || new Date()),
+                changeFrequency: 'weekly' as const,
+                priority: 0.7,
+            }));
+        }
     }
   } catch (e) {
-    console.error('Sitemap product fetch error:', e);
+    console.error('Sitemap product fetch skipped (API unreachable or timeout):', e);
   }
 
   // Dynamic categories
