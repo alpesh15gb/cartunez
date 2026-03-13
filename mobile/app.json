@@ -26,6 +26,9 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
+    "plugins": [
+      "./plugins/withGradleFix"
+    ],
     "extra": {
       "eas": {
         "projectId": "b2d610fc-7a14-4466-82f2-45f21259d5a3"
