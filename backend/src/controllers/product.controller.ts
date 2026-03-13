@@ -79,7 +79,7 @@ export const updateProduct = async (req: Request, res: Response) => {
     const { name, description, price, discountPrice, stockQuantity, images, categoryId } = req.body;
     try {
         const product = await prisma.product.update({
-            where: { id },
+            where: { id: id as string },
             data: {
                 name,
                 description,
@@ -104,7 +104,7 @@ export const deleteProduct = async (req: Request, res: Response) => {
         await (prisma as any).review.deleteMany({ where: { productId: id } });
         
         await prisma.product.delete({
-            where: { id },
+            where: { id: id as string },
         });
         res.json({ message: 'Product deleted successfully' });
     } catch (error) {
