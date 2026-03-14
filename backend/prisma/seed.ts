@@ -8,7 +8,7 @@ async function main() {
     console.log('Start seeding...');
 
     const productsData = JSON.parse(
-        fs.readFileSync(path.join(__dirname, '..', '..', 'tmp', 'extracted_products.json'), 'utf8')
+        fs.readFileSync(path.join(__dirname, 'seed_data.json'), 'utf8')
     );
 
     // Clear existing data to avoid conflicts (Optional, but good for fresh seed)

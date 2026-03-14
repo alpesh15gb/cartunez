@@ -2,8 +2,8 @@ const isServer = typeof window === 'undefined';
 
 export const API_URL = process.env.NEXT_PUBLIC_API_URL || (
     isServer 
-    ? 'https://cartunez.in/api' 
-    : (window.location.hostname === 'localhost' ? 'http://localhost:5000/api' : '/api')
+    ? (process.env.INTERNAL_API_URL || 'http://backend:5000/api') 
+    : '/api'
 );
 
 export const API_ENDPOINTS = {

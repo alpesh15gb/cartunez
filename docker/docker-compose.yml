@@ -33,6 +33,9 @@ services:
     restart: always
     ports:
       - "127.0.0.1:3030:3000"
+    environment:
+      NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-/api}
+      INTERNAL_API_URL: http://backend:5000/api
     depends_on:
       - backend
 
