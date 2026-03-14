@@ -262,7 +262,7 @@ export default function OrdersAdminPage() {
                   <div className="bg-muted/50 p-4 rounded-xl border border-border">
                     <p className="text-[11px] font-bold leading-relaxed">{selectedOrder.userName || 'Unknown Driver'}</p>
                     <p className="text-[11px] font-bold text-muted mt-1 leading-relaxed">{(selectedOrder as any).shippingAddress || 'No address provided'}</p>
-                    <p className="text-[10px] font-bold text-primary mt-2">{selectedOrder.userEmail}</p>
+                    <p className="text-[10px] font-bold text-primary mt-2">{selectedOrder.user?.email}</p>
                   </div>
                 </div>
                 <div className="space-y-4">
