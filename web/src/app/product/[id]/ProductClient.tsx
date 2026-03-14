@@ -162,18 +162,54 @@ export default function ProductClient({ initialProduct }: { initialProduct: any 
         setZoomPos({ x, y });
     };
 
+    const [selectedQuantity, setSelectedQuantity] = useState(1);
+
+    const handleQuantityChange = (val: string) => {
+        const q = parseInt(val);
+        if (isNaN(q) || q < 1) setSelectedQuantity(1);
+        else setSelectedQuantity(q);
+    };
+
+    const handleShare = async () => {
+        if (navigator.share) {
+            try {
+                await navigator.share({
+                    title: product.name,
+                    text: `Check out this ${product.name} on CarTunez!`,
+                    url: window.location.href,
+                });
+            } catch (err) {
+                console.error('Share failed:', err);
+            }
+        } else {
+            // Fallback: Copy to clipboard
+            navigator.clipboard.writeText(window.location.href);
+            alert('Product link copied to clipboard!');
+        }
+    };
+
+    const handleSearchFocus = () => {
+        const searchInput = document.querySelector('input[placeholder="Search Assets..."]') as HTMLInputElement;
+        if (searchInput) {
+            searchInput.focus();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        } else {
+            router.push('/shop');
+        }
+    };
+
     return (
         <div className="min-h-screen bg-[#f8f9fa] pb-24 font-body">
             {/* Top Navigation Bar - Simple & Clean */}
-            <div className="bg-white border-b border-gray-100">
+            <div className="bg-white border-b border-gray-100 sticky top-0 md:top-[120px] z-[40]">
                 <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
                     <button onClick={() => router.back()} className="flex items-center gap-2 text-sm font-bold uppercase tracking-widest text-gray-500 hover:text-black transition-colors">
                         <ChevronLeft size={16} />
                         Back
                     </button>
                     <div className="flex gap-4">
-                        <button className="p-2 text-gray-400 hover:text-black transition-colors"><Search size={20} /></button>
-                        <button className="p-2 text-gray-400 hover:text-black transition-colors"><Share size={20} /></button>
+                        <button onClick={handleSearchFocus} className="p-2 text-gray-400 hover:text-black transition-colors"><Search size={20} /></button>
+                        <button onClick={handleShare} className="p-2 text-gray-400 hover:text-black transition-colors"><Share size={20} /></button>
                     </div>
                 </div>
             </div>
@@ -273,7 +309,13 @@ export default function ProductClient({ initialProduct }: { initialProduct: any 
                                     <div className="flex items-center gap-6">
                                         <div className="flex items-center border-2 border-gray-100 rounded-xl px-4 py-2 h-14 bg-gray-50">
                                             <span className="text-[10px] font-black uppercase tracking-widest mr-4">Qty</span>
-                                            <input type="number" defaultValue={1} className="w-12 bg-transparent text-center font-bold text-lg outline-none" min={1} />
+                                            <input 
+                                                type="number" 
+                                                value={selectedQuantity} 
+                                                onChange={(e) => handleQuantityChange(e.target.value)}
+                                                className="w-12 bg-transparent text-center font-bold text-lg outline-none" 
+                                                min={1} 
+                                            />
                                         </div>
 
                                         <button
@@ -282,7 +324,7 @@ export default function ProductClient({ initialProduct }: { initialProduct: any 
                                                 id: product.id,
                                                 name: product.name,
                                                 price: currentPrice,
-                                                quantity: 1,
+                                                quantity: selectedQuantity,
                                                 image: mainImage || '🚗'
                                             })}
                                             className={`flex-1 h-14 rounded-xl font-black uppercase tracking-[0.2em] text-xs shadow-xl transition-all active:scale-95 ${isOutOfStock ? 'bg-gray-200 text-gray-400' : 'bg-primary text-white hover:bg-black'}`}

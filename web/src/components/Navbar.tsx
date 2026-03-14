@@ -74,7 +74,23 @@ export default function Navbar() {
 
                 {/* 3. Right Section: Utility Icons */}
                 <div className="flex items-center justify-end flex-1 space-x-4 md:space-x-6 text-[#1a1a1a]">
-                    <button className="p-1 hover:text-primary transition-colors">
+                    <form onSubmit={handleSearch} className="hidden lg:flex items-center relative">
+                        <input
+                            type="text"
+                            placeholder="Search Assets..."
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
+                            className="bg-gray-50 border border-gray-100 px-4 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-widest outline-none focus:ring-2 ring-primary/10 transition-all w-48 focus:w-64"
+                        />
+                        <button type="submit" className="absolute right-3 text-gray-400 hover:text-primary">
+                            <Search size={14} />
+                        </button>
+                    </form>
+
+                    <button 
+                        onClick={() => setIsMenuOpen(true)}
+                        className="lg:hidden p-1 hover:text-primary transition-colors"
+                    >
                         <Search size={22} strokeWidth={1.5} />
                     </button>
                     

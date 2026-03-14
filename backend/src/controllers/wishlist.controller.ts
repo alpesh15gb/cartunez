@@ -23,11 +23,18 @@ export const addToWishlist = async (req: AuthRequest, res: Response) => {
     if (!userId) return res.status(401).json({ message: 'Unauthorized' });
 
     try {
-        const item = await prisma.wishlistItem.create({
-            data: {
+        const item = await prisma.wishlistItem.upsert({
+            where: {
+                userId_productId: {
+                    userId,
+                    productId
+                }
+            },
+            create: {
                 userId,
                 productId,
             },
+            update: {}, // No changes needed if already exists
             include: { product: true },
         });
         res.status(201).json(item);
