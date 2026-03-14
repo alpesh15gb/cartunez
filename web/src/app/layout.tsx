@@ -109,7 +109,7 @@ export default function RootLayout({
               <div className="container mx-auto px-6">
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12 mb-20">
                     <div className="flex flex-col items-center lg:items-start text-center lg:text-left">
-                      <div className="relative h-14 w-56 mb-6">
+                      <div className="relative h-20 w-80 mb-6">
                           <Image
                               src="/logo.png"
                               alt="CarTunez"
