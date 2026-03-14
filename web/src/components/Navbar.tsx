@@ -38,7 +38,7 @@ export default function Navbar() {
     return (
         <header className="bg-white border-b border-border sticky top-0 z-50">
             {/* Main Header */}
-            <div className="container mx-auto px-4 md:px-6 h-16 md:h-20 flex items-center justify-between relative">
+            <div className="container mx-auto px-4 md:px-6 h-20 md:h-28 flex items-center justify-between relative">
                 
                 {/* 1. Left Section: Navigation Menu (Desktop) / Hamburger (Mobile) */}
                 <div className="flex items-center flex-1">
@@ -65,7 +65,7 @@ export default function Navbar() {
                 {/* 2. Center Section: Logo */}
                 <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
                     <Link href="/" className="flex items-center group">
-                        <div className="relative h-12 w-48 md:h-16 md:w-64">
+                        <div className="relative h-16 w-56 md:h-24 md:w-80">
                             <Image
                                 src="/logo.png"
                                 alt="CarTunez"
