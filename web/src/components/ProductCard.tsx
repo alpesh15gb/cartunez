@@ -69,28 +69,29 @@ export default function ProductCard({ product }: ProductCardProps) {
       </Link>
 
       {/* Product Info */}
-      <div className="flex flex-col flex-1 px-2">
+      <div className="flex flex-col flex-1 px-4 pb-4">
         <Link href={`/product/${product.id}`}>
-            <h3 className="text-[#1a1a1a] text-sm font-black uppercase tracking-tight line-clamp-1 mb-1 group-hover:text-primary transition-colors">
+            <h3 className="text-gray-900 text-lg font-serif font-medium leading-tight line-clamp-2 mb-2 group-hover:text-primary transition-colors h-12 overflow-hidden flex items-center justify-center">
             {product.name}
             </h3>
         </Link>
         
         {/* Rating Stars (Static for UI) */}
-        <div className="flex items-center justify-center space-x-0.5 mb-2">
+        <div className="flex items-center justify-center space-x-0.5 mb-3">
             {[1, 2, 3, 4, 5].map((i) => (
                 <Star key={i} size={10} className={i <= 4 ? "fill-primary text-primary" : "fill-gray-200 text-gray-200"} />
             ))}
+            <span className="text-[8px] font-bold text-gray-400 ml-1.5 uppercase tracking-widest">(1)</span>
         </div>
 
         {/* Price Section */}
-        <div className="flex flex-col items-center mb-4">
+        <div className="flex flex-col items-center mb-6">
             {oldPrice && (
                 <span className="text-gray-300 text-[10px] font-bold line-through mb-0.5">
                     ₹{oldPrice.toLocaleString('en-IN')}.00
                 </span>
             )}
-            <span className="text-primary font-black text-sm tracking-tight">
+            <span className="text-gray-900 font-bold text-base tracking-tight">
                 ₹{currentPrice.toLocaleString('en-IN')}.00
             </span>
         </div>
@@ -99,7 +100,7 @@ export default function ProductCard({ product }: ProductCardProps) {
         <button 
             onClick={handleAddToCart}
             disabled={product.isOutOfStock || product.stockQuantity === 0}
-            className="mt-auto w-full bg-primary text-white text-[9px] font-black uppercase tracking-[0.2em] py-2.5 rounded hover:bg-black transition-all duration-300 disabled:bg-gray-200 disabled:text-gray-400 disabled:cursor-not-allowed"
+            className="mt-auto w-full btn-primary !text-[9px] !px-4 !py-3 rounded-full"
         >
             Add to Cart
         </button>

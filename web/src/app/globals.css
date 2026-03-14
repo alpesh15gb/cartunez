@@ -27,6 +27,7 @@
 
   --font-display: var(--font-poppins);
   --font-body: var(--font-inter);
+  --font-serif: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
 }
 
 @layer base {
