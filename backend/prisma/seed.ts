@@ -32,29 +32,38 @@ async function main() {
         }
 
         // 2. Create Product
-        // We'll use a unique identifier or just rely on the name for now if we want to avoid duplicates
-        const product = await prisma.product.upsert({
-            where: { id: item.id }, // We'll try to use the Shopify ID as our ID
-            update: {
-                name: item.name,
-                description: item.description,
-                price: item.price,
-                stockQuantity: 10, // Default stock
-                images: item.image ? [item.image] : [],
-                categoryId: category.id,
-            },
-            create: {
-                id: item.id,
-                name: item.name,
-                description: item.description,
-                price: item.price,
-                stockQuantity: 10,
-                images: item.image ? [item.image] : [],
-                categoryId: category.id,
-            },
+        // Check for existing product by name first to prevent duplicates if IDs changed
+        const existingByName = await prisma.product.findFirst({
+            where: { name: item.name }
         });
 
-        console.log(`Upserted product: ${product.name}`);
+        const commonData = {
+            name: item.name,
+            description: item.description,
+            price: item.price,
+            stockQuantity: 10,
+            images: item.image ? [item.image] : [],
+            categoryId: category.id,
+        };
+
+        let product;
+        if (existingByName) {
+            product = await prisma.product.update({
+                where: { id: existingByName.id },
+                data: commonData
+            });
+            console.log(`Updated product (matched by name): ${product.name}`);
+        } else {
+            product = await prisma.product.upsert({
+                where: { id: item.id },
+                update: commonData,
+                create: {
+                    id: item.id,
+                    ...commonData
+                },
+            });
+            console.log(`Upserted product (matched by ID): ${product.name}`);
+        }
     }
 
     console.log('Seeding finished.');

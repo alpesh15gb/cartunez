@@ -71,7 +71,7 @@ export default function ProductCard({ product }: ProductCardProps) {
       {/* Product Info */}
       <div className="flex flex-col flex-1 px-4 pb-4">
         <Link href={`/product/${product.id}`}>
-            <h3 className="text-gray-900 text-lg font-serif font-medium leading-tight line-clamp-2 mb-2 group-hover:text-primary transition-colors h-12 overflow-hidden flex items-center justify-center">
+            <h3 className="text-gray-900 text-base font-serif font-medium leading-[1.3] line-clamp-3 mb-2 group-hover:text-primary transition-colors min-h-[4rem] flex items-center justify-center">
             {product.name}
             </h3>
         </Link>
