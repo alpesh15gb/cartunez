@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Poppins, Inter } from "next/font/google";
+import Image from "next/image";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import TopBar from "@/components/TopBar";
@@ -107,11 +108,15 @@ export default function RootLayout({
             <footer className="bg-white text-[#1a1a1a] pt-20 pb-10 border-t border-[#f0f0f0]">
               <div className="container mx-auto px-6">
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12 mb-20">
-                  <div className="flex flex-col items-center lg:items-start text-center lg:text-left">
-                    <div className="flex items-center gap-1 mb-6">
-                        <span className="text-2xl font-black tracking-tighter italic uppercase text-[#1a1a1a]">CarTunez</span>
-                        <span className="bg-[#cc0000] text-white text-[9px] font-bold px-1.5 py-0.5 rounded leading-none">AUTO</span>
-                    </div>
+                    <div className="flex flex-col items-center lg:items-start text-center lg:text-left">
+                      <div className="relative h-10 w-40 mb-6">
+                          <Image
+                              src="/logo.png"
+                              alt="CarTunez"
+                              fill
+                              className="object-contain lg:object-left"
+                          />
+                      </div>
                     <p className="text-muted text-[10px] font-bold uppercase tracking-[0.2em] leading-relaxed max-w-xs">
                       "India's Premier Destination for Automotive Mastery " — Curated components for the modern enthusiast.
                     </p>

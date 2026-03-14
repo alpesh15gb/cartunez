@@ -65,9 +65,14 @@ export default function Navbar() {
                 {/* 2. Center Section: Logo */}
                 <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
                     <Link href="/" className="flex items-center group">
-                        <div className="flex items-center gap-1">
-                            <span className="text-3xl font-serif font-medium tracking-tight text-[#1a1a1a]">CarTunez</span>
-                            <span className="bg-[#cc0000] text-white text-[8px] font-black px-1.5 py-0.5 rounded-sm leading-none uppercase tracking-widest translate-y-[-2px]">Auto</span>
+                        <div className="relative h-12 w-48 md:h-16 md:w-64">
+                            <Image
+                                src="/logo.png"
+                                alt="CarTunez"
+                                fill
+                                className="object-contain"
+                                priority
+                            />
                         </div>
                     </Link>
                 </div>
