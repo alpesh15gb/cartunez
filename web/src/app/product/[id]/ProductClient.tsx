@@ -7,6 +7,7 @@ import { useAuth } from '@/context/AuthContext';
 import Image from 'next/image';
 import Link from 'next/link';
 import { API_URL } from '@/config';
+import { getSafeImageUrl } from '@/utils/imageUrl';
 import { ChevronLeft, Search, Share, ChevronDown, ChevronUp, Heart } from 'lucide-react';
 import ProductCard from '@/components/ProductCard';
 
@@ -189,7 +190,7 @@ export default function ProductClient({ initialProduct }: { initialProduct: any 
                     {mainImage ? (
                         <>
                             <Image unoptimized
-                                src={mainImage}
+                                src={getSafeImageUrl(mainImage)}
                                 alt={product.name}
                                 fill
                                 className={`object-contain transition-opacity duration-300 ${isZoomed ? 'opacity-0' : 'opacity-100'}`}
@@ -199,7 +200,7 @@ export default function ProductClient({ initialProduct }: { initialProduct: any 
                                 <div 
                                     className="absolute inset-0 pointer-events-none"
                                     style={{
-                                        backgroundImage: `url(${mainImage})`,
+                                        backgroundImage: `url(${getSafeImageUrl(mainImage)})`,
                                         backgroundPosition: `${zoomPos.x}% ${zoomPos.y}%`,
                                         backgroundSize: '250%',
                                         backgroundRepeat: 'no-repeat'
@@ -275,7 +276,7 @@ export default function ProductClient({ initialProduct }: { initialProduct: any 
                                     onClick={() => setActiveImageIndex(idx)}
                                     className={`relative w-16 h-16 rounded-xl overflow-hidden flex-shrink-0 border-2 transition-all ${activeImageIndex === idx ? 'border-gray-800 shadow-sm' : 'border-gray-100'}`}
                                 >
-                                    <Image unoptimized src={img} alt={`Thumbnail ${idx}`} fill className="object-contain p-1" />
+                                    <Image unoptimized src={getSafeImageUrl(img)} alt={`Thumbnail ${idx}`} fill className="object-contain p-1" />
                                 </button>
                             ))}
                         </div>

@@ -3,6 +3,7 @@
 import { useCart } from '@/context/CartContext';
 import Link from 'next/link';
 import Image from 'next/image';
+import { getSafeImageUrl } from '@/utils/imageUrl';
 
 export default function CartPage() {
     const { cart, removeFromCart, totalPrice, totalItems } = useCart();
@@ -26,16 +27,16 @@ export default function CartPage() {
                     {cart.map((item) => (
                         <div key={item.id} className="flex gap-6 bg-card border border-border p-6 rounded-lg transition-transform hover:scale-[1.01] items-center">
                             <div className="w-24 h-24 bg-background relative rounded border border-border overflow-hidden flex-shrink-0">
-                                {item.image && item.image.startsWith('/') ? (
+                                {item.image ? (
                                     <Image unoptimized
-                                        src={item.image}
+                                        src={getSafeImageUrl(item.image)}
                                         alt={item.name}
                                         fill
                                         className="object-cover"
                                     />
                                 ) : (
                                     <div className="w-full h-full flex items-center justify-center text-4xl grayscale">
-                                        {item.image || '🚗'}
+                                        🚗
                                     </div>
                                 )}
                             </div>

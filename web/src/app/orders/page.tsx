@@ -5,6 +5,7 @@ import { useAuth } from '@/context/AuthContext';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { API_URL } from '@/config';
+import { getSafeImageUrl } from '@/utils/imageUrl';
 
 export default function OrdersPage() {
     const { isAuthenticated, token } = useAuth();
@@ -84,7 +85,7 @@ export default function OrdersPage() {
                                             <div className="flex items-center space-x-4">
                                                 <div className="relative w-12 h-12 bg-white border border-border rounded overflow-hidden">
                                                     <Image unoptimized
-                                                        src={item.product.images[0] || '/placeholder.png'}
+                                                        src={getSafeImageUrl(item.product.images[0])}
                                                         alt={item.product.name}
                                                         fill
                                                         className="object-cover"

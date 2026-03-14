@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import { API_URL } from '@/config';
+import { getSafeImageUrl } from '@/utils/imageUrl';
 import { 
   Newspaper, 
   Plus, 
@@ -175,7 +176,7 @@ export default function NewsAdminPage() {
             <div key={item.id} className="bg-card border border-border rounded-2xl overflow-hidden flex flex-col group hover:border-primary/40 transition-all hover:shadow-2xl hover:shadow-primary/5">
               <div className="h-48 w-full relative bg-muted overflow-hidden">
                 {item.imageUrl ? (
-                  <img src={item.imageUrl} alt={item.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+                  <img src={getSafeImageUrl(item.imageUrl)} alt={item.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
                 ) : (
                   <div className="h-full w-full flex items-center justify-center text-muted/30">
                     <Newspaper size={48} />

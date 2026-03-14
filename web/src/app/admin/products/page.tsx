@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import { API_URL } from '@/config';
+import { getSafeImageUrl } from '@/utils/imageUrl';
 import Link from 'next/link';
 import { 
   Plus, 
@@ -128,7 +129,7 @@ export default function ProductsAdminPage() {
                       <div className="flex items-center gap-4">
                         <div className="h-14 w-14 rounded-xl border border-border bg-background overflow-hidden relative shrink-0">
                           {product.images[0] ? (
-                            <img src={product.images[0]} alt={product.name} className="h-full w-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                            <img src={getSafeImageUrl(product.images[0])} alt={product.name} className="h-full w-full object-cover group-hover:scale-110 transition-transform duration-500" />
                           ) : (
                             <div className="h-full w-full flex items-center justify-center text-muted">
                               <ImageIcon size={20} />

@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
 import { API_URL } from '@/config';
+import { getSafeImageUrl } from '@/utils/imageUrl';
 
 export default function WishlistPage() {
     const { isAuthenticated, token } = useAuth();
@@ -77,7 +78,7 @@ export default function WishlistPage() {
                         <div key={item.id} className="bg-card border border-border group relative overflow-hidden flex flex-col">
                             <div className="aspect-square relative overflow-hidden bg-white">
                                 <Image unoptimized
-                                    src={item.product.images[0] || '/placeholder.png'}
+                                    src={getSafeImageUrl(item.product.images[0])}
                                     alt={item.product.name}
                                     fill
                                     className="object-cover group-hover:scale-110 transition-transform duration-500"

@@ -4,6 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Heart, Star } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
+import { getSafeImageUrl } from '@/utils/imageUrl';
 
 interface ProductCardProps {
   product: {
@@ -43,7 +44,7 @@ export default function ProductCard({ product }: ProductCardProps) {
         {product.images && product.images[0] ? (
           <Image
             unoptimized
-            src={product.images[0]}
+            src={getSafeImageUrl(product.images[0])}
             alt={product.name}
             fill
             className="object-contain p-6 group-hover:scale-105 transition-transform duration-500"
