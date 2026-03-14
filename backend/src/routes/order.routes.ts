@@ -15,6 +15,7 @@ import { handleRazorpayWebhook } from '../controllers/webhook.controller';
 const router = Router();
 
 router.post('/', authenticate, createOrder);
+router.get('/', authenticate, authorize(['ADMIN']), getAllOrders);
 router.get('/my-orders', authenticate, getMyOrders);
 router.get('/all', authenticate, authorize(['ADMIN']), getAllOrders);
 router.get('/:id', getOrderById);

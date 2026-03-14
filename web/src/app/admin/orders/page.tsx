@@ -20,10 +20,10 @@ import {
 interface Order {
   id: string;
   createdAt: string;
-  total: number;
+  totalAmount: number;
   status: string;
   userName?: string;
-  userEmail: string;
+  user: { email: string };
   items: any[];
   returnStatus?: string;
   returnReason?: string;
@@ -158,7 +158,7 @@ export default function OrdersAdminPage() {
                 ))
               ) : orders.length > 0 ? (
                 orders
-                .filter(o => o.id.toLowerCase().includes(searchTerm.toLowerCase()) || o.userEmail.toLowerCase().includes(searchTerm.toLowerCase()))
+                .filter(o => o.id.toLowerCase().includes(searchTerm.toLowerCase()) || o.user?.email.toLowerCase().includes(searchTerm.toLowerCase()))
                 .map((order) => {
                   const status = getStatusInfo(order.status);
                   const isNew = isNewOrder(order.createdAt);
@@ -182,12 +182,12 @@ export default function OrdersAdminPage() {
                       </td>
                       <td className="px-6 py-5">
                         <div className="flex flex-col">
-                          <span className="text-sm font-bold tracking-tight">{order.userName || 'Anonymous Driver'}</span>
-                          <span className="text-[9px] font-bold uppercase tracking-widest text-muted mt-0.5">{order.userEmail}</span>
+                          <span className="text-sm font-bold tracking-tight">{order.userName || order.user?.email.split('@')[0] || 'Anonymous Driver'}</span>
+                          <span className="text-[9px] font-bold uppercase tracking-widest text-muted mt-0.5">{order.user?.email}</span>
                         </div>
                       </td>
                       <td className="px-6 py-5">
-                        <span className="text-sm font-black italic tracking-tight">₹{order.total.toLocaleString()}</span>
+                        <span className="text-sm font-black italic tracking-tight">₹{order.totalAmount.toLocaleString()}</span>
                       </td>
                       <td className="px-6 py-5">
                         <span className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full ${status.bg} ${status.color} border border-current/20`}>
@@ -302,7 +302,7 @@ export default function OrdersAdminPage() {
                     <tfoot className="bg-muted/30">
                       <tr>
                         <td colSpan={2} className="px-4 py-4 text-[11px] font-black uppercase tracking-widest">Aggregate Payload</td>
-                        <td className="px-4 py-4 text-right text-lg font-black italic tracking-tighter text-primary">₹{selectedOrder.total.toLocaleString()}</td>
+                        <td className="px-4 py-4 text-right text-lg font-black italic tracking-tighter text-primary">₹{selectedOrder.totalAmount.toLocaleString()}</td>
                       </tr>
                     </tfoot>
                   </table>

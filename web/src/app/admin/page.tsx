@@ -228,7 +228,7 @@ export default function AdminDashboard() {
                     </td>
                     <td className="px-8 py-5">
                       <p className="text-xs font-bold leading-tight">{order.user?.email.split('@')[0]}</p>
-                      <p className="text-[9px] text-muted-foreground uppercase font-medium">{order.email}</p>
+                      <p className="text-[9px] text-muted-foreground uppercase font-medium">{order.user?.email}</p>
                     </td>
                     <td className="px-8 py-5">
                       <span className="font-black text-xs text-primary italic">₹{order.totalAmount.toLocaleString()}</span>

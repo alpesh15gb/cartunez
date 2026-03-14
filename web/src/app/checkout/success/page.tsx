@@ -21,16 +21,26 @@ function SuccessContent() {
             <h1 className="text-6xl font-black italic uppercase tracking-tighter mb-4">Mission <span className="text-primary italic">Accomplished</span></h1>
             <p className="text-muted text-sm font-bold uppercase tracking-[0.3em] mb-12">Your order has been deployed successfully</p>
 
-            <div className="w-full max-w-xl bg-card border border-border p-10 rounded-2xl relative overflow-hidden mb-12">
+            <div className="w-full max-w-xl bg-card border border-border p-10 rounded-2xl relative overflow-hidden mb-12 shadow-2xl">
                 <div className="absolute top-0 left-0 w-full h-1 bg-primary" />
-                <div className="flex flex-col md:flex-row justify-between items-center gap-8">
-                    <div className="text-left w-full">
+                <div className="flex flex-col gap-8">
+                    <div className="text-left w-full border-b border-border pb-6">
                         <p className="text-[10px] uppercase font-black tracking-widest text-muted mb-2">Order Tracking ID</p>
-                        <p className="text-xl font-mono font-black tracking-tighter text-white break-all">{orderId || 'PENDING'}</p>
+                        <p className="text-2xl font-mono font-black tracking-tighter text-primary break-all">#{orderId?.slice(-12).toUpperCase() || 'TX-DEPLOY-PENDING'}</p>
                     </div>
-                    <div className="bg-primary/10 p-6 rounded-xl border border-primary/20 flex flex-col items-center justify-center min-w-[150px]">
-                        <Package size={32} className="text-primary mb-2" />
-                        <p className="text-[10px] uppercase font-black tracking-widest text-primary">Status: Deployed</p>
+                    
+                    <div className="flex flex-col md:flex-row justify-between items-center gap-8">
+                        <div className="text-left">
+                            <h3 className="text-sm font-black uppercase tracking-widest text-white mb-2">Payload Secure</h3>
+                            <p className="text-[10px] font-bold text-muted uppercase tracking-widest leading-relaxed">
+                                Our logistics team has received your deployment request. <br/>
+                                Check your email for full telemetry data.
+                            </p>
+                        </div>
+                        <div className="bg-primary/10 p-6 rounded-xl border border-primary/20 flex flex-col items-center justify-center min-w-[150px]">
+                            <Package size={32} className="text-primary mb-2" />
+                            <p className="text-[10px] uppercase font-black tracking-widest text-primary">Status: Deployed</p>
+                        </div>
                     </div>
                 </div>
             </div>
