@@ -89,7 +89,7 @@ export default function HomePage() {
       <div className="ghost-title" aria-hidden="true">AUTO PARTS</div>
 
       {/* Hero Section */}
-      <section className="relative h-[600px] md:h-[750px] w-full mb-20">
+      <section className="relative h-[700px] md:h-[850px] w-full mb-20">
         <Image unoptimized
           src="/hero.png"
           alt="Premium Automotive Mastery"
