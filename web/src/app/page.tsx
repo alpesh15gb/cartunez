@@ -5,6 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { API_URL } from '@/config';
 import ProductCard from '@/components/ProductCard';
+import { getSafeImageUrl } from '@/utils/imageUrl';
 
 export default function HomePage() {
   const [products, setProducts] = useState<any[]>([]);
@@ -219,7 +220,7 @@ export default function HomePage() {
               <div key={news.id} className="group cursor-pointer">
                 <div className="relative h-64 bg-card mb-6 overflow-hidden rounded-sm">
                   {news.imageUrl ? (
-                    <Image unoptimized src={news.imageUrl} alt={news.title} fill className="object-cover grayscale group-hover:grayscale-0 group-hover:scale-110 transition-all duration-700" />
+                    <Image unoptimized src={getSafeImageUrl(news.imageUrl)} alt={news.title} fill className="object-cover grayscale group-hover:grayscale-0 group-hover:scale-110 transition-all duration-700" />
                   ) : (
                     <div className="w-full h-full flex items-center justify-center text-8xl grayscale group-hover:grayscale-0 group-hover:scale-110 transition-all duration-700">
                       📰
