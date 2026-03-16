@@ -34,7 +34,7 @@ services:
       - "3001:3000"
     environment:
       - NEXT_PUBLIC_MEDUSA_BACKEND_URL=http://medusa-backend:9000
-      - NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY=pk_0ba82e7ce012124025540c8f693875b039fcdf9818c20eac3ce7a2d4f6b8405e
+      - NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY=pk_8ac102cdd2ed35a8728f98273db6a69a0bb288eeee956d9fc0b593501bab8900
     depends_on:
       - medusa-backend
     restart: unless-stopped
