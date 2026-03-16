@@ -4,6 +4,7 @@ import PriceFilter from "@/components/PriceFilter";
 import SortDropdown from "@/components/SortDropdown";
 import ProductGrid from "@/components/ProductGrid";
 import GarageUpdater from "@/components/GarageUpdater";
+import MobileFilterBar from "@/components/MobileFilterBar";
 import { vehicleData } from "@/data/car-compatibility";
 
 const PAGE_SIZE = 20;
@@ -330,18 +331,10 @@ export default async function Shop({
         </div>
       </div>
 
-      {/* Mobile Filter/Sort Bar */}
-      <div className="md:hidden fixed bottom-6 left-1/2 -translate-x-1/2 w-[90%] bg-surface/90 backdrop-blur-xl border border-border/50 p-2 rounded-2xl shadow-2xl shadow-black/50 z-50 flex gap-2">
-        <button className="flex-1 bg-surface-hover hover:bg-surface border border-border text-white font-bold py-3 rounded-xl flex items-center justify-center gap-2 transition-all active:scale-95">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-primary"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
-          <span className="text-sm">Filter</span>
-        </button>
-        <div className="w-px bg-border/50 my-2"></div>
-        <button className="flex-1 bg-surface-hover hover:bg-surface border border-border text-white font-bold py-3 rounded-xl flex items-center justify-center gap-2 transition-all active:scale-95">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-primary"><path d="m3 16 4 4 4-4"/><path d="M7 20V4"/><path d="m21 8-4-4-4 4"/><path d="M17 4v16"/></svg>
-          <span className="text-sm">Sort</span>
-        </button>
-      </div>
+      <MobileFilterBar 
+        categories={categories} 
+        totalCount={count} 
+      />
     </main>
   );
 }
