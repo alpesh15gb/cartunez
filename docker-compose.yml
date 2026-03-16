@@ -22,6 +22,8 @@ services:
     restart: unless-stopped
     volumes:
       - ./medusa-backend:/app/medusa-backend
+      - ./nhone_products.json:/app/nhone_products.json
+      - ./names_v2.json:/app/names_v2.json
       - /app/medusa-backend/node_modules
 
   storefront:
