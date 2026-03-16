@@ -9,7 +9,7 @@ services:
     ports:
       - "9001:9000"
     environment:
-      - DATABASE_URL=postgres://postgres:password@postgres:5432/medusa
+      - DATABASE_URL=postgres://postgres:password@postgres:5432/medusa?sslmode=disable
       - REDIS_URL=redis://redis:6379
       - NODE_ENV=development
       - JWT_SECRET=supersecret
