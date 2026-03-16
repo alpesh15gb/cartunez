@@ -4,17 +4,18 @@ import { useGarage } from "@/context/GarageContext";
 
 interface CompatibilityBadgeProps {
   productPCD?: string;
-  productSize?: string;  // the currently-selected variant's wheel size (e.g. "20")
+  productSize?: string;  
   category?: string;
+  metadata?: Record<string, any>; // Add metadata prop
 }
 
 // Generic accessories that fit every car
 const UNIVERSAL_CATEGORIES = [
   "car-cleaning", "perfume", "key-cover", "mobile-holders",
-  "cleaning-care", "air-freshener", "seat-cover", "floor-mat"
+  "cleaning-care", "air-freshener"
 ];
 
-export default function CompatibilityBadge({ productPCD, productSize, category }: CompatibilityBadgeProps) {
+export default function CompatibilityBadge({ productPCD, productSize, category, metadata }: CompatibilityBadgeProps) {
   const { savedVehicle, isVehicleSaved } = useGarage();
 
   if (!isVehicleSaved || !savedVehicle) return null;
@@ -63,6 +64,29 @@ export default function CompatibilityBadge({ productPCD, productSize, category }
         label={`Confirmed fit — ${productSize ? `${productSize}" wheel, ` : ""}${savedVehicle.pcd} PCD matches your ${savedVehicle.model}`}
       />
     );
+  }
+
+  // ── Custom-fit accessories (Seat covers, Mats, etc.) ─────────────
+  if (metadata?.make && metadata?.model) {
+    const isMakeMatch = metadata.make.toLowerCase() === savedVehicle.make.toLowerCase();
+    const isModelMatch = savedVehicle.model.toLowerCase().includes(metadata.model.toLowerCase()) || 
+                         metadata.model.toLowerCase().includes(savedVehicle.model.toLowerCase());
+
+    if (isMakeMatch && isModelMatch) {
+      return (
+        <Badge
+          type="fit"
+          label={`Confirmed Custom Fit — Handcrafted specifically for your ${savedVehicle.make} ${savedVehicle.model}`}
+        />
+      );
+    } else {
+      return (
+        <Badge
+          type="no-fit"
+          label={`Does not fit — This setup is for ${metadata.make} ${metadata.model}, but your car is a ${savedVehicle.model}`}
+        />
+      );
+    }
   }
 
   // productPCD is undefined — wheel data not loaded yet, or non-wheel product

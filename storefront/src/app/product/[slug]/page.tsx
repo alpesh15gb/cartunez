@@ -176,6 +176,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
               productPCD={displayProduct.metadata?.pcd}
               productSize={displayProduct.metadata?.wheel_size}
               category={displayProduct.categories?.[0]?.handle}
+              metadata={displayProduct.variants?.[0]?.metadata || displayProduct.metadata}
             />
             
             <div className="flex items-end gap-3 mb-6">
