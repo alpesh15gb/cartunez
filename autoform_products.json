@@ -1,0 +1,90 @@
+[
+  {
+    "title": "Autoform Xclusive Plus Artificial Leather Seat Covers",
+    "description": "Premium Xclusive Plus series featuring high-density foam and soft-touch PU leather. Water-resistant and durable.",
+    "handle": "autoform-xclusive-plus-seat-covers",
+    "category": "Car Seat Covers",
+    "variants": [
+      {
+        "title": "Mahindra Thar (2020+) - Black/Red",
+        "sku": "AF-XP-THAR-BLKRED",
+        "price": 18879,
+        "color": "Black/Red",
+        "make": "Mahindra",
+        "model": "Thar",
+        "year": "2020-2024"
+      },
+      {
+        "title": "Hyundai Creta (2020+) - Black/Grey",
+        "sku": "AF-XP-CRETA-BLKGRY",
+        "price": 19500,
+        "color": "Black/Grey",
+        "make": "Hyundai",
+        "model": "Creta",
+        "year": "2020-2024"
+      },
+      {
+        "title": "Maruti Swift (2018+) - Beige/Tan",
+        "sku": "AF-XP-SWIFT-BEITAN",
+        "price": 16500,
+        "color": "Beige/Tan",
+        "make": "Maruti",
+        "model": "Swift",
+        "year": "2018-2024"
+      }
+    ],
+    "images": [
+      "https://autoformindia.com/images/products/xclusive-plus-1.jpg",
+      "https://autoformindia.com/images/products/xclusive-plus-2.jpg"
+    ]
+  },
+  {
+    "title": "Autoform Duo Lucenzo Premium Seat Covers",
+    "description": "Double-layered luxury with Lucenzo material. Superior finish and long-lasting comfort.",
+    "handle": "autoform-duo-lucenzo-seat-covers",
+    "category": "Car Seat Covers",
+    "variants": [
+      {
+        "title": "Tata Nexon (2020+) - Black/Blue",
+        "sku": "AF-DL-NEXON-BLKBLU",
+        "price": 22000,
+        "color": "Black/Blue",
+        "make": "Tata",
+        "model": "Nexon",
+        "year": "2020-2024"
+      },
+      {
+        "title": "Kia Seltos (2019+) - Black/Silver",
+        "sku": "AF-DL-SELTOS-BLKSIL",
+        "price": 23500,
+        "color": "Black/Silver",
+        "make": "Kia",
+        "model": "Seltos",
+        "year": "2019-2024"
+      }
+    ],
+    "images": [
+      "https://autoformindia.com/images/products/duo-lucenzo-1.jpg"
+    ]
+  },
+  {
+    "title": "Autoform Honeycomb Design Seat Covers",
+    "description": "Contemporary honeycomb pattern for a sporty look. High-quality stitching and breathable material.",
+    "handle": "autoform-honeycomb-seat-covers",
+    "category": "Car Seat Covers",
+    "variants": [
+      {
+        "title": "Maruti Baleno - All Black",
+        "sku": "AF-HC-BALENO-BLK",
+        "price": 17800,
+        "color": "All Black",
+        "make": "Maruti",
+        "model": "Baleno",
+        "year": "2015-2024"
+      }
+    ],
+    "images": [
+      "https://autoformindia.com/images/products/honeycomb-1.jpg"
+    ]
+  }
+]
