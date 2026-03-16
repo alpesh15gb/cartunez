@@ -1,0 +1,68 @@
+version: '3.8'
+
+services:
+  medusa-backend:
+    build: 
+      context: ./medusa-backend
+      dockerfile: Dockerfile
+    container_name: cartunez-medusa
+    ports:
+      - "9001:9000"
+    environment:
+      - DATABASE_URL=postgres://postgres:password@postgres:5432/medusa
+      - REDIS_URL=redis://redis:6379
+      - NODE_ENV=development
+      - JWT_SECRET=supersecret
+      - COOKIE_SECRET=supersecret
+      - STORE_CORS=http://localhost:3000,http://cartunez.in,https://cartunez.in
+      - ADMIN_CORS=http://localhost:9000,http://cartunez.in/admin,https://cartunez.in/admin
+    depends_on:
+      - postgres
+      - redis
+    restart: unless-stopped
+    volumes:
+      - ./medusa-backend:/app/medusa-backend
+      - /app/medusa-backend/node_modules
+
+  storefront:
+    build:
+      context: ./storefront
+      dockerfile: Dockerfile
+    container_name: cartunez-storefront
+    ports:
+      - "3001:3000"
+    environment:
+      - NEXT_PUBLIC_MEDUSA_BACKEND_URL=http://medusa-backend:9000
+      - NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY=pk_0ba82e7ce012124025540c8f693875b039fcdf9818c20eac3ce7a2d4f6b8405e
+    depends_on:
+      - medusa-backend
+    restart: unless-stopped
+    volumes:
+      - ./storefront:/app/storefront
+      - /app/storefront/node_modules
+
+  postgres:
+    image: postgres:15
+    container_name: cartunez-postgres
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=medusa
+    ports:
+      - "5440:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    restart: unless-stopped
+
+  redis:
+    image: redis:alpine
+    container_name: cartunez-redis
+    ports:
+      - "6380:6379"
+    volumes:
+      - redis-data:/data
+    restart: unless-stopped
+
+volumes:
+  postgres-data:
+  redis-data:
