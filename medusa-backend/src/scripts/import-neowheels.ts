@@ -12,9 +12,9 @@ export default async function importNeoWheels({ container }) {
   const logger = container.resolve(ContainerRegistrationKeys.LOGGER)
   const query  = container.resolve(ContainerRegistrationKeys.QUERY)
 
-  const SALES_CHANNEL_ID     = "sc_01KKQ6RZAQG80TTY3A9B1M913K"
-  const SHIPPING_PROFILE_ID  = "sp_01KKQ6RD4APKTT6Q5GY38CCCC0"
-  const REGION_ID            = "reg_01KKQ6YF16H6APJYZ1XHDKCDA2"
+  const SALES_CHANNEL_ID     = "sc_01KKVGK5NNKY1WZS2T69FG7A6M"
+  const SHIPPING_PROFILE_ID  = "sp_01KKVGK5S10V8E13J4F57SZZY8"
+  const REGION_ID            = "reg_01KKVH69QGNMNB0XC90NXRWN5D"
 
   logger.info("Neo Wheels FULL import — all 43 models …")
 
