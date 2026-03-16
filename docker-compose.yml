@@ -29,11 +29,14 @@ services:
     build:
       context: ./storefront
       dockerfile: Dockerfile
+      args:
+        - NEXT_PUBLIC_MEDUSA_BACKEND_URL=https://cartunez.in
+        - NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY=pk_8ac102cdd2ed35a8728f98273db6a69a0bb288eeee956d9fc0b593501bab8900
     container_name: cartunez-storefront
     ports:
       - "3001:3000"
     environment:
-      - NEXT_PUBLIC_MEDUSA_BACKEND_URL=http://medusa-backend:9000
+      - NEXT_PUBLIC_MEDUSA_BACKEND_URL=https://cartunez.in
       - NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY=pk_8ac102cdd2ed35a8728f98273db6a69a0bb288eeee956d9fc0b593501bab8900
     depends_on:
       - medusa-backend
