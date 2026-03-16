@@ -14,8 +14,8 @@ services:
       - NODE_ENV=development
       - JWT_SECRET=supersecret
       - COOKIE_SECRET=supersecret
-      - STORE_CORS=http://localhost:3000,http://cartunez.in,https://cartunez.in
-      - ADMIN_CORS=http://localhost:9000,http://cartunez.in/admin,https://cartunez.in/admin
+      - STORE_CORS=http://localhost:3001,http://cartunez.in,https://cartunez.in
+      - ADMIN_CORS=http://localhost:9001,http://cartunez.in,https://cartunez.in
     depends_on:
       - postgres
       - redis
