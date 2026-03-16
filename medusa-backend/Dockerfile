@@ -16,4 +16,4 @@ RUN npm run build
 EXPOSE 9000
 
 # Start medusa backend
-CMD ["npm", "run", "start"]
+CMD ["npx", "medusa", "start"]
