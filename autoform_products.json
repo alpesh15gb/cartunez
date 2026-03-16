@@ -1,90 +1,139 @@
 [
   {
     "title": "Autoform Xclusive Plus Artificial Leather Seat Covers",
-    "description": "Premium Xclusive Plus series featuring high-density foam and soft-touch PU leather. Water-resistant and durable.",
+    "description": "The flagship premium series featuring intricate stitching and high-quality soft-touch artificial leather. Water-resistant, durable, and handcrafted for a perfect fit.",
     "handle": "autoform-xclusive-plus-seat-covers",
     "category": "Car Seat Covers",
     "variants": [
       {
-        "title": "Mahindra Thar (2020+) - Black/Red",
-        "sku": "AF-XP-THAR-BLKRED",
-        "price": 18879,
-        "color": "Black/Red",
+        "title": "Mahindra Thar - Brown/Black",
+        "sku": "AF-XP-THAR-BRNBLK",
+        "price": 23429,
+        "color": "Brown/Black",
         "make": "Mahindra",
         "model": "Thar",
         "year": "2020-2024"
       },
       {
-        "title": "Hyundai Creta (2020+) - Black/Grey",
-        "sku": "AF-XP-CRETA-BLKGRY",
-        "price": 19500,
-        "color": "Black/Grey",
-        "make": "Hyundai",
-        "model": "Creta",
+        "title": "Mahindra Thar - Black/Tan",
+        "sku": "AF-XP-THAR-BLKTAN",
+        "price": 23429,
+        "color": "Black/Tan",
+        "make": "Mahindra",
+        "model": "Thar",
         "year": "2020-2024"
       },
       {
-        "title": "Maruti Swift (2018+) - Beige/Tan",
-        "sku": "AF-XP-SWIFT-BEITAN",
-        "price": 16500,
-        "color": "Beige/Tan",
+        "title": "Hyundai Creta - Black/Red",
+        "sku": "AF-XP-CRETA-BLKRED",
+        "price": 19500,
+        "color": "Black/Red",
+        "make": "Hyundai",
+        "model": "Creta",
+        "year": "2020-2024"
+      }
+    ],
+    "images": [
+      "https://api.autoformindia.com/uploads/products/1714120245.webp",
+      "https://api.autoformindia.com/uploads/products/1714120353.webp"
+    ]
+  },
+  {
+    "title": "Autoform U-Focus Sport Series",
+    "description": "A modern, sportier design with focal-point stitching patterns. Designed for those who want their car interior to look as dynamic as the drive.",
+    "handle": "autoform-u-focus-seat-covers",
+    "category": "Car Seat Covers",
+    "variants": [
+      {
+        "title": "Mahindra Thar - Blue/Black",
+        "sku": "AF-UF-THAR-BLUBLK",
+        "price": 16009,
+        "color": "Blue/Black",
+        "make": "Mahindra",
+        "model": "Thar",
+        "year": "2020-2024"
+      },
+      {
+        "title": "Maruti Swift - Grey/Black",
+        "sku": "AF-UF-SWIFT-GRYBLK",
+        "price": 14500,
+        "color": "Grey/Black",
         "make": "Maruti",
         "model": "Swift",
         "year": "2018-2024"
       }
     ],
     "images": [
-      "https://autoformindia.com/images/products/xclusive-plus-1.jpg",
-      "https://autoformindia.com/images/products/xclusive-plus-2.jpg"
+      "https://api.autoformindia.com/uploads/products/1714120120.webp"
     ]
   },
   {
-    "title": "Autoform Duo Lucenzo Premium Seat Covers",
-    "description": "Double-layered luxury with Lucenzo material. Superior finish and long-lasting comfort.",
-    "handle": "autoform-duo-lucenzo-seat-covers",
+    "title": "Autoform U-Volt Design Seat Covers",
+    "description": "Features a high-voltage lightning-style stitching pattern. Premium finish and long-lasting comfort for daily driving.",
+    "handle": "autoform-u-volt-seat-covers",
     "category": "Car Seat Covers",
     "variants": [
       {
-        "title": "Tata Nexon (2020+) - Black/Blue",
-        "sku": "AF-DL-NEXON-BLKBLU",
-        "price": 22000,
-        "color": "Black/Blue",
+        "title": "Tata Nexon - Black/Silver",
+        "sku": "AF-UV-NEXON-BLKSIL",
+        "price": 18879,
+        "color": "Black/Silver",
         "make": "Tata",
         "model": "Nexon",
         "year": "2020-2024"
-      },
-      {
-        "title": "Kia Seltos (2019+) - Black/Silver",
-        "sku": "AF-DL-SELTOS-BLKSIL",
-        "price": 23500,
-        "color": "Black/Silver",
-        "make": "Kia",
-        "model": "Seltos",
-        "year": "2019-2024"
       }
     ],
     "images": [
-      "https://autoformindia.com/images/products/duo-lucenzo-1.jpg"
+      "https://api.autoformindia.com/uploads/products/1714120900.webp"
     ]
   },
   {
-    "title": "Autoform Honeycomb Design Seat Covers",
-    "description": "Contemporary honeycomb pattern for a sporty look. High-quality stitching and breathable material.",
-    "handle": "autoform-honeycomb-seat-covers",
-    "category": "Car Seat Covers",
+    "title": "Autoform 7D Premium Car Mats",
+    "description": "Diamond-stitched 7D custom floor mats for full floor coverage. Easy to clean and incredibly durable.",
+    "handle": "autoform-7d-car-mats",
+    "category": "Car Floor Mats",
     "variants": [
       {
-        "title": "Maruti Baleno - All Black",
-        "sku": "AF-HC-BALENO-BLK",
-        "price": 17800,
-        "color": "All Black",
-        "make": "Maruti",
-        "model": "Baleno",
-        "year": "2015-2024"
+        "title": "Mahindra Thar - Luxury Black",
+        "sku": "AF-MAT-THAR-LBLK",
+        "price": 9500,
+        "color": "Black",
+        "make": "Mahindra",
+        "model": "Thar",
+        "year": "2020-2024"
+      },
+      {
+        "title": "Hyundai Creta - Luxury Tan",
+        "sku": "AF-MAT-CRETA-LTAN",
+        "price": 8500,
+        "color": "Tan",
+        "make": "Hyundai",
+        "model": "Creta",
+        "year": "2020-2024"
       }
     ],
     "images": [
-      "https://autoformindia.com/images/products/honeycomb-1.jpg"
+      "https://api.autoformindia.com/uploads/products/1714120600.webp"
+    ]
+  },
+  {
+    "title": "Autoform Sporty Steering Cover",
+    "description": "High-grip premium steering cover for precise control and comfort. Fits all standard 15-inch steering wheels.",
+    "handle": "autoform-steering-cover-sporty",
+    "category": "Interior Accessories",
+    "variants": [
+      {
+        "title": "Universal - Black Leatherite",
+        "sku": "AF-ST-BLK",
+        "price": 850,
+        "color": "Black",
+        "make": "Universal",
+        "model": "Universal",
+        "year": "All"
+      }
+    ],
+    "images": [
+      "https://api.autoformindia.com/uploads/products/1714120700.webp"
     ]
   }
 ]
