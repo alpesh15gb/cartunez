@@ -19,6 +19,14 @@ const nextConfig: NextConfig = {
         protocol: 'https',
         hostname: 'www.neowheels.com',
       },
+      {
+        protocol: 'https',
+        hostname: 'autoformindia.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'api.autoformindia.com',
+      },
     ],
   },
 };

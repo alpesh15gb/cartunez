@@ -1,139 +1,74 @@
-[
-  {
-    "title": "Autoform Xclusive Plus Artificial Leather Seat Covers",
-    "description": "The flagship premium series featuring intricate stitching and high-quality soft-touch artificial leather. Water-resistant, durable, and handcrafted for a perfect fit.",
-    "handle": "autoform-xclusive-plus-seat-covers",
-    "category": "Car Seat Covers",
-    "variants": [
-      {
-        "title": "Mahindra Thar - Brown/Black",
-        "sku": "AF-XP-THAR-BRNBLK",
-        "price": 23429,
-        "color": "Brown/Black",
-        "make": "Mahindra",
-        "model": "Thar",
-        "year": "2020-2024"
-      },
-      {
-        "title": "Mahindra Thar - Black/Tan",
-        "sku": "AF-XP-THAR-BLKTAN",
-        "price": 23429,
-        "color": "Black/Tan",
-        "make": "Mahindra",
-        "model": "Thar",
-        "year": "2020-2024"
-      },
-      {
-        "title": "Hyundai Creta - Black/Red",
-        "sku": "AF-XP-CRETA-BLKRED",
-        "price": 19500,
-        "color": "Black/Red",
-        "make": "Hyundai",
-        "model": "Creta",
-        "year": "2020-2024"
-      }
-    ],
-    "images": [
-      "https://api.autoformindia.com/uploads/products/1714120245.webp",
-      "https://api.autoformindia.com/uploads/products/1714120353.webp"
-    ]
-  },
-  {
-    "title": "Autoform U-Focus Sport Series",
-    "description": "A modern, sportier design with focal-point stitching patterns. Designed for those who want their car interior to look as dynamic as the drive.",
-    "handle": "autoform-u-focus-seat-covers",
-    "category": "Car Seat Covers",
-    "variants": [
-      {
-        "title": "Mahindra Thar - Blue/Black",
-        "sku": "AF-UF-THAR-BLUBLK",
-        "price": 16009,
-        "color": "Blue/Black",
-        "make": "Mahindra",
-        "model": "Thar",
-        "year": "2020-2024"
-      },
-      {
-        "title": "Maruti Swift - Grey/Black",
-        "sku": "AF-UF-SWIFT-GRYBLK",
-        "price": 14500,
-        "color": "Grey/Black",
-        "make": "Maruti",
-        "model": "Swift",
-        "year": "2018-2024"
-      }
-    ],
-    "images": [
-      "https://api.autoformindia.com/uploads/products/1714120120.webp"
-    ]
-  },
-  {
-    "title": "Autoform U-Volt Design Seat Covers",
-    "description": "Features a high-voltage lightning-style stitching pattern. Premium finish and long-lasting comfort for daily driving.",
-    "handle": "autoform-u-volt-seat-covers",
-    "category": "Car Seat Covers",
-    "variants": [
-      {
-        "title": "Tata Nexon - Black/Silver",
-        "sku": "AF-UV-NEXON-BLKSIL",
-        "price": 18879,
-        "color": "Black/Silver",
-        "make": "Tata",
-        "model": "Nexon",
-        "year": "2020-2024"
-      }
-    ],
-    "images": [
-      "https://api.autoformindia.com/uploads/products/1714120900.webp"
-    ]
-  },
-  {
-    "title": "Autoform 7D Premium Car Mats",
-    "description": "Diamond-stitched 7D custom floor mats for full floor coverage. Easy to clean and incredibly durable.",
-    "handle": "autoform-7d-car-mats",
-    "category": "Car Floor Mats",
-    "variants": [
-      {
-        "title": "Mahindra Thar - Luxury Black",
-        "sku": "AF-MAT-THAR-LBLK",
-        "price": 9500,
-        "color": "Black",
-        "make": "Mahindra",
-        "model": "Thar",
-        "year": "2020-2024"
-      },
-      {
-        "title": "Hyundai Creta - Luxury Tan",
-        "sku": "AF-MAT-CRETA-LTAN",
-        "price": 8500,
-        "color": "Tan",
-        "make": "Hyundai",
-        "model": "Creta",
-        "year": "2020-2024"
-      }
-    ],
-    "images": [
-      "https://api.autoformindia.com/uploads/products/1714120600.webp"
-    ]
-  },
-  {
-    "title": "Autoform Sporty Steering Cover",
-    "description": "High-grip premium steering cover for precise control and comfort. Fits all standard 15-inch steering wheels.",
-    "handle": "autoform-steering-cover-sporty",
-    "category": "Interior Accessories",
-    "variants": [
-      {
-        "title": "Universal - Black Leatherite",
-        "sku": "AF-ST-BLK",
-        "price": 850,
-        "color": "Black",
-        "make": "Universal",
-        "model": "Universal",
-        "year": "All"
-      }
-    ],
-    "images": [
-      "https://api.autoformindia.com/uploads/products/1714120700.webp"
-    ]
-  }
-]
+{
+  "brands": [
+    {
+      "name": "Mahindra",
+      "models": ["Thar", "Scorpio-N", "XUV700", "XUV300", "Bolero Neo", "Scorpio Classic", "Marazzo"]
+    },
+    {
+      "name": "Hyundai",
+      "models": ["Creta", "Venue", "Verna", "i20", "i10 Nios", "Alcazar", "Aura", "EXTER", "Tucson", "Santro"]
+    },
+    {
+      "name": "Maruti Suzuki",
+      "models": ["Swift", "Baleno", "Brezza", "Ertiga", "Dzire", "Grand Vitara", "Fronx", "Jimny", "Alto K10", "Wagon R"]
+    },
+    {
+      "name": "TATA",
+      "models": ["Nexon", "Punch", "Harrier", "Safari", "Altroz", "Tiago", "Tigor"]
+    },
+    {
+      "name": "Toyota",
+      "models": ["Innova Hycross", "Innova Crysta", "Fortuner", "Legender", "Hyryder", "Glanza", "Urban Cruiser"]
+    },
+    {
+      "name": "KIA",
+      "models": ["Seltos", "Sonet", "Carens"]
+    }
+  ],
+  "series": [
+    {
+      "name": "Xclusive Plus",
+      "handle": "autoform-xclusive-plus-seat-covers",
+      "description": "The flagship premium series featuring intricate stitching and high-quality soft-touch artificial leather. Water-resistant and handcrafted for a perfect fit.",
+      "basePrice": 23429,
+      "colors": [
+        { "name": "Brown/Black", "image": "https://api.autoformindia.com/uploads/products/1714120245.webp" },
+        { "name": "Black/Tan", "image": "https://api.autoformindia.com/uploads/products/1714120353.webp" },
+        { "name": "Black/Black", "image": "https://api.autoformindia.com/uploads/products/1714120412.webp" },
+        { "name": "Blue/Black", "image": "https://api.autoformindia.com/uploads/products/1714120476.webp" },
+        { "name": "Burgundy/Black", "image": "https://api.autoformindia.com/uploads/products/1714120531.webp" }
+      ]
+    },
+    {
+      "name": "U-Focus Sport",
+      "handle": "autoform-u-focus-seat-covers",
+      "description": "A modern, sportier design with focal-point stitching patterns. Designed for those who want their car interior to look as dynamic as the drive.",
+      "basePrice": 16009,
+      "colors": [
+        { "name": "Blue/Black", "image": "https://api.autoformindia.com/uploads/products/1714120120.webp" },
+        { "name": "Red/Black", "image": "https://api.autoformindia.com/uploads/products/1714120120.webp" },
+        { "name": "Grey/Black", "image": "https://api.autoformindia.com/uploads/products/1714120120.webp" }
+      ]
+    },
+    {
+      "name": "U-Volt Series",
+      "handle": "autoform-u-volt-seat-covers",
+      "description": "Features a high-voltage lightning-style stitching pattern. Premium finish and long-lasting comfort for daily driving.",
+      "basePrice": 18879,
+      "colors": [
+        { "name": "Black/Silver", "image": "https://api.autoformindia.com/uploads/products/1714120900.webp" },
+        { "name": "Black/Red", "image": "https://api.autoformindia.com/uploads/products/1714120900.webp" }
+      ]
+    },
+    {
+      "name": "Duo Lucenzo",
+      "handle": "autoform-duo-lucenzo-seat-covers",
+      "description": "Double-layered luxury with Lucenzo material. Superior finish and long-lasting comfort.",
+      "basePrice": 22000,
+      "colors": [
+        { "name": "Tan/Black", "image": "https://api.autoformindia.com/uploads/products/1714120245.webp" },
+        { "name": "Beige/Black", "image": "https://api.autoformindia.com/uploads/products/1714120245.webp" }
+      ]
+    }
+  ]
+}
