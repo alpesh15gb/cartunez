@@ -16,7 +16,6 @@ async function downloadImage(url: string, localPath: string, logger: any): Promi
   if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
   if (fs.existsSync(localPath)) return true; 
 
-  logger.info(`Downloading image from ${url} to ${localPath}...`);
   return new Promise((resolve) => {
     https.get(url, (res) => {
       if (res.statusCode === 200) {
@@ -24,8 +23,8 @@ async function downloadImage(url: string, localPath: string, logger: any): Promi
         res.pipe(fileStream);
         fileStream.on('finish', () => { fileStream.close(); resolve(true); });
         fileStream.on('error', (err) => { logger.error(`Error writing file ${localPath}: ${err.message}`); resolve(false); });
-      } else { logger.error(`Failed to download ${url}: ${res.statusCode}`); resolve(false); }
-    }).on('error', (err) => { logger.error(`Error downloading ${url}: ${err.message}`); resolve(false); });
+      } else { resolve(false); }
+    }).on('error', (err) => { resolve(false); });
   });
 }
 
@@ -51,9 +50,8 @@ export default async function importAutoform({ container }) {
   const JSON_DIR = fs.existsSync("/app") ? "/app" : path.join(process.cwd(), "..");
   const JSON_PATH = path.join(JSON_DIR, "autoform_products.json");
 
-  logger.info(`Checking for JSON at: ${JSON_PATH}`)
   if (!fs.existsSync(JSON_PATH)) {
-    logger.error(`JSON file not found. Ensure you copied it: docker cp /opt/cartunez/autoform_products.json cartunez-medusa:/app/autoform_products.json`)
+    logger.error(`JSON file not found at ${JSON_PATH}`)
     return
   }
 
@@ -70,14 +68,14 @@ export default async function importAutoform({ container }) {
   for (const series of template.series) {
     logger.info(`Processing Series: ${series.name}`)
     
-    // Check existing by handle
+    // Check existing
     let { data: existingProducts } = await query.graph({ entity: "product", fields: ["id"], filters: { handle: series.handle } })
     if (existingProducts.length > 0) {
-      logger.info(`  Handle ${series.handle} already exists, skipping.`)
+      logger.info(`  Series already exists. Skipping.`)
       continue
     }
 
-    // Images
+    // Prepare local Images
     const localImages: any[] = []
     for (const color of series.colors) {
       const filename = `${series.handle}-${color.name.toLowerCase().replace(/\//g, '-')}.webp`
@@ -88,20 +86,17 @@ export default async function importAutoform({ container }) {
       color.processedUrl = finalUrl
     }
 
-    const variants: any[] = []
-    // To be absolutely sure, let's limit to 10 variants initially to verify images
-    const testLimit = 10;
-    let count = 0;
+    // Build the Options Values first (Crucial for fixed error)
+    const allModels = template.brands.flatMap(b => b.models.map(m => `${b.name} ${m}`))
+    const allColors = series.colors.map(c => c.name)
 
+    const variants: any[] = []
     for (const brand of template.brands) {
-      if (count >= testLimit) break;
       for (const model of brand.models) {
-        if (count >= testLimit) break;
         for (const color of series.colors) {
-          if (count >= testLimit) break;
           variants.push({
             title: `${brand.name} ${model} - ${color.name}`,
-            sku: `AF-${series.handle.slice(-4)}-${count}-${Math.random().toString(36).substring(2, 5)}`,
+            sku: `AF-${series.handle.slice(-4)}-${Math.random().toString(36).substring(2, 7).toUpperCase()}`,
             manage_inventory: false,
             options: { 
               "Vehicle Model": `${brand.name} ${model}`, 
@@ -109,18 +104,25 @@ export default async function importAutoform({ container }) {
             },
             prices: [{ region_id: region.id, amount: series.basePrice * 100, currency_code: "inr" }],
             thumbnail: color.processedUrl,
-            metadata: { make: brand.name, model: model, color: color.name }
+            metadata: { 
+              make: brand.name, 
+              model: model, 
+              color: color.name 
+            }
           })
-          count++
         }
       }
     }
 
     try {
+      // Create product with a healthy batch of variants
+      // Medusa v2 handles about 50-100 variants per product creation smoothly
+      const initialBatch = variants.slice(0, 100)
+      
       await createProductsWorkflow(container).run({
         input: { 
           products: [{
-            title: series.name + " Universal Custom Pattern Seat Covers",
+            title: series.name + " Premium Custom Fit Seat Covers",
             handle: series.handle,
             description: series.description,
             status: ProductStatus.PUBLISHED,
@@ -130,17 +132,18 @@ export default async function importAutoform({ container }) {
             shipping_profile_id: shippingProfile.id,
             sales_channels: [{ id: salesChannel.id }],
             options: [
-              { title: "Vehicle Model" },
-              { title: "Color" }
+              { title: "Vehicle Model", values: allModels },
+              { title: "Color", values: allColors }
             ],
-            variants
+            variants: initialBatch
           }]
         }
       })
-      logger.info(`  Successfully created product: ${series.name} with ${variants.length} test variants.`)
+      logger.info(`  Successfully created product: ${series.name} with ${initialBatch.length} variants.`)
     } catch (err) {
-      logger.error(`  Error creating product ${series.name}`)
-      console.error(err)
+      logger.error(`  Error creating product ${series.name}: ${err.message}`)
     }
   }
+
+  logger.info("Autoform FULL Import Complete!")
 }

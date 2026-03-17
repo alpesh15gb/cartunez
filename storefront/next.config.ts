@@ -27,6 +27,10 @@ const nextConfig: NextConfig = {
         protocol: 'https',
         hostname: 'api.autoformindia.com',
       },
+      {
+        protocol: 'https',
+        hostname: 'cartunez.in',
+      },
     ],
   },
 };
