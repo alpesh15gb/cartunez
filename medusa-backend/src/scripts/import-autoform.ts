@@ -9,11 +9,50 @@ import {
 } from "@medusajs/medusa/core-flows"
 import fs from "fs"
 import path from "path"
+import https from "https"
+
+async function downloadImage(url: string, localPath: string, logger: any): Promise<boolean> {
+  const dir = path.dirname(localPath);
+  if (!fs.existsSync(dir)) {
+    fs.mkdirSync(dir, { recursive: true });
+  }
+
+  if (fs.existsSync(localPath)) {
+    return true; // Already exists
+  }
+
+  return new Promise((resolve) => {
+    https.get(url, (res) => {
+      if (res.statusCode === 200) {
+        const fileStream = fs.createWriteStream(localPath);
+        res.pipe(fileStream);
+        fileStream.on('finish', () => {
+          fileStream.close();
+          resolve(true);
+        });
+        fileStream.on('error', (err) => {
+          logger.error(`Error writing file ${localPath}: ${err.message}`);
+          resolve(false);
+        });
+      } else {
+        logger.error(`Failed to download ${url}: ${res.statusCode}`);
+        resolve(false);
+      }
+    }).on('error', (err) => {
+      logger.error(`Error downloading ${url}: ${err.message}`);
+      resolve(false);
+    });
+  });
+}
 
 export default async function importAutoform({ container }) {
   const logger = container.resolve(ContainerRegistrationKeys.LOGGER)
   const query = container.resolve(ContainerRegistrationKeys.QUERY)
   
+  // Configuration
+  const UPLOADS_BASE_URL = "https://cartunez.in/uploads/autoform"
+  const UPLOADS_DIR = path.join(process.cwd(), "uploads", "autoform")
+
   // 1. Resolve IDs dynamically
   const { data: salesChannels } = await query.graph({
     entity: "sales_channel",
@@ -33,10 +72,6 @@ export default async function importAutoform({ container }) {
   })
   const shippingProfile = shippingProfiles.find(sp => sp.name === "Default Shipping Profile") || shippingProfiles[0]
 
-  logger.info(`Using Sales Channel: ${salesChannel.name} (${salesChannel.id})`)
-  logger.info(`Using Region: ${region.name} (${region.id})`)
-  logger.info(`Using Shipping Profile: ${shippingProfile.name} (${shippingProfile.id})`)
-
   const JSON_PATH = path.join(process.cwd(), "..", "autoform_products.json")
   
   if (!fs.existsSync(JSON_PATH)) {
@@ -46,7 +81,7 @@ export default async function importAutoform({ container }) {
 
   const template = JSON.parse(fs.readFileSync(JSON_PATH, "utf8"))
 
-  logger.info("Starting Autoform FULL combinatorial import...")
+  logger.info("Starting Autoform LOCAL image import...")
 
   // Ensure category exists
   let { data: existingCategories } = await query.graph({
@@ -70,6 +105,21 @@ export default async function importAutoform({ container }) {
   for (const series of template.series) {
     logger.info(`Processing Series: ${series.name}`)
     
+    // Download images locally
+    const localImages: any[] = []
+    for (const color of series.colors) {
+      const filename = `${series.handle}-${color.name.toLowerCase().replace(/\//g, '-')}.webp`
+      const localPath = path.join(UPLOADS_DIR, filename)
+      const success = await downloadImage(color.image, localPath, logger)
+      
+      if (success) {
+        color.localImageUrl = `${UPLOADS_BASE_URL}/${filename}`
+      } else {
+        color.localImageUrl = color.image // Fallback to remote if download fails
+      }
+      localImages.push({ url: color.localImageUrl })
+    }
+
     // Check if product already exists to avoid duplicates
     let { data: existingProducts } = await query.graph({
       entity: "product",
@@ -78,15 +128,11 @@ export default async function importAutoform({ container }) {
     })
 
     if (existingProducts.length > 0) {
-      logger.info(`  Series ${series.name} already exists. Skipping product creation (will update variants in future version).`)
+      logger.info(`  Series ${series.name} already exists. Skipping product creation.`)
       continue
     }
 
-    const images = series.colors.map(c => ({ url: c.image }))
     const colorNames = series.colors.map(c => c.name)
-    
-    // We need to limit the initial variant creation because Medusa/Vite might timeout if we do 5,000 at once.
-    // We'll focus on the most popular brands first as per template.
     const variants: any[] = []
     
     for (const brand of template.brands) {
@@ -106,7 +152,7 @@ export default async function importAutoform({ container }) {
               color: color.name,
               series: series.name
             },
-            thumbnail: color.image,
+            thumbnail: color.localImageUrl,
             prices: [
               {
                 region_id: region.id,
@@ -119,27 +165,24 @@ export default async function importAutoform({ container }) {
       }
     }
 
-    logger.info(`  Generated ${variants.length} variants for ${series.name}`)
-
     const options = [
       { title: "Vehicle Model", values: Array.from(new Set(variants.map(v => v.options["Vehicle Model"]))) },
       { title: "Color", values: colorNames }
     ]
 
     try {
-      // Chunk variants if there are too many
       const chunkSize = 100
       const initialBatch = variants.slice(0, chunkSize)
       
-      const { result } = await createProductsWorkflow(container).run({
+      await createProductsWorkflow(container).run({
         input: { 
           products: [{
             title: series.name + " Premium Custom Fit Seat Covers",
             handle: series.handle,
             description: series.description,
             status: ProductStatus.PUBLISHED,
-            images,
-            thumbnail: images[0]?.url,
+            images: localImages,
+            thumbnail: localImages[0]?.url,
             category_ids: [categoryId],
             shipping_profile_id: shippingProfile.id,
             sales_channels: [{ id: salesChannel.id }],
@@ -149,15 +192,12 @@ export default async function importAutoform({ container }) {
         }
       })
       
-      logger.info(`  Successfully created ${series.name} with first ${initialBatch.length} variants.`)
-      
-      // In a real scenario, we'd add the remaining variants using the add-variants workflow
-      // but for this task, 100 per series covering the main cars is a great start.
+      logger.info(`  Successfully created ${series.name} with ${initialBatch.length} local variants.`)
       
     } catch (err) {
       logger.error(`  Error importing ${series.name}: ${err.message}`)
     }
   }
 
-  logger.info("Autoform Combinatorial Import Complete!")
+  logger.info("Autoform LOCAL Import Complete!")
 }

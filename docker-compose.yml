@@ -23,6 +23,7 @@ services:
     volumes:
       - ./nhone_products.json:/app/nhone_products.json
       - ./names_v2.json:/app/names_v2.json
+      - ./uploads:/app/medusa-backend/uploads
       - /app/medusa-backend/node_modules
 
   storefront:
@@ -42,6 +43,7 @@ services:
       - medusa-backend
     restart: unless-stopped
     volumes:
+      - ./uploads:/app/storefront/public/uploads
       - /app/storefront/node_modules
 
   postgres:
@@ -64,6 +66,21 @@ services:
       - "6380:6379"
     volumes:
       - redis-data:/data
+    restart: unless-stopped
+
+  nginx:
+    image: nginx:alpine
+    container_name: cartunez-nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./uploads:/usr/share/nginx/html/uploads:ro
+      - /etc/letsencrypt:/etc/letsencrypt:ro
+    depends_on:
+      - storefront
+      - medusa-backend
     restart: unless-stopped
 
 volumes:
